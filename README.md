@@ -21,15 +21,15 @@ Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung
 ## Call trace
 
 ```
-extract(html)                          pluck/extract.py
-├─ rungs.scripts(html)                 pluck/rungs.py      inline <script> bodies
-├─ mine.jsonld(rungs.declared(scr))    pluck/rungs.py, mine.py
-├─ mine.state(rungs.shipped(scr))      pluck/rungs.py, mine.py
-├─ mine.state(rungs.computed(scr))     pluck/rungs.py      only if core fields missing (V8 sandbox)
-├─ _visible_prices(html)               pluck/extract.py    corroborate or flag conflict
-├─ infer(html, missing, TOPS, known)   pluck/infer.py      one call: missing fields + top-level category
-├─ pick_leaf(known, html, subtree)     pluck/infer.py      one call: exact path within that branch
-└─ taxonomy.snap(answer)               pluck/taxonomy.py   snap any stray answer to a real path
+extract(html)                          climbs the rungs, assembles the product      pluck/extract.py
+├─ rungs.scripts(html)                 pulls every inline <script> body             pluck/rungs.py
+├─ mine.jsonld(rungs.declared(scr))    reads the merchant's json-ld for google      pluck/mine.py
+├─ mine.state(rungs.shipped(scr))      parses embedded json state (__NEXT_DATA__)   pluck/mine.py
+├─ mine.state(rungs.computed(scr))     runs page js in a v8 sandbox, reads state    pluck/rungs.py
+├─ _visible_prices(html)               price must show on the page or model referees pluck/extract.py
+├─ infer(html, missing, TOPS, known)   one call: missing fields + top-level category pluck/infer.py
+├─ pick_leaf(known, html, subtree)     one call: exact path within that branch      pluck/infer.py
+└─ taxonomy.snap(answer)               snaps any stray answer to a real path        pluck/taxonomy.py
 ```
 
 ## Files and data structures
