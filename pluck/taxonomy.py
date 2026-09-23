@@ -42,6 +42,19 @@ def _embedder():
 
 
 _SET = set(_CATS)
+TOPS = sorted({c.split(" > ")[0] for c in _CATS})
+
+
+def top(name) -> str | None:
+    """Case-tolerant match of a model answer to a real top-level category."""
+    if not name:
+        return None
+    n = str(name).replace("&amp;", "&").strip()
+    return next((t for t in TOPS if t.lower() == n.lower()), None)
+
+
+def subtree(top_name: str) -> list[str]:
+    return [c for c in _CATS if c == top_name or c.startswith(top_name + " > ")]
 
 
 def snap(path) -> str | None:
@@ -71,20 +84,3 @@ def snap(path) -> str | None:
     return scored[0] if qall & scored[1] else None
 
 
-def shortlist(query: str, k: int = 10) -> list[str]:
-    q = _toks(query)
-    scored = sorted(
-        ((len(q & al) + 1.5 * len(q & lf), p) for p, al, lf in _PATHS if q & al),
-        reverse=True,
-    )
-    lex = [p for _, p in scored[: k]]
-
-    emb = _embedder()
-    if emb:
-        model, mat, np = emb
-        v = np.array(list(model.embed([query])))[0]
-        sims = mat @ v / (np.linalg.norm(mat, axis=1) * np.linalg.norm(v) + 1e-9)
-        for i in np.argsort(-sims)[: k // 2]:
-            if _CATS[i] not in lex:
-                lex.append(_CATS[i])
-    return lex[: k + k // 2]

@@ -19,17 +19,15 @@ def clean_text(html: str, limit: int = 16_000) -> str:
     return re.sub(r"\s+", " ", text)[:limit]
 
 
-async def infer(html: str, missing: list[str], categories: list[str],
+async def infer(html: str, missing: list[str], tops: list[str],
                 known_name: str | None) -> tuple[dict, dict]:
-    """Ask for `missing` fields plus a category path. Returns (fields, usage)."""
+    """Ask for `missing` fields plus the top-level category (the first step of
+    the taxonomy descent). Returns (fields, usage)."""
     keys = missing + ["category"]
     rules = ["Reply with a JSON object with exactly these keys: " + str(keys) + ".",
              "Use null when the page does not state a value.",
-             "'category': copy the best-fitting path verbatim from this list: "
-             + json.dumps(categories)
-             + " — but if none of them fits this product, instead write the correct "
-             "full Google Shopping taxonomy path yourself, formatted like "
-             "'Apparel & Accessories > Jewelry > Watches'."]
+             "'category': the best-fitting top-level Google Shopping category, "
+             "copied verbatim from this list: " + json.dumps(tops)]
     if "compare_at" in keys:
         rules.append("'compare_at' is the crossed-out / 'was' / list price shown "
                      "next to the current price; null if there is no higher original "
@@ -39,9 +37,8 @@ async def infer(html: str, missing: list[str], categories: list[str],
         rules.append("'price' is the number a buyer pays right now for a standard "
                      "one-time purchase (not a subscription or member price), as a "
                      "decimal number (write 42,01 as 42.01).")
-    # a category-only call doesn't need the page, just the identity
     content = clean_text(html) if missing else \
-        f"Product: {known_name}\n{clean_text(html, 1_200)}"
+        f"Product: {known_name}\n{clean_text(html, 4_000)}"
     async with httpx.AsyncClient(timeout=90) as client:
         r = await client.post(
             "https://openrouter.ai/api/v1/chat/completions",
@@ -64,3 +61,32 @@ async def infer(html: str, missing: list[str], categories: list[str],
                 data.get("usage", {}))
     except (KeyError, json.JSONDecodeError):
         return {}, data.get("usage", {})
+
+
+async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[str | None, dict]:
+    """Descent step two: choose the full path within the top-level subtree."""
+    async with httpx.AsyncClient(timeout=90) as client:
+        r = await client.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={"Authorization": f"Bearer {os.environ['OPEN_ROUTER_API_KEY']}"},
+            json={
+                "model": MODEL,
+                "messages": [
+                    {"role": "system", "content":
+                     "Pick the single best-fitting category path for this product; "
+                     "prefer a general path over a specific one unless the specific "
+                     "clearly applies. Reply JSON {\"category\": \"<one string copied "
+                     "verbatim from the list>\"}. List: " + json.dumps(paths)},
+                    {"role": "user", "content": f"{known}\n{clean_text(html, 4_000)}"},
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0,
+            },
+        )
+    r.raise_for_status()
+    data = r.json()
+    try:
+        return (json.loads(data["choices"][0]["message"]["content"]).get("category"),
+                data.get("usage", {}))
+    except (KeyError, json.JSONDecodeError):
+        return None, data.get("usage", {})

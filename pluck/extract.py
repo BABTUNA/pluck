@@ -10,9 +10,8 @@ import time
 
 from pydantic import BaseModel
 
-from . import mine, rungs
-from .infer import infer
-from .taxonomy import shortlist, snap
+from . import mine, rungs, taxonomy
+from .infer import infer, pick_leaf
 
 _CORE = ("name", "price", "currency")
 _SALE = re.compile(r"was \$|% off|you save|original price|compare at|-\d+%", re.I)
@@ -103,16 +102,23 @@ async def extract(html: str) -> Product:
     desc = re.search(r'(?:og|name=["\'])[:"\']description["\'][^>]*content=["\']([^"\']{20,300})', html, re.I)
     if desc:
         known += " | " + mine._unesc(desc.group(1))
-    cats = shortlist(known, k=14)
-    fb, usage = await infer(html, missing, cats, known)
-    for k in missing + ["category"]:
+    fb, usage = await infer(html, missing, taxonomy.TOPS, known)
+    for k in missing:
         v = fb.get(k)
-        if k == "category":
-            v = snap(v)  # the model names it, the tree files it
         if k in ("price", "compare_at") and v is not None:
             v = mine._num(v)
         if v is not None or k not in fields:
             fields[k] = Field(value=v, source="inferred" if v is not None else "none")
+
+    # category descends the taxonomy like everything else climbed the page:
+    # top-level branch first, then one pick inside that real subtree
+    cat = None
+    if top := taxonomy.top(fb.get("category")):
+        leaf, usage2 = await pick_leaf(known, html, taxonomy.subtree(top))
+        usage = {k: (usage.get(k) or 0) + (usage2.get(k) or 0) for k in usage | usage2
+                 if isinstance(usage.get(k, usage2.get(k)), (int, float))}
+        cat = taxonomy.snap(leaf)
+    fields["category"] = Field(value=cat, source="inferred" if cat else "none")
 
     for k in ("name", "price", "compare_at", "currency", "category"):
         fields.setdefault(k, Field(value=None, source="none"))
