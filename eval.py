@@ -6,6 +6,7 @@ Usage: uv run python eval.py [n_pages]
 import asyncio
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 from pluck.extract import extract
@@ -20,7 +21,7 @@ async def main():
     expected_cats = json.loads((OLD / "eval" / "expected_categories.json").read_text())
 
     score = {k: [0, 0] for k in ("name", "price", "compare_at", "currency", "category")}
-    conf_correct, conf_wrong, fallbacks, misses = [], [], 0, []
+    sources, misses = Counter(), []
     total_tokens = 0
 
     sem = asyncio.Semaphore(8)
@@ -34,14 +35,13 @@ async def main():
 
     for stem, r in await asyncio.gather(*(one(p) for p in pages)):
         if isinstance(r, Exception):
-            misses.append(f"{stem}: ERROR {r}")
+            misses.append(f"{stem}: ERROR {r!r}")
             continue
         ref_file = OLD / "output" / f"{stem}.json"
         if not ref_file.exists():
             continue
         ref = json.loads(ref_file.read_text())
-        total_tokens += (r.meta["chooser_tokens"] or {}).get("total_tokens", 0)
-        fallbacks += len(r.meta["fallback_fields"])
+        total_tokens += (r.meta["llm_tokens"] or {}).get("total_tokens", 0)
 
         def num_eq(a, b):
             return a is not None and b is not None and abs(float(a) - float(b)) < 0.01
@@ -61,20 +61,26 @@ async def main():
             ok = check(f.value)
             score[k][1] += 1
             score[k][0] += ok
-            (conf_correct if ok else conf_wrong).append(f.confidence)
+            sources[(k, f.source, "ok" if ok else "MISS")] += 1
             if not ok:
-                misses.append(f"{stem}.{k}: {f.value!r} (conf {f.confidence}, {f.source})")
+                misses.append(f"{stem}.{k}: {f.value!r} ({f.source})")
 
-    print(f"\n== pluck vs previous verified pipeline ({score['name'][1]} pages) ==")
+    print(f"\n== pluck decision tree vs verified pipeline ({score['name'][1]} pages) ==")
     for k, (c, n) in score.items():
         print(f"  {k:11} {c}/{n}  ({c / max(n, 1):.0%})")
-    avg = lambda xs: sum(xs) / len(xs) if xs else 0
-    print(f"\n  avg confidence when correct: {avg(conf_correct):.2f}")
-    print(f"  avg confidence when wrong:   {avg(conf_wrong):.2f}")
-    print(f"  fallback field-calls: {fallbacks}")
-    print(f"  chooser tokens total: {total_tokens}  (~${total_tokens / 1e6 * 0.05:.4f} at nano rates)")
+    print("\nrung attribution (field, source -> ok/miss):")
+    for k in score:
+        row = {s: [0, 0] for s in ("declared", "shipped", "computed", "inferred", "none")}
+        for (fk, src, ok), n in sources.items():
+            if fk == k:
+                row[src][ok == "ok"] += n
+        cells = "  ".join(f"{s}:{good}/{good + bad}" for s, (bad, good) in row.items()
+                          if good + bad)
+        print(f"  {k:11} {cells}")
+    print(f"\n  llm tokens total: {total_tokens}  "
+          f"(~${total_tokens / 1e6 * 0.10:.4f} at flash-lite rates)")
     print(f"\nmisses ({len(misses)}):")
-    for m in misses[:25]:
+    for m in misses[:30]:
         print("  " + m)
 
 

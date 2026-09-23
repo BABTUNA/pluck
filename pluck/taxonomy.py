@@ -41,6 +41,36 @@ def _embedder():
         return None
 
 
+_SET = set(_CATS)
+
+
+def snap(path) -> str | None:
+    """Snap a model-written taxonomy path to a real one: exact match, else the
+    deepest valid prefix (every taxonomy prefix is itself a category), else
+    the leaf-nearest path in the tree."""
+    if not path:
+        return None
+    p = re.sub(r"\s*>\s*", " > ", str(path).replace("&amp;", "&").strip())
+    if p in _SET:
+        return p
+    segs = p.split(" > ")
+    # the leaf is the signal: find the real path whose leaf matches it best
+    qleaf, qall = _toks(segs[-1]), _toks(p)
+    scored = max(_PATHS, key=lambda t: 3 * len(qleaf & t[2]) + len(qall & t[1]))
+    if qleaf & scored[2]:
+        return scored[0]
+    emb = _embedder()
+    if emb:  # synonym leaves ("Fragrances" vs "Perfume & Cologne") need vectors
+        model, mat, np = emb
+        v = np.array(list(model.embed([p])))[0]
+        sims = mat @ v / (np.linalg.norm(mat, axis=1) * np.linalg.norm(v) + 1e-9)
+        return _CATS[int(np.argmax(sims))]
+    for i in range(len(segs) - 1, 1, -1):  # else deepest valid prefix
+        if (q := " > ".join(segs[:i])) in _SET:
+            return q
+    return scored[0] if qall & scored[1] else None
+
+
 def shortlist(query: str, k: int = 10) -> list[str]:
     q = _toks(query)
     scored = sorted(
