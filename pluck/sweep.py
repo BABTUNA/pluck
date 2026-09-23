@@ -90,7 +90,7 @@ def sweep(html: str) -> Candidates:
                 continue
             key = f"{v:g}"
             ctx = re.sub(r"\s+", " ", src[max(0, m.start() - 55):m.end() + 25])
-            seen.setdefault(key, ctx[:90])
+            seen.setdefault(key, "SYM " + ctx[:86])  # money-pattern = symbol-adjacent
             sym = m.group("sym") or m.group("code") or ""
             cur = _CUR_HINTS.get(sym, sym if len(sym) == 3 else "")
             if cur and cur not in c.currencies:
@@ -102,6 +102,30 @@ def sweep(html: str) -> Candidates:
             key = f"{v:g}"
             ctx = re.sub(r"\s+", " ", src[max(0, m.start() - 40):m.end() + 20])
             seen.setdefault(key, ctx[:90])
+    # cents-encoded twins: drop 8940 when 89.4 is also present, but only
+    # when the big number never appears with a currency symbol (a real
+    # $3,599 keeps its symbol; blob minor-units don't)
+    vals = {float(k) for k in seen}
+    def _drop(k, v):
+        f = float(k)
+        adjacent = v.startswith("SYM ")
+        if f >= 1000 and f == int(f) and f / 100 in vals and not adjacent:
+            return True  # cents-encoded twin from a json key
+        if 1900 <= f <= 2100 and f == int(f) and not adjacent:
+            return True  # year masquerading as a price
+        return False
+    # a lone json-key integer >= 1000 with no symbol anywhere on the page at
+    # that magnitude is usually minor units: offer its /100 form as well
+    has_big_sym = any(v.startswith("SYM ") and float(k) >= 1000 for k, v in seen.items())
+    extra = {}
+    for k, v in seen.items():
+        f = float(k)
+        if (f >= 1000 and f == int(f) and not v.startswith("SYM ")
+                and not has_big_sym and f"{f / 100:g}" not in seen):
+            extra[f"{f / 100:g}"] = f"= {k} from data, divided by 100 (minor units)"
+    seen.update(extra)
+    seen = {k: (v[4:] if v.startswith("SYM ") else v)
+            for k, v in seen.items() if not _drop(k, v)}
     c.prices = [f"{k}  [{ctx}]" for k, ctx in list(seen.items())[:9]]
     for code in re.findall(r'"(?:priceCurrency|currency(?:Code)?)"\s*:\s*"([A-Z]{3})"', " ".join(blobs)):
         if code not in c.currencies:

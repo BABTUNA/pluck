@@ -48,7 +48,7 @@ def _questions(c: Candidates) -> list[Question]:
         Question("name", "Which is the product's concise name (not a long page/SEO title)?", c.names, allow_none=False),
         Question("price", "Which number is the price a buyer pays right now (after any sale or instant savings)?", c.prices),
         Question("compare_at",
-                 "Which number is the crossed-out ORIGINAL price, different from the current price? Answer N unless the page clearly shows a sale.", c.prices),
+                 "Which number is the crossed-out, 'was', or list price shown alongside the current price? N if the page shows no higher original price.", c.prices),
     ]
     if c.currencies:
         qs.append(Question("currency", "Which currency are the prices in?", c.currencies,
@@ -68,11 +68,13 @@ def _state(c: Candidates) -> str:
     return "\n".join(parts)
 
 
-async def _fallback(html: str, fields: list[str]) -> dict:
+async def _fallback(html: str, fields: list[str], categories: list[str]) -> dict:
     """Re-ask only the failed fields with a generative model over page text."""
     text = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>|<[^>]+>", " ", html)
     text = re.sub(r"\s+", " ", text)[:12_000]
     schema = {f: "string or number or null" for f in fields}
+    cat_rule = (f" For 'category' you MUST copy one string verbatim from this list "
+                f"(or null): {categories}" if "category" in fields else "")
     async with httpx.AsyncClient(timeout=90) as client:
         r = await client.post(
             "https://openrouter.ai/api/v1/chat/completions",
@@ -83,7 +85,7 @@ async def _fallback(html: str, fields: list[str]) -> dict:
                     {"role": "system", "content":
                      "Extract the requested product fields from the page text. "
                      f"Reply with a JSON object with exactly these keys: {list(schema)}. "
-                     "Use null when the page does not state a value."},
+                     "Use null when the page does not state a value." + cat_rule},
                     {"role": "user", "content": text},
                 ],
                 "response_format": {"type": "json_object"},
@@ -124,10 +126,12 @@ async def extract(html: str) -> Product:
 
     # confidence-routed fallback: only fields below the floor (compare_at may
     # honestly be absent, so a low-confidence N is not retried)
-    weak = [k for k, f in out.items()
-            if f.confidence < CONFIDENCE_FLOOR and not (k == "compare_at" and f.value is None)]
+    weak = [k for k, f in out.items() if f.confidence < CONFIDENCE_FLOOR]
+    # a product page always has a price; a confident "none" is still a miss
+    if out["price"].value is None and "price" not in weak:
+        weak.append("price")
     if weak:
-        fb = await _fallback(html, weak)
+        fb = await _fallback(html, weak, c.categories)
         for k in weak:
             if fb.get(k) is not None:
                 v = fb[k]
@@ -136,7 +140,11 @@ async def extract(html: str) -> Product:
                         v = float(re.sub(r"[^\d.]", "", str(v)))
                     except ValueError:
                         continue
+                if k == "category" and v not in c.categories:
+                    continue  # only taxonomy strings count
                 out[k] = Field(value=v, confidence=0.5, source="fallback")
+            elif k == "compare_at" and out[k].value is not None:
+                out[k] = Field(value=None, confidence=0.5, source="fallback")
 
     # a compare-at equal to the price means "not on sale"
     if out["compare_at"].value is not None and out["price"].value is not None \
