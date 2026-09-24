@@ -103,17 +103,37 @@ three dicts look like a product, the hint overlap makes Wool Runner win. out:
 
 **mine.state(rungs.computed(scr), hint)**
 
-skipped on this page, the core fields are filled. on a shopify page the sandbox globals come back like:
+skipped on this page since the core fields are filled. it exists for pages that ship code instead of data, where the product only comes to exist when a browser runs the scripts. rungs.computed plays browser, it boots a v8 sandbox with a fake window and no network, runs the pages own scripts and returns whatever new globals appeared.
 
-```json
-[{"product": {"title": "Dreamweave Waffle Robe", "handle": "dreamweave-robe",
-              "variants": [{"price": 8940, "compare_at_price": null}]}}]
+in, a script that builds state at runtime:
+
+```html
+<script>
+  window.ShopifyAnalytics = window.ShopifyAnalytics || {};
+  window.ShopifyAnalytics.meta = {
+    product: {
+      title: "Dreamweave Waffle Robe",
+      handle: "dreamweave-robe",
+      variants: [{ price: 8940, compare_at_price: 13900, name: "Robe - S/M" }]
+    },
+    currency: "USD"
+  };
+</script>
 ```
 
-and mine.state returns the cents decoded product:
+after running it the sandbox globals come back as real json:
 
 ```json
-{"name": "Dreamweave Waffle Robe", "price": 89.4}
+{"ShopifyAnalytics": {"meta": {
+  "product": {"title": "Dreamweave Waffle Robe", "handle": "dreamweave-robe",
+              "variants": [{"price": 8940, "compare_at_price": 13900, "name": "Robe - S/M"}]},
+  "currency": "USD"}}}
+```
+
+the same mine.state finds the product, sees handle so the ints are shopify cents, and returns:
+
+```json
+{"name": "Dreamweave Waffle Robe", "price": 89.4, "compare_at": 139.0, "currency": "USD"}
 ```
 
 **_visible_prices(html)**
