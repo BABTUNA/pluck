@@ -16,6 +16,7 @@ _SCRIPT = re.compile(r"<script\b([^>]*)>([\s\S]*?)</script>", re.I)
 _TYPE = re.compile(r"type\s*=\s*[\"']([^\"']+)", re.I)
 
 
+# every inline script body with its type attribute
 def scripts(html: str) -> list[tuple[str, str]]:
     out = []
     for m in _SCRIPT.finditer(html):
@@ -27,6 +28,7 @@ def scripts(html: str) -> list[tuple[str, str]]:
     return out
 
 
+# forgiving json parse
 def _loads(body: str):
     try:
         return json.loads(body)
@@ -39,12 +41,14 @@ def _loads(body: str):
 
 
 # ---------------------------------------------------------------- rung a --
+# parsed json ld blocks
 def declared(scr: list[tuple[str, str]]) -> list:
     return [o for t, body in scr if t == "application/ld+json"
             and (o := _loads(body)) is not None]
 
 
 # ---------------------------------------------------------------- rung b --
+# parsed inert json state tags
 def shipped(scr: list[tuple[str, str]]) -> list:
     out = []
     for t, body in scr:
@@ -112,11 +116,14 @@ _STATEY = re.compile(
     r"|JSON\.parse|__remix|Shopify|_state_|__STATE", re.I)
 
 
+# serialize sandbox use across threads
 def computed(scr: list[tuple[str, str]]) -> list:
     with _VM_LOCK:
         return _computed(scr)
 
 
+# boot a fake browser, run the pages state building scripts,
+# then snapshot and return whatever new globals they created
 def _computed(scr: list[tuple[str, str]]) -> list:
     from py_mini_racer import MiniRacer
     ctx = MiniRacer()

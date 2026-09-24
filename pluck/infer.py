@@ -17,12 +17,14 @@ load_dotenv()
 MODEL = os.environ.get("PLUCK_MODEL", "google/gemini-2.5-flash-lite")
 
 
+# strip the page down to what a human would read
 def clean_text(html: str, limit: int = 16_000) -> str:
     text = re.sub(r"<(script|style|svg|noscript)[\s\S]*?</\1>|<[^>]+>", " ", html)
     return re.sub(r"\s+", " ", text)[:limit]
 
 
-# returns (fields dict, token usage)
+# one json call for the missing or disputed fields plus a top level category
+# rules encode the judgment calls, one time price, no other brands compare at
 async def infer(html: str, missing: list[str], tops: list[str],
                 known_name: str | None) -> tuple[dict, dict]:
     keys = missing + ["category"]
@@ -68,6 +70,7 @@ async def infer(html: str, missing: list[str], tops: list[str],
         return {}, data.get("usage", {})
 
 
+# second half of the category descent, one verbatim pick from the branch
 async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[str | None, dict]:
     async with httpx.AsyncClient(timeout=90) as client:
         r = await client.post(

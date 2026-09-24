@@ -19,11 +19,12 @@ _CURRENCY_KEYS = {"currency", "currencycode", "currency_code", "pricecurrency"}
 _CRUMB_KEYS = {"category", "product_type", "producttype", "product_category"}
 
 
+# pages double encode entities, unescape twice
 def _unesc(s: str) -> str:
-    # pages double encode, unescape twice
     return _html.unescape(_html.unescape(s)).strip()
 
 
+# money in any shape to a float, or none
 def _num(v) -> float | None:
     if isinstance(v, dict):
         v = v.get("amount") or v.get("value") or v.get("price")
@@ -45,10 +46,13 @@ def _num(v) -> float | None:
     return None
 
 
+# sane price bounds
 def _ok_price(v: float | None) -> bool:
     return v is not None and 0.5 <= v <= 500_000
 
 
+# mine schema org product blocks, the merchants declared answer
+# several distinct offer prices is treated as ambiguity so the tree climbs
 def jsonld(objs: list) -> dict:
     out: dict = {}
     stack = list(objs)
@@ -97,8 +101,9 @@ def jsonld(objs: list) -> dict:
     return {k: v for k, v in out.items() if v}
 
 
+# mine framework state for the product the page is about
+# hint is the page title, it breaks ties against recommended product entries
 def state(objs: list, hint: str = "") -> dict:
-    # hint is the page title, it breaks ties against recommended product entries
     hint_toks = set(re.findall(r"[a-z0-9]+", hint.lower()))
     best, best_score, cur_seen = {}, 0, None
 
@@ -134,6 +139,7 @@ def state(objs: list, hint: str = "") -> dict:
     return best
 
 
+# pull typed fields out of one dict by key name
 def _mine_dict(o: dict, shopify: bool) -> dict:
     out: dict = {}
     for k, v in o.items():
@@ -160,13 +166,14 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
             if v is not None and (k in ("name", "currency") or _ok_price(v))}
 
 
+# an integer 8940 in a shopify blob means 89.40
 def _cents(n: float | None, raw, shopify: bool) -> float | None:
-    # an integer 8940 in a shopify blob means 89.40
     if n is not None and shopify and isinstance(raw, int) and n >= 100:
         return n / 100
     return n
 
 
+# collect category style strings anywhere in the state
 def _crumbs(objs, depth: int = 0) -> list[str]:
     found: list[str] = []
     if depth > 10:

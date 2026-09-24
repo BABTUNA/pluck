@@ -13,6 +13,7 @@ _CATS = [l.strip() for l in (Path(__file__).parent.parent / "categories.txt")
          .read_text().splitlines() if l.strip() and not l.startswith("#")]
 
 
+# lowercase stemmed tokens
 def _toks(text: str) -> set[str]:
     out = set()
     for t in re.findall(r"[a-z0-9]+", text.lower()):
@@ -24,6 +25,7 @@ def _toks(text: str) -> set[str]:
 _PATHS = [(p, _toks(p), _toks(p.rsplit(">", 1)[-1])) for p in _CATS]
 
 
+# local embedding model over all 5595 paths, loaded once, disabled on tiny machines
 @lru_cache(maxsize=1)
 def _embedder():
     import os
@@ -49,6 +51,7 @@ _SET = set(_CATS)
 TOPS = sorted({c.split(" > ")[0] for c in _CATS})
 
 
+# case tolerant match of a model answer to a real top level category
 def top(name) -> str | None:
     if not name:
         return None
@@ -56,10 +59,13 @@ def top(name) -> str | None:
     return next((t for t in TOPS if t.lower() == n.lower()), None)
 
 
+# every real path under one top level branch
 def subtree(top_name: str) -> list[str]:
     return [c for c in _CATS if c == top_name or c.startswith(top_name + " > ")]
 
 
+# map any model written path to a real one
+# exact match, else best leaf overlap, else embeddings, else deepest valid prefix
 def snap(path) -> str | None:
     if not path:
         return None

@@ -21,11 +21,13 @@ _SALE = re.compile(r"was \$|% off|you save|original price|compare at|-\d+%", re.
 _SYM = {"$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY", "kr": "SEK"}
 
 
+# a value plus which rung answered it
 class Field(BaseModel):
     value: str | float | None
     source: str  # declared | shipped | computed | inferred | none
 
 
+# the finished extraction, every field carries its provenance
 class Product(BaseModel):
     name: Field
     price: Field
@@ -36,6 +38,8 @@ class Product(BaseModel):
     meta: dict
 
 
+# accumulator for the climb: first rung to answer a field wins,
+# numeric disagreements between rungs become disputes for the model
 class _Fields:
     def __init__(self):
         self.data: dict[str, Field] = {}
@@ -43,6 +47,7 @@ class _Fields:
         self.images: list = []
         self.disputes: set[str] = set()
 
+    # fold one rungs findings in without overwriting earlier rungs
     def merge(self, found: dict, source: str):
         for k, v in found.items():
             if k == "crumbs":
@@ -58,24 +63,28 @@ class _Fields:
                 # two rungs disagree, the model referees
                 self.disputes.add(k)
 
+    # overwrite a field, used for model answers and final guards
     def set(self, k: str, v, source: str):
         self.data[k] = Field(value=v, source=source)
 
+    # current value or none
     def value(self, k: str):
         return self.data[k].value if k in self.data else None
 
+    # which of name, price, currency are still unanswered
     def core_missing(self) -> list[str]:
         return [k for k in _CORE if k not in self.data]
 
 
+# two numbers more than one percent apart
 def _differ(a, b) -> bool:
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
         return False
     return abs(a - b) > 0.01 * max(a, b)
 
 
+# page title, used to pick the right product out of state blobs
 def _hint(html: str) -> str:
-    # page title, used to pick the right product out of state blobs
     m = re.search(r"<title[^>]*>([^<]{3,150})", html, re.I) \
         or re.search(r'property=["\']og:title["\'][^>]*content=["\']([^"\']{3,150})', html, re.I)
     return mine._unesc(m.group(1)) if m else ""
@@ -84,6 +93,7 @@ def _hint(html: str) -> str:
 _VIS = re.compile(r"[$€£¥]\s?(\d[\d.,]*)|(\d[\d.,]*)\s?(?:[$€£¥]|USD|EUR|GBP|kr\b)")
 
 
+# every price a human could actually see on the rendered page
 def _visible_prices(html: str) -> set[float]:
     text = re.sub(r"<(script|style|svg|noscript)[\s\S]*?</\1>|<[^>]+>", " ", html)
     out = set()
@@ -94,8 +104,8 @@ def _visible_prices(html: str) -> set[float]:
     return out
 
 
+# name plus breadcrumbs plus meta description, the identity the model sees
 def _context(f: _Fields, html: str) -> str:
-    # name plus breadcrumbs plus meta description, the identity the model sees
     known = str(f.value("name") or "")
     if f.crumbs:
         known += " | " + " > ".join(dict.fromkeys(str(c) for c in f.crumbs[:5]))
@@ -106,8 +116,9 @@ def _context(f: _Fields, html: str) -> str:
     return known
 
 
+# descend the taxonomy: the guess names the branch, one pick inside its subtree
+# only real paths are offered so the answer cannot be invented
 async def _category(guess, known: str, html: str) -> tuple[str | None, dict]:
-    # descend the taxonomy: the guess names the branch, one pick inside it
     top = taxonomy.top(guess)
     if not top:
         return None, {}
@@ -115,6 +126,8 @@ async def _category(guess, known: str, html: str) -> tuple[str | None, dict]:
     return taxonomy.snap(leaf) or taxonomy.snap(guess), usage
 
 
+# the whole decision tree for one page: free rungs, sandbox if still short,
+# referee any price the page cannot corroborate, one model call for the rest
 async def extract(html: str) -> Product:
     t0 = time.time()
     scr = rungs.scripts(html)
