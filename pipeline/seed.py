@@ -1,7 +1,9 @@
-"""Seed the queue with real product urls from each store's public sitemap,
-then let worker discovery grow the frontier.
-
-    DATABASE_URL=... python -m pipeline.seed
+"""
+seed the queue with real product urls from each stores public sitemap
+then let worker discovery grow the frontier
+  store_products  pull the first few product urls from one stores sitemap
+  main            seed every store and print what got enqueued
+run with DATABASE_URL=... python -m pipeline.seed
 """
 
 import asyncio
@@ -22,6 +24,7 @@ STORES = [
 PER_STORE = 3
 
 
+# pull the first few product urls from one stores sitemap
 async def store_products(client, domain: str) -> list[str]:
     try:
         r = await client.get(f"https://{domain}/sitemap.xml")
@@ -36,6 +39,7 @@ async def store_products(client, domain: str) -> list[str]:
         return []
 
 
+# seed every store and print what got enqueued
 async def main():
     pool = await q.connect()
     async with httpx.AsyncClient(headers=HEADERS, follow_redirects=True, timeout=20) as c:

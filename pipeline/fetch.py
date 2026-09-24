@@ -1,5 +1,7 @@
-"""Fetch a live product page. Realistic headers, one retry, honest errors:
-a block is data for the analysis, not something to hide.
+"""
+fetch a live product page with realistic headers and honest errors
+a block is data for the analysis not something to hide
+  fetch  get a url and return html or an error string
 """
 
 import asyncio
@@ -14,8 +16,8 @@ HEADERS = {
 }
 
 
+# get the page with one retry and return (html, error) where exactly one is set
 async def fetch(url: str) -> tuple[str | None, str | None]:
-    """Returns (html, error). Exactly one is set."""
     last = "unknown"
     for attempt in range(2):
         try:

@@ -1,6 +1,11 @@
-"""The queue is a Postgres table; workers coordinate only through atomic
-claims. Leases make crashes harmless, backoff makes rate limits polite,
-the dead-letter table makes failures inspectable.
+"""
+the queue is a postgres table and workers coordinate only through atomic claims
+leases make crashes harmless and backoff keeps rate limits polite
+the dead letter table makes failures inspectable instead of lost
+  enqueue  insert new urls and silently drop duplicates and full domains
+  claim    atomically lease one ready job
+  done     mark a job done and store its product
+  fail     retry with backoff then dead letter
 """
 
 import os
@@ -33,13 +38,14 @@ CREATE TABLE IF NOT EXISTS dead_letters (
 """
 
 
+# same page must mean same string or dedupe cannot work
 def norm(url: str) -> str:
-    """same page must mean same string, or dedupe can't work"""
     from urllib.parse import urlsplit
     s = urlsplit(url.strip())
     return f"{s.scheme}://{s.netloc.lower()}{s.path.rstrip('/')}"
 
 
+# open the pool and create the tables on first run
 async def connect() -> asyncpg.Pool:
     pool = await asyncpg.create_pool(os.environ["DATABASE_URL"], min_size=1, max_size=4)
     async with pool.acquire() as c:
@@ -47,8 +53,9 @@ async def connect() -> asyncpg.Pool:
     return pool
 
 
+# insert new urls and silently drop duplicates and full domains
+# on conflict do nothing is what makes double discovery harmless
 async def enqueue(pool, urls: list[str], per_domain_cap: int = 40) -> int:
-    """insert new urls, silently dropping duplicates and full domains"""
     n = 0
     async with pool.acquire() as c:
         for u in {norm(u) for u in urls}:
@@ -62,8 +69,9 @@ async def enqueue(pool, urls: list[str], per_domain_cap: int = 40) -> int:
     return n
 
 
+# atomically lease one ready job and expired leases are claimable again
+# skip locked means two workers can never get the same row
 async def claim(pool, worker: str) -> asyncpg.Record | None:
-    """atomically lease one ready job; expired leases are claimable again"""
     async with pool.acquire() as c:
         return await c.fetchrow(
             """UPDATE jobs SET status='leased', lease_until=now() + interval '2 min'
@@ -76,6 +84,7 @@ async def claim(pool, worker: str) -> asyncpg.Record | None:
                RETURNING id, url""")
 
 
+# mark a job done and store its product keyed by url for recrawls later
 async def done(pool, job_id: int, url: str, product: str, worker: str):
     async with pool.acquire() as c:
         await c.execute("UPDATE jobs SET status='done' WHERE id=$1", job_id)
@@ -85,8 +94,8 @@ async def done(pool, job_id: int, url: str, product: str, worker: str):
             url, product, worker)
 
 
+# retry with exponential backoff at 1m then 4m then 16m then dead letter
 async def fail(pool, job_id: int, url: str, error: str, max_attempts: int = 3):
-    """retry with exponential backoff (1m, 4m, 16m), then dead-letter"""
     async with pool.acquire() as c:
         attempts = await c.fetchval(
             "UPDATE jobs SET attempts = attempts + 1 WHERE id=$1 RETURNING attempts", job_id)

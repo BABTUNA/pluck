@@ -1,7 +1,10 @@
-"""A worker: claim -> fetch -> extract -> store, forever. Stateless and
-identical to every other worker, so throughput scales by starting more.
-
-    python -m pipeline.worker
+"""
+a worker that claims fetches extracts and stores forever
+stateless and identical to every other worker so throughput scales by starting more
+  run_one   process one claimed job end to end
+  discover  find same domain product links to feed back into the queue
+  loop      claim then work then repeat and back off when the queue is empty
+run with python -m pipeline.worker
 """
 
 import asyncio
@@ -19,8 +22,8 @@ CONCURRENCY = int(os.environ.get("PLUCK_CONCURRENCY", "3"))
 _LINK = re.compile(r'href=["\']([^"\'#?]*/products?/[^"\'#?]+)["\']', re.I)
 
 
+# find same domain product links on the page to feed the queue
 def discover(url: str, html: str) -> list[str]:
-    """same-domain product links on the page feed the queue"""
     host = url.split("/")[2]
     out = []
     for m in _LINK.finditer(html):
@@ -32,6 +35,7 @@ def discover(url: str, html: str) -> list[str]:
     return out[:25]
 
 
+# process one job end to end and report the outcome
 async def run_one(pool, job) -> None:
     html, err = await fetch(job["url"])
     if err:
@@ -50,6 +54,7 @@ async def run_one(pool, job) -> None:
           f"price={product.price.value}({product.price.source})  +{n} discovered", flush=True)
 
 
+# claim then work then repeat and back off when the queue is empty
 async def loop(pool):
     idle = 0
     while True:
@@ -63,6 +68,7 @@ async def loop(pool):
         await asyncio.sleep(1)  # per-task politeness between fetches
 
 
+# n concurrent loops sharing one pool
 async def main():
     pool = await q.connect()
     print(f"[{WORKER}] up, concurrency {CONCURRENCY}", flush=True)

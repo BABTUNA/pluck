@@ -1,7 +1,10 @@
-"""The demo front door: POST any product URL, get a product back with
-per-field provenance. Every request is logged so /stats can tell the story.
-
-    uvicorn pipeline.api:app --port 8080
+"""
+the demo front door on fly
+post any product url and get a product back with per field provenance
+every request lands in a log so stats can tell the story
+  run    fetch then extract one url and log the row
+  stats  success rate rung attribution latency and tokens from the log
+run with uvicorn pipeline.api:app --port 8080
 """
 
 import json
@@ -20,10 +23,12 @@ LOG = Path(os.environ.get("PLUCK_LOG", "requests.jsonl"))
 TOKEN = os.environ.get("PLUCK_TOKEN")  # unset = open
 
 
+# the request body
 class Job(BaseModel):
     url: str
 
 
+# fetch then extract one url and append the outcome to the log
 @app.post("/extract")
 async def run(job: Job, authorization: str | None = Header(None)):
     if TOKEN and authorization != f"Bearer {TOKEN}":
@@ -46,6 +51,7 @@ async def run(job: Job, authorization: str | None = Header(None)):
     return row
 
 
+# crunch the request log into the numbers that matter
 @app.get("/stats")
 async def stats():
     rows = [json.loads(l) for l in LOG.read_text().splitlines()] if LOG.exists() else []
