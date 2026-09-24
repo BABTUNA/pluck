@@ -47,7 +47,10 @@ def norm(url: str) -> str:
 
 # open the pool and create the tables on first run
 async def connect() -> asyncpg.Pool:
-    pool = await asyncpg.create_pool(os.environ["DATABASE_URL"], min_size=1, max_size=4)
+    # command timeout so a dead socket raises instead of hanging a worker forever
+    # small pool per worker so a fleet does not overwhelm a tiny postgres
+    pool = await asyncpg.create_pool(os.environ["DATABASE_URL"], min_size=1, max_size=2,
+                                     command_timeout=30)
     async with pool.acquire() as c:
         await c.execute(SCHEMA)
     return pool

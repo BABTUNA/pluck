@@ -55,16 +55,21 @@ async def run_one(pool, job) -> None:
 
 
 # claim then work then repeat and back off when the queue is empty
+# a db blip must never kill the loop, the lease system already covers the job
 async def loop(pool):
     idle = 0
     while True:
-        job = await q.claim(pool, WORKER)
-        if job is None:
-            idle += 1
-            await asyncio.sleep(min(30, 2 * idle))  # queue empty: back off
-            continue
-        idle = 0
-        await run_one(pool, job)
+        try:
+            job = await q.claim(pool, WORKER)
+            if job is None:
+                idle += 1
+                await asyncio.sleep(min(30, 2 * idle))  # queue empty: back off
+                continue
+            idle = 0
+            await run_one(pool, job)
+        except Exception as e:  # noqa: BLE001
+            print(f"[{WORKER}] loop error {type(e).__name__}: {e}", flush=True)
+            await asyncio.sleep(5)
         await asyncio.sleep(1)  # per-task politeness between fetches
 
 
