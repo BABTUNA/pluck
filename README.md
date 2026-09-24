@@ -10,7 +10,7 @@ curl -X POST https://pluck-extract.fly.dev/extract \
   -d '{"url": "https://www.brooklinen.com/products/luxe-core-sheet-set"}'
 ```
 
-Deep dives: [EXTRACTION.md](EXTRACTION.md) for the decision tree, [PIPELINE.md](PIPELINE.md) for the distributed crawler and deployment.
+Deep dives: [EXTRACTION.md](docs/EXTRACTION.md) for the decision tree, [PIPELINE.md](docs/PIPELINE.md) for the distributed crawler and deployment.
 
 ## Goal and how it works
 
