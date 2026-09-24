@@ -34,6 +34,86 @@ extract(html)                          climbs the rungs, assembles the product  
    └─ taxonomy.snap(answer)            snaps any stray answer to a real path         pluck/taxonomy.py
 ```
 
+## Trace inputs and outputs
+
+The same trace on a real page (the Ace Hardware drill), showing what each step receives and returns.
+
+```jsonc
+// rungs.scripts(html)
+// in: 663KB of raw html
+// out: 46 (type, body) pairs, external src= scripts dropped
+[["application/ld+json", "{\"@type\": \"Product\", \"name\": \"DeWalt 20V MAX...\", ...}"],
+ ["application/json",    "{\"props\": ...}"],
+ ["",                    "window.__STATE__ = {...};"]]
+```
+
+```jsonc
+// mine.jsonld(rungs.declared(scr))
+// in: the parsed ld+json objects
+// out: the merchant's declared answer
+{"name": "DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery & Charger)",
+ "price": 129.0, "currency": "USD",
+ "crumbs": ["Tools", "Power Tools", "Cordless Drills"]}
+```
+
+```jsonc
+// mine.state(rungs.shipped(scr), hint)
+// in: 6 embedded json blobs + the page title as hint
+// out: nothing new here, name and price already filled so nothing merges
+{"crumbs": ["016013301004-Cordless Drills"]}
+```
+
+```jsonc
+// mine.state(rungs.computed(scr), hint)  -- SKIPPED on this page, core fields are filled
+// on a shopify page it returns e.g. {"name": "Dreamweave Waffle Robe...", "price": 89.4}
+```
+
+```jsonc
+// _visible_prices(html)
+// out: every price shown on the rendered page; 129.0 is in it so the declared price is trusted
+[129.0, 149.0, 99.0, ...]
+```
+
+```jsonc
+// _context(f, html)
+// out: the identity string the model sees
+"DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery & Charger) | Tools > Power Tools > Cordless Drills | The DCD771C2 20V MAX..."
+```
+
+```jsonc
+// infer(html, missing=["compare_at"], TOPS, known)
+// in: cleaned page text + the 21 top level categories
+// out: the missing fields plus the branch to descend
+{"compare_at": null, "category": "Hardware"}
+```
+
+```jsonc
+// pick_leaf(known, html, subtree("Hardware"))
+// in: all 522 real paths under Hardware + the page text
+// out: the model's pick, here it echoed the site's breadcrumb which is not a real path
+"Hardware > Tools > Power Tools > Cordless Drills"
+```
+
+```jsonc
+// taxonomy.snap(answer)
+// out: the nearest real taxonomy path
+"Hardware > Tools > Drills > Handheld Power Drills"
+```
+
+```jsonc
+// extract(html) final product
+{"name":       {"value": "DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery & Charger)", "source": "declared"},
+ "price":      {"value": 129.0, "source": "declared"},
+ "compare_at": {"value": null,  "source": "none"},
+ "currency":   {"value": "USD", "source": "declared"},
+ "category":   {"value": "Hardware > Tools > Drills > Handheld Power Drills", "source": "inferred"},
+ "images":     ["https://..."],
+ "meta": {"latency_s": 1.5, "llm_fields": ["compare_at", "category"],
+          "llm_tokens": {"total_tokens": 4570, "cost": 0.0005},
+          "sources": {"name": "declared", "price": "declared", "compare_at": "none",
+                      "currency": "declared", "category": "inferred"}}}
+```
+
 ## Files and data structures
 
 | file | what it does |
