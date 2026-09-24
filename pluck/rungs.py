@@ -1,15 +1,15 @@
-"""Three ways to get the page's own data, cheapest first.
-
-declared  - json-ld the merchant wrote for google
-shipped   - json state frameworks embed as inert script tags
-computed  - run the page's inline JS in a V8 sandbox and read the state it builds
-"""
+# three ways to get the pages own data, cheapest first
+#   scripts   every inline script body, everything else works off this list
+#   declared  json ld the merchant wrote for google, just parse it
+#   shipped   json state frameworks embed as inert script tags, just parse it
+#   computed  run the pages inline js in a v8 sandbox and read the state it builds
 
 import json
 import re
 import threading
 
-_VM_LOCK = threading.Lock()  # v8 isolates don't like concurrent teardown
+# v8 isolates dont like concurrent teardown, one page in the sandbox at a time
+_VM_LOCK = threading.Lock()
 _SCRIPT = re.compile(r"<script\b([^>]*)>([\s\S]*?)</script>", re.I)
 _TYPE = re.compile(r"type\s*=\s*[\"']([^\"']+)", re.I)
 
@@ -29,7 +29,8 @@ def _loads(body: str):
     try:
         return json.loads(body)
     except json.JSONDecodeError:
-        try:  # tolerate trailing garbage after the json document
+        # tolerate trailing garbage after the json document
+        try:
             return json.JSONDecoder().raw_decode(body.strip())[0]
         except (json.JSONDecodeError, ValueError):
             return None
@@ -124,10 +125,11 @@ def _computed(scr: list[tuple[str, str]]) -> list:
             continue
         if not _STATEY.search(body):
             continue
+        # a pages broken script is its problem, run the rest
         try:
             ctx.eval(body, timeout_sec=1.5, max_memory=256 * 1024 * 1024)
             ran += 1
-        except Exception:  # noqa: BLE001 - a page's broken script is its problem
+        except Exception:  # noqa: BLE001
             pass
         if ran >= 60:
             break

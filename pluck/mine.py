@@ -1,6 +1,8 @@
-"""One miner, many sources. Every rung produces JSON; this walks it for
-product fields so rungs stay dumb harvesters and the tree stays readable.
-"""
+# one miner, many sources: every rung produces json, this walks it for product fields
+# rungs stay dumb harvesters and the tree stays readable
+#   jsonld  mine schema org product objects, the merchants declared answer
+#   state   mine framework state for the product the page is about
+#   _num    money arrives as 129.9, "129.90", "$129.90", cents ints or amount dicts
 
 import html as _html
 import re
@@ -16,11 +18,11 @@ _CRUMB_KEYS = {"category", "product_type", "producttype", "product_category"}
 
 
 def _unesc(s: str) -> str:
-    return _html.unescape(_html.unescape(s)).strip()  # pages double-encode
+    # pages double encode, unescape twice
+    return _html.unescape(_html.unescape(s)).strip()
 
 
 def _num(v) -> float | None:
-    """Numbers arrive as 129.9, '129.90', '$129.90', or money dicts."""
     if isinstance(v, dict):
         v = v.get("amount") or v.get("value") or v.get("price")
     if isinstance(v, bool) or v is None:
@@ -29,8 +31,9 @@ def _num(v) -> float | None:
         return float(v)
     if isinstance(v, str):
         s = re.sub(r"[^\d.,]", "", v)
+        # 1.299,90 european style vs 1,299.90
         if s.count(",") == 1 and re.search(r",\d{2}$", s):
-            s = s.replace(".", "").replace(",", ".")  # 1.299,90 eu style
+            s = s.replace(".", "").replace(",", ".")
         else:
             s = s.replace(",", "")
         try:
@@ -44,9 +47,7 @@ def _ok_price(v: float | None) -> bool:
     return v is not None and 0.5 <= v <= 500_000
 
 
-# ---------------------------------------------------------------- json-ld --
 def jsonld(objs: list) -> dict:
-    """Mine schema.org Product objects: the merchant's declared answer."""
     out: dict = {}
     stack = list(objs)
     while stack:
@@ -85,8 +86,7 @@ def jsonld(objs: list) -> dict:
             if _ok_price(p):
                 out.setdefault("prices", set()).add(round(p, 2))
                 out.setdefault("currency", offer.get("priceCurrency"))
-    # several distinct offer prices means the merchant declared an ambiguity,
-    # not an answer; leave price unset so the tree climbs
+    # several distinct offer prices is an ambiguity declared, not an answer
     prices = out.pop("prices", set())
     if len(prices) == 1:
         out["price"] = prices.pop()
@@ -95,10 +95,8 @@ def jsonld(objs: list) -> dict:
     return {k: v for k, v in out.items() if v}
 
 
-# ---------------------------------------------- app state (shipped or vm) --
 def state(objs: list, hint: str = "") -> dict:
-    """Mine framework state for the product the page is about. `hint` (page
-    title words) breaks ties against recommended-product entries."""
+    # hint is the page title, it breaks ties against recommended product entries
     hint_toks = set(re.findall(r"[a-z0-9]+", hint.lower()))
     best, best_score, cur_seen = {}, 0, None
 
@@ -112,13 +110,13 @@ def state(objs: list, hint: str = "") -> dict:
             return
         if not isinstance(o, dict):
             return
-        # shopify's .js product json is cents-encoded; "handle" is the tell
+        # shopifys product json is cents encoded, handle is the tell
         shopify = shopify or "handle" in o or "compare_at_price" in o
         cand = _mine_dict(o, shopify)
-        cur_seen = cur_seen or cand.get("currency")  # page-level, any object counts
+        cur_seen = cur_seen or cand.get("currency")
         if cand.get("name") and "price" in cand:
             toks = set(re.findall(r"[a-z0-9]+", str(cand["name"]).lower()))
-            # parent product objects beat their own variant rows
+            # more filled fields, title overlap, and parent objects beat their own variants
             score = len(cand) + 2 * len(toks & hint_toks) + 2 * ("variants" in o)
             if score > best_score:
                 best, best_score = cand, score
@@ -149,17 +147,19 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
                 v = v.get("active") or v.get("code") or v.get("isoCode") or ""
             if isinstance(v, str) and re.fullmatch(r"[A-Z]{3}", v):
                 out.setdefault("currency", v)
-    # variant lists carry the real prices on shopify-shaped objects
-    for vr in (o.get("variants") or [])[:1] if isinstance(o.get("variants"), list) else []:
-        if isinstance(vr, dict):
-            for k, fk in (("price", "price"), ("compare_at_price", "compare_at")):
-                if k in vr:
-                    out[fk] = _cents(_num(vr[k]), vr[k], True)
+    # shopify keeps the real prices on the variants
+    variants = o.get("variants")
+    if isinstance(variants, list) and variants and isinstance(variants[0], dict):
+        vr = variants[0]
+        for key, field in (("price", "price"), ("compare_at_price", "compare_at")):
+            if key in vr:
+                out[field] = _cents(_num(vr[key]), vr[key], True)
     return {k: v for k, v in out.items()
             if v is not None and (k in ("name", "currency") or _ok_price(v))}
 
 
 def _cents(n: float | None, raw, shopify: bool) -> float | None:
+    # an integer 8940 in a shopify blob means 89.40
     if n is not None and shopify and isinstance(raw, int) and n >= 100:
         return n / 100
     return n

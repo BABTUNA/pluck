@@ -1,6 +1,7 @@
-"""The last rung: one cheap generative call for whatever the page's own data
-didn't answer, plus the category pick (taxonomy is never on the page).
-"""
+# the last rung: one cheap model call for whatever the pages own data didnt answer
+#   infer      asks for the missing fields plus a top level category, json in one shot
+#   pick_leaf  second half of the category descent, one pick inside the chosen branch
+#   clean_text strips the page down to what a human would read
 
 import json
 import os
@@ -19,10 +20,9 @@ def clean_text(html: str, limit: int = 16_000) -> str:
     return re.sub(r"\s+", " ", text)[:limit]
 
 
+# returns (fields dict, token usage)
 async def infer(html: str, missing: list[str], tops: list[str],
                 known_name: str | None) -> tuple[dict, dict]:
-    """Ask for `missing` fields plus the top-level category (the first step of
-    the taxonomy descent). Returns (fields, usage)."""
     keys = missing + ["category"]
     rules = ["Reply with a JSON object with exactly these keys: " + str(keys) + ".",
              "Use null when the page does not state a value.",
@@ -67,7 +67,6 @@ async def infer(html: str, missing: list[str], tops: list[str],
 
 
 async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[str | None, dict]:
-    """Descent step two: choose the full path within the top-level subtree."""
     async with httpx.AsyncClient(timeout=90) as client:
         r = await client.post(
             "https://openrouter.ai/api/v1/chat/completions",

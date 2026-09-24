@@ -1,8 +1,7 @@
-"""Shortlist Google taxonomy paths for the category question.
-
-Lexical stemmed matching, leaf-weighted; unioned with local embeddings when
-fastembed is installed (it fixes the trousers/pants class of vocabulary gap).
-"""
+# the google product taxonomy, 5595 paths, and how answers get mapped onto it
+#   top      case tolerant match of a model answer to a real top level category
+#   subtree  every real path under one top level branch
+#   snap     map any model written path to a real one: exact, valid prefix, nearest leaf
 
 import re
 from functools import lru_cache
@@ -49,7 +48,6 @@ TOPS = sorted({c.split(" > ")[0] for c in _CATS})
 
 
 def top(name) -> str | None:
-    """Case-tolerant match of a model answer to a real top-level category."""
     if not name:
         return None
     n = str(name).replace("&amp;", "&").strip()
@@ -61,9 +59,6 @@ def subtree(top_name: str) -> list[str]:
 
 
 def snap(path) -> str | None:
-    """Snap a model-written taxonomy path to a real one: exact match, else the
-    deepest valid prefix (every taxonomy prefix is itself a category), else
-    the leaf-nearest path in the tree."""
     if not path:
         return None
     p = re.sub(r"\s*>\s*", " > ", str(path).replace("&amp;", "&").strip())
