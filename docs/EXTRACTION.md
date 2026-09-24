@@ -27,9 +27,11 @@ extract(html)                          climbs the rungs, assembles the product  
 ├─ mine.state(rungs.shipped(scr))      parses embedded json state, scores candidates pluck/mine.py
 ├─ mine.state(rungs.computed(scr))     runs page js in a v8 sandbox, reads state     pluck/rungs.py
 ├─ _visible_prices(html)               price must show on the page or model referees pluck/extract.py
+├─ _context(f, html)                   name + breadcrumbs + description for the model pluck/extract.py
 ├─ infer(html, missing, TOPS, known)   one call: missing fields + top-level category pluck/infer.py
-├─ pick_leaf(known, html, subtree)     one call: exact path within that branch       pluck/infer.py
-└─ taxonomy.snap(answer)               snaps any stray answer to a real path         pluck/taxonomy.py
+└─ _category(guess, known, html)       taxonomy descent for the category             pluck/extract.py
+   ├─ pick_leaf(known, html, subtree)  one call: exact path within that branch       pluck/infer.py
+   └─ taxonomy.snap(answer)            snaps any stray answer to a real path         pluck/taxonomy.py
 ```
 
 ## Files and data structures
