@@ -83,16 +83,22 @@ out, the merchants declared answer:
 
 **mine.state(rungs.shipped(scr), hint)**
 
-in, 6 embedded json blobs plus the page title as the hint:
+some sites leave their data in the page as plain json, like a config file nothing runs. rungs.shipped grabs those blobs, mine.state digs through them for the dict that is actually the product, and the page title as hint picks the right one over recommended products.
+
+in, an embedded blob plus hint "Wool Runner | Allbirds":
 
 ```json
-[{"props": {"pageProps": {"breadcrumbs": "016013301004-Cordless Drills"}}}, "..."]
+{"props": {"pageProps": {
+  "product": {"title": "Wool Runner", "price": "110.00", "currencyCode": "USD"},
+  "recommended": [{"title": "Tree Dasher", "price": "135.00"},
+                  {"title": "Wool Lounger", "price": "100.00"}],
+  "cart": {"total": 0}}}}
 ```
 
-out, nothing new merges since name and price are already filled:
+three dicts look like a product, the hint overlap makes Wool Runner win. out:
 
 ```json
-{"crumbs": ["016013301004-Cordless Drills"]}
+{"name": "Wool Runner", "price": 110.0, "currency": "USD"}
 ```
 
 **mine.state(rungs.computed(scr), hint)**
