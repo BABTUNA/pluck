@@ -36,79 +36,145 @@ extract(html)                          climbs the rungs, assembles the product  
 
 ## Trace inputs and outputs
 
-The same trace on a real page (the Ace Hardware drill), showing what each step receives and returns.
+The trace on a real page (the Ace Hardware drill), one step at a time. Each step shows the actual input it receives and the output it returns.
 
-```jsonc
-// rungs.scripts(html)
-// in: 663KB of raw html
-// out: 46 (type, body) pairs, external src= scripts dropped
-[["application/ld+json", "{\"@type\": \"Product\", \"name\": \"DeWalt 20V MAX...\", ...}"],
- ["application/json",    "{\"props\": ...}"],
- ["",                    "window.__STATE__ = {...};"]]
+**rungs.scripts(html)**
+
+in, the raw html:
+
+```html
+<html><head>
+<script src="https://cdn.acehardware.com/app.js"></script>
+<script type="application/ld+json">{"@type": "Product", "name": "DeWalt 20V MAX...", "offers": {"price": 129.0, "priceCurrency": "USD"}}</script>
+<script type="application/json" id="__NEXT_DATA__">{"props": {"pageProps": ...}}</script>
+<script>window.__STATE__ = {cart: [], currency: "USD"};</script>
+...
 ```
 
-```jsonc
-// mine.jsonld(rungs.declared(scr))
-// in: the parsed ld+json objects
-// out: the merchant's declared answer
+out, one (type, body) pair per inline script, the external src one is dropped:
+
+```json
+[["application/ld+json", "{\"@type\": \"Product\", \"name\": \"DeWalt 20V MAX...\"}"],
+ ["application/json", "{\"props\": {\"pageProps\": \"...\"}}"],
+ ["", "window.__STATE__ = {cart: [], currency: \"USD\"};"]]
+```
+
+**mine.jsonld(rungs.declared(scr))**
+
+in, the parsed ld+json objects:
+
+```json
+[{"@type": "Product",
+  "name": "DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery &amp; Charger)",
+  "image": ["https://cdn.acehardware.com/2385458.jpg"],
+  "offers": {"price": 129.0, "priceCurrency": "USD"}},
+ {"@type": "BreadcrumbList", "itemListElement": [{"item": {"name": "Tools"}}, {"item": {"name": "Power Tools"}}, {"item": {"name": "Cordless Drills"}}]}]
+```
+
+out, the merchants declared answer:
+
+```json
 {"name": "DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery & Charger)",
- "price": 129.0, "currency": "USD",
+ "price": 129.0,
+ "currency": "USD",
+ "images": ["https://cdn.acehardware.com/2385458.jpg"],
  "crumbs": ["Tools", "Power Tools", "Cordless Drills"]}
 ```
 
-```jsonc
-// mine.state(rungs.shipped(scr), hint)
-// in: 6 embedded json blobs + the page title as hint
-// out: nothing new here, name and price already filled so nothing merges
+**mine.state(rungs.shipped(scr), hint)**
+
+in, 6 embedded json blobs plus the page title as the hint:
+
+```json
+[{"props": {"pageProps": {"breadcrumbs": "016013301004-Cordless Drills"}}}, "..."]
+```
+
+out, nothing new merges since name and price are already filled:
+
+```json
 {"crumbs": ["016013301004-Cordless Drills"]}
 ```
 
-```jsonc
-// mine.state(rungs.computed(scr), hint)  -- SKIPPED on this page, core fields are filled
-// on a shopify page it returns e.g. {"name": "Dreamweave Waffle Robe...", "price": 89.4}
+**mine.state(rungs.computed(scr), hint)**
+
+skipped on this page, the core fields are filled. on a shopify page the sandbox globals come back like:
+
+```json
+[{"product": {"title": "Dreamweave Waffle Robe", "handle": "dreamweave-robe",
+              "variants": [{"price": 8940, "compare_at_price": null}]}}]
 ```
 
-```jsonc
-// _visible_prices(html)
-// out: every price shown on the rendered page; 129.0 is in it so the declared price is trusted
-[129.0, 149.0, 99.0, ...]
+and mine.state returns the cents decoded product:
+
+```json
+{"name": "Dreamweave Waffle Robe", "price": 89.4}
 ```
 
-```jsonc
-// _context(f, html)
-// out: the identity string the model sees
-"DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery & Charger) | Tools > Power Tools > Cordless Drills | The DCD771C2 20V MAX..."
+**_visible_prices(html)**
+
+in, the same raw html. out, every price a human can see on the rendered page. 129.0 is in the set so the declared price is trusted and there is no dispute:
+
+```json
+[9.99, 99.0, 129.0, 149.0, 199.0]
 ```
 
-```jsonc
-// infer(html, missing=["compare_at"], TOPS, known)
-// in: cleaned page text + the 21 top level categories
-// out: the missing fields plus the branch to descend
+**_context(f, html)**
+
+in, the filled fields plus the html. out, the identity string the model will see:
+
+```json
+"DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery & Charger) | Tools > Power Tools > Cordless Drills | The DCD771C2 20V MAX Lithium Ion Compact Drill/Driver Kit is lightweight..."
+```
+
+**infer(html, missing, TOPS, known)**
+
+in, the cleaned page text, the fields still open and the 21 top level categories:
+
+```json
+{"missing": ["compare_at"],
+ "tops": ["Animals & Pet Supplies", "Apparel & Accessories", "...", "Hardware", "..."],
+ "text": "Ace Hardware DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit $129.00 Free Store Pickup..."}
+```
+
+out, the missing fields plus the branch to descend:
+
+```json
 {"compare_at": null, "category": "Hardware"}
 ```
 
-```jsonc
-// pick_leaf(known, html, subtree("Hardware"))
-// in: all 522 real paths under Hardware + the page text
-// out: the model's pick, here it echoed the site's breadcrumb which is not a real path
+**pick_leaf(known, html, subtree("Hardware"))**
+
+in, all 522 real paths under Hardware plus the page text:
+
+```json
+["Hardware", "Hardware > Building Consumables", "...", "Hardware > Tools > Drills", "Hardware > Tools > Drills > Handheld Power Drills", "..."]
+```
+
+out, the models pick. here it echoed the sites breadcrumb which is not a real path:
+
+```json
 "Hardware > Tools > Power Tools > Cordless Drills"
 ```
 
-```jsonc
-// taxonomy.snap(answer)
-// out: the nearest real taxonomy path
+**taxonomy.snap(answer)**
+
+in, that stray string. out, the nearest real taxonomy path:
+
+```json
 "Hardware > Tools > Drills > Handheld Power Drills"
 ```
 
-```jsonc
-// extract(html) final product
+**extract(html), the final product**
+
+```json
 {"name":       {"value": "DeWalt 20V MAX 1/2 in. Brushed Cordless Compact Drill Kit (Battery & Charger)", "source": "declared"},
  "price":      {"value": 129.0, "source": "declared"},
  "compare_at": {"value": null,  "source": "none"},
  "currency":   {"value": "USD", "source": "declared"},
  "category":   {"value": "Hardware > Tools > Drills > Handheld Power Drills", "source": "inferred"},
- "images":     ["https://..."],
- "meta": {"latency_s": 1.5, "llm_fields": ["compare_at", "category"],
+ "images":     ["https://cdn.acehardware.com/2385458.jpg"],
+ "meta": {"latency_s": 1.5,
+          "llm_fields": ["compare_at", "category"],
           "llm_tokens": {"total_tokens": 4570, "cost": 0.0005},
           "sources": {"name": "declared", "price": "declared", "compare_at": "none",
                       "currency": "declared", "category": "inferred"}}}
