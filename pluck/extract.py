@@ -145,6 +145,11 @@ async def extract(html: str) -> Product:
     if "name" not in f.data and hint:
         f.merge({"name": hint.split("|")[0].strip()}, "declared")
 
+    # most stores declare a hero photo in og image even when json ld has none
+    if not f.images:
+        f.images += re.findall(
+            r'property=["\'](?:og|twitter):image["\'][^>]*content=["\'](http[^"\']+)', html)[:4]
+
     # a price the rendered page never shows is suspect
     if "price" in f.data:
         p, vis = float(f.value("price")), _visible_prices(html)
@@ -184,7 +189,8 @@ async def extract(html: str) -> Product:
 
     return Product(
         **f.data,
-        images=[str(u) for u in dict.fromkeys(f.images) if str(u).startswith("http")][:10],
+        images=[str(u).replace(":////", "://") for u in dict.fromkeys(f.images)
+                if str(u).startswith("http")][:10],
         meta={
             "latency_s": round(time.time() - t0, 2),
             "llm_fields": missing + ["category"],
