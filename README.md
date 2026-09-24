@@ -10,6 +10,8 @@ curl -X POST https://pluck-extract.fly.dev/extract \
   -d '{"url": "https://www.brooklinen.com/products/luxe-core-sheet-set"}'
 ```
 
+Deep dives: [EXTRACTION.md](EXTRACTION.md) for the decision tree, [PIPELINE.md](PIPELINE.md) for the distributed crawler and deployment.
+
 ## Goal and how it works
 
 Most product pages already contain the answer in machine-readable form. Pluck climbs four rungs, cheapest first, and stops as soon as the core fields (name, price, currency) are filled:
