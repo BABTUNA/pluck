@@ -1,8 +1,10 @@
-# one miner, many sources: every rung produces json, this walks it for product fields
-# rungs stay dumb harvesters and the tree stays readable
-#   jsonld  mine schema org product objects, the merchants declared answer
-#   state   mine framework state for the product the page is about
-#   _num    money arrives as 129.9, "129.90", "$129.90", cents ints or amount dicts
+"""
+one miner, many sources: every rung produces json, this walks it for product fields
+rungs stay dumb harvesters and the tree stays readable
+  jsonld  mine schema org product objects, the merchants declared answer
+  state   mine framework state for the product the page is about
+  _num    money arrives as 129.9, "129.90", "$129.90", cents ints or amount dicts
+"""
 
 import html as _html
 import re

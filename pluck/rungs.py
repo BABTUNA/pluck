@@ -1,8 +1,10 @@
-# three ways to get the pages own data, cheapest first
-#   scripts   every inline script body, everything else works off this list
-#   declared  json ld the merchant wrote for google, just parse it
-#   shipped   json state frameworks embed as inert script tags, just parse it
-#   computed  run the pages inline js in a v8 sandbox and read the state it builds
+"""
+three ways to get the pages own data, cheapest first
+  scripts   every inline script body, everything else works off this list
+  declared  json ld the merchant wrote for google, just parse it
+  shipped   json state frameworks embed as inert script tags, just parse it
+  computed  run the pages inline js in a v8 sandbox and read the state it builds
+"""
 
 import json
 import re

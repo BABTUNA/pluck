@@ -1,9 +1,11 @@
-# the router: one page in, one product out
-# climbs four sources cheapest first and stops once name, price and currency are filled
-#   extract          walk the rungs, referee disputes, let the model fill the rest
-#   _Fields          first rung to answer a field wins, disagreements become disputes
-#   _visible_prices  a deterministic price must show up on the rendered page
-#   _category        taxonomy descent: pick the top level branch then one path inside it
+"""
+the router: one page in, one product out
+climbs four sources cheapest first and stops once name, price and currency are filled
+  extract          walk the rungs, referee disputes, let the model fill the rest
+  _Fields          first rung to answer a field wins, disagreements become disputes
+  _visible_prices  a deterministic price must show up on the rendered page
+  _category        taxonomy descent: pick the top level branch then one path inside it
+"""
 
 import asyncio
 import re

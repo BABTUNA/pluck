@@ -1,7 +1,9 @@
-# the google product taxonomy, 5595 paths, and how answers get mapped onto it
-#   top      case tolerant match of a model answer to a real top level category
-#   subtree  every real path under one top level branch
-#   snap     map any model written path to a real one: exact, valid prefix, nearest leaf
+"""
+the google product taxonomy, 5595 paths, and how answers get mapped onto it
+  top      case tolerant match of a model answer to a real top level category
+  subtree  every real path under one top level branch
+  snap     map any model written path to a real one: exact, valid prefix, nearest leaf
+"""
 
 import re
 from functools import lru_cache

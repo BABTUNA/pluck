@@ -1,7 +1,9 @@
-# the last rung: one cheap model call for whatever the pages own data didnt answer
-#   infer      asks for the missing fields plus a top level category, json in one shot
-#   pick_leaf  second half of the category descent, one pick inside the chosen branch
-#   clean_text strips the page down to what a human would read
+"""
+the last rung: one cheap model call for whatever the pages own data didnt answer
+  infer      asks for the missing fields plus a top level category, json in one shot
+  pick_leaf  second half of the category descent, one pick inside the chosen branch
+  clean_text strips the page down to what a human would read
+"""
 
 import json
 import os
