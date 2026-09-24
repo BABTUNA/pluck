@@ -3,7 +3,12 @@ primary_region = "sjc"
 
 [build]
 
+[processes]
+  app = "uvicorn api:app --host 0.0.0.0 --port 8080"
+  worker = "python worker.py"
+
 [http_service]
+  processes = ["app"]
   internal_port = 8080
   force_https = true
   auto_stop_machines = "stop"
