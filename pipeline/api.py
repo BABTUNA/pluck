@@ -1,7 +1,7 @@
 """The demo front door: POST any product URL, get a product back with
 per-field provenance. Every request is logged so /stats can tell the story.
 
-    uvicorn api:app --port 8080
+    uvicorn pipeline.api:app --port 8080
 """
 
 import json
@@ -12,7 +12,7 @@ from pathlib import Path
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
 
-from fetch import fetch
+from pipeline.fetch import fetch
 from pluck.extract import extract
 
 app = FastAPI(title="pluck")

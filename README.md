@@ -69,7 +69,7 @@ extract(html)                          climbs the rungs, assembles the product  
 The deployed system is a crawler x extractor with real big-data mechanics, run at demo scale:
 
 ```
-seed.py ── real product urls from store sitemaps ──▶ Postgres jobs table
+pipeline/seed.py ── real product urls from store sitemaps ──▶ Postgres jobs table
                                                        │
    worker × N (fly machines, identical, stateless) ◀───┘
    claim with a 2-min lease ─ fetch ─ extract ─ store result
@@ -91,11 +91,11 @@ seed.py ── real product urls from store sitemaps ──▶ Postgres jobs tab
 | `pluck/mine.py` | one miner that walks any JSON for product fields (shared by all rungs) |
 | `pluck/infer.py` | the two model calls (missing fields + category leaf), OpenRouter |
 | `pluck/taxonomy.py` | Google taxonomy: top-level list, subtree slices, snap-to-real-path |
-| `api.py` | `POST /extract {url}` and `GET /stats`, the deployed front door |
-| `fetch.py` | live fetching with honest error reporting |
-| `jobq.py` | the queue: leases, backoff, dead letters, deduped enqueue |
-| `worker.py` | claim -> fetch -> extract -> store -> discover, forever |
-| `seed.py` | seeds the queue from store sitemaps |
+| `pipeline/api.py` | `POST /extract {url}` and `GET /stats`, the deployed front door |
+| `pipeline/fetch.py` | live fetching with honest error reporting |
+| `pipeline/jobq.py` | the queue: leases, backoff, dead letters, deduped enqueue |
+| `pipeline/worker.py` | claim -> fetch -> extract -> store -> discover, forever |
+| `pipeline/seed.py` | seeds the queue from store sitemaps |
 | `eval.py` | grades 50 pages against the previous project's verified outputs |
 
 Core shapes:
@@ -116,9 +116,9 @@ mine.state(objs, hint) -> {"name": "...", "price": 89.4, "compare_at": 139.0,
 ```bash
 uv sync                                  # deps
 uv run python eval.py                    # 50-page accuracy eval
-uv run uvicorn api:app --port 8080       # the api, locally
-DATABASE_URL=... python seed.py          # seed the queue
-DATABASE_URL=... python worker.py        # a worker
+uv run uvicorn pipeline.api:app --port 8080       # the api, locally
+DATABASE_URL=... python -m pipeline.seed          # seed the queue
+DATABASE_URL=... python -m pipeline.worker        # a worker
 ```
 
 `PLUCK_MODEL` picks the model for both calls: `google/gemini-2.5-flash-lite` (default, cheapest) or `google/gemini-3-flash-preview` (category 80% -> 92% at ~6x the LLM cost).

@@ -1,7 +1,7 @@
 """A worker: claim -> fetch -> extract -> store, forever. Stateless and
 identical to every other worker, so throughput scales by starting more.
 
-    python worker.py
+    python -m pipeline.worker
 """
 
 import asyncio
@@ -10,8 +10,8 @@ import os
 import re
 import socket
 
-import jobq as q
-from fetch import fetch
+from pipeline import jobq as q
+from pipeline.fetch import fetch
 from pluck.extract import extract
 
 WORKER = os.environ.get("FLY_MACHINE_ID", socket.gethostname())

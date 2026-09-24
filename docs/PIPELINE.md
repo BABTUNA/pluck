@@ -6,7 +6,7 @@ Run the extractor against the live web as a crawler that scales by adding identi
 
 The queue is a Postgres table and workers coordinate only through atomic claims:
 
-- **seed**: `seed.py` pulls real product URLs from each store's public sitemap and inserts them. URLs are normalized (host lowercased, query/fragment stripped) and unique, so a page can only ever be one row.
+- **seed**: `pipeline/seed.py` pulls real product URLs from each store's public sitemap and inserts them. URLs are normalized (host lowercased, query/fragment stripped) and unique, so a page can only ever be one row.
 - **claim with a lease**: a worker takes one ready job and stamps `lease_until = now() + 2 min` in a single `FOR UPDATE SKIP LOCKED` update. Two workers can never get the same row. If a worker dies mid-job the lease expires and the row becomes claimable again, nothing is lost.
 - **work**: fetch the page, run `extract()`, upsert the product into `results` keyed by url with `processed_at` (re-crawling later = re-enqueue where stale).
 - **failure**: `attempts + 1`, retried after 1m, then 4m, then 16m; after 3 attempts the row moves to `dead_letters` with its error, so blocks and 404s are inspectable instead of retried forever.
@@ -19,29 +19,29 @@ Measured on the demo crawl (311 live pages, 18 stores): 9 pages/min at 1 worker 
 ## Call trace
 
 ```
-worker.py main()                       one process, N concurrent claim loops         worker.py
+pipeline/worker.py main()                       one process, N concurrent claim loops         worker.py
 └─ loop(pool)                          claim -> work -> repeat, backs off when idle  worker.py
-   ├─ jobq.claim(pool)                 atomic lease via FOR UPDATE SKIP LOCKED       jobq.py
-   ├─ fetch(url)                       live GET, browser headers, one retry          fetch.py
+   ├─ jobq.claim(pool)                 atomic lease via FOR UPDATE SKIP LOCKED       pipeline/jobq.py
+   ├─ fetch(url)                       live GET, browser headers, one retry          pipeline/fetch.py
    ├─ extract(html)                    the whole decision tree (see EXTRACTION.md)   pluck/extract.py
-   ├─ jobq.done(...)                   mark done, upsert product into results        jobq.py
-   ├─ jobq.fail(...)                   backoff 1m/4m/16m, then dead_letters          jobq.py
-   └─ jobq.enqueue(discover(html))     same-domain product links, deduped, capped    jobq.py
+   ├─ jobq.done(...)                   mark done, upsert product into results        pipeline/jobq.py
+   ├─ jobq.fail(...)                   backoff 1m/4m/16m, then dead_letters          pipeline/jobq.py
+   └─ jobq.enqueue(discover(html))     same-domain product links, deduped, capped    pipeline/jobq.py
 
-seed.py main()                         store sitemaps -> first product urls          seed.py
-api.py  POST /extract                  fetch + extract for one url, logs every call  api.py
-api.py  GET /stats                     success rate, rung %, latency from the log    api.py
+pipeline/seed.py main()                         store sitemaps -> first product urls          seed.py
+pipeline/api.py  POST /extract                  fetch + extract for one url, logs every call  api.py
+pipeline/api.py  GET /stats                     success rate, rung %, latency from the log    api.py
 ```
 
 ## Files and data structures
 
 | file | what it does |
 |---|---|
-| `jobq.py` | schema + the four queue operations: enqueue, claim, done, fail |
-| `worker.py` | stateless worker: claim -> fetch -> extract -> store -> discover |
-| `seed.py` | seeds the queue from store sitemaps |
-| `fetch.py` | live fetching with honest error strings |
-| `api.py` | the public demo endpoint on Fly |
+| `pipeline/jobq.py` | schema + the four queue operations: enqueue, claim, done, fail |
+| `pipeline/worker.py` | stateless worker: claim -> fetch -> extract -> store -> discover |
+| `pipeline/seed.py` | seeds the queue from store sitemaps |
+| `pipeline/fetch.py` | live fetching with honest error strings |
+| `pipeline/api.py` | the public demo endpoint on Fly |
 | `Dockerfile`, `fly.toml` | one image, two process groups (`app`, `worker`) |
 
 ```sql

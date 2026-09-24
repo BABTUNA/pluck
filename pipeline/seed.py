@@ -1,7 +1,7 @@
 """Seed the queue with real product urls from each store's public sitemap,
 then let worker discovery grow the frontier.
 
-    DATABASE_URL=... python seed.py
+    DATABASE_URL=... python -m pipeline.seed
 """
 
 import asyncio
@@ -9,8 +9,8 @@ import re
 
 import httpx
 
-import jobq as q
-from fetch import HEADERS
+from pipeline import jobq as q
+from pipeline.fetch import HEADERS
 
 STORES = [
     "www.allbirds.com", "www.brooklinen.com", "www.gymshark.com", "bombas.com",
@@ -45,4 +45,5 @@ async def main():
         print(f"{d}: {len(urls)} found, {n} enqueued")
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
