@@ -5,3 +5,4 @@
 __pycache__
 **/__pycache__
 requests.jsonl
+frontend/node_modules
