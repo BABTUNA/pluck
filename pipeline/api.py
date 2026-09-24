@@ -119,6 +119,7 @@ async def products():
     async with pool.acquire() as c:
         rows = await c.fetch(
             "SELECT md5(url) AS id, url, product, processed_at FROM results "
+            "WHERE product->'price'->>'value' IS NOT NULL "  # no price means the page gave us nothing worth showing
             "ORDER BY processed_at DESC LIMIT 500")
     out, seen = [], set()
     for r in rows:
