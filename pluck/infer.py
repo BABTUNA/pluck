@@ -28,6 +28,9 @@ async def infer(html: str, missing: list[str], tops: list[str],
              "Use null when the page does not state a value.",
              "'category': the best-fitting top-level Google Shopping category, "
              "copied verbatim from this list: " + json.dumps(tops)]
+    if "currency" in keys:
+        rules.append("'currency' is the ISO 4217 code of the displayed prices; infer "
+                     "it from the symbol and site (a $ price on a US site is USD).")
     if "compare_at" in keys:
         rules.append("'compare_at' is the crossed-out / 'was' / list price shown "
                      "next to the current price; null if there is no higher original "

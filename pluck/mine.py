@@ -100,10 +100,10 @@ def state(objs: list, hint: str = "") -> dict:
     """Mine framework state for the product the page is about. `hint` (page
     title words) breaks ties against recommended-product entries."""
     hint_toks = set(re.findall(r"[a-z0-9]+", hint.lower()))
-    best, best_score = {}, 0
+    best, best_score, cur_seen = {}, 0, None
 
     def walk(o, shopify: bool, depth: int):
-        nonlocal best, best_score
+        nonlocal best, best_score, cur_seen
         if depth > 14:
             return
         if isinstance(o, list):
@@ -115,6 +115,7 @@ def state(objs: list, hint: str = "") -> dict:
         # shopify's .js product json is cents-encoded; "handle" is the tell
         shopify = shopify or "handle" in o or "compare_at_price" in o
         cand = _mine_dict(o, shopify)
+        cur_seen = cur_seen or cand.get("currency")  # page-level, any object counts
         if cand.get("name") and "price" in cand:
             toks = set(re.findall(r"[a-z0-9]+", str(cand["name"]).lower()))
             # parent product objects beat their own variant rows
@@ -125,6 +126,8 @@ def state(objs: list, hint: str = "") -> dict:
             walk(v, shopify, depth + 1)
 
     walk(objs, False, 0)
+    if cur_seen:
+        best.setdefault("currency", cur_seen)
     crumbs = _crumbs(objs)
     if crumbs:
         best.setdefault("crumbs", crumbs)
@@ -141,8 +144,11 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
             out.setdefault("price", _cents(_num(v), v, shopify))
         elif lk in _COMPARE_KEYS:
             out.setdefault("compare_at", _cents(_num(v), v, shopify))
-        elif lk in _CURRENCY_KEYS and isinstance(v, str) and re.fullmatch(r"[A-Z]{3}", v):
-            out.setdefault("currency", v)
+        elif lk in _CURRENCY_KEYS:
+            if isinstance(v, dict):
+                v = v.get("active") or v.get("code") or v.get("isoCode") or ""
+            if isinstance(v, str) and re.fullmatch(r"[A-Z]{3}", v):
+                out.setdefault("currency", v)
     # variant lists carry the real prices on shopify-shaped objects
     for vr in (o.get("variants") or [])[:1] if isinstance(o.get("variants"), list) else []:
         if isinstance(vr, dict):
