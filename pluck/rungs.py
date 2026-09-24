@@ -1,8 +1,8 @@
 """
-three ways to get the pages own data, cheapest first
-  scripts   every inline script body, everything else works off this list
-  declared  json ld the merchant wrote for google, just parse it
-  shipped   json state frameworks embed as inert script tags, just parse it
+three ways to get the pages own data ordered cheapest first
+  scripts   grab every inline script body and everything else works off that list
+  declared  parse the json ld the merchant wrote for google
+  shipped   parse the json state frameworks embed as inert script tags
   computed  run the pages inline js in a v8 sandbox and read the state it builds
 """
 
@@ -10,13 +10,13 @@ import json
 import re
 import threading
 
-# v8 isolates dont like concurrent teardown, one page in the sandbox at a time
+# v8 isolates dont like concurrent teardown so one page in the sandbox at a time
 _VM_LOCK = threading.Lock()
 _SCRIPT = re.compile(r"<script\b([^>]*)>([\s\S]*?)</script>", re.I)
 _TYPE = re.compile(r"type\s*=\s*[\"']([^\"']+)", re.I)
 
 
-# every inline script body with its type attribute
+# grab every inline script body with its type attribute
 def scripts(html: str) -> list[tuple[str, str]]:
     out = []
     for m in _SCRIPT.finditer(html):
@@ -41,14 +41,14 @@ def _loads(body: str):
 
 
 # ---------------------------------------------------------------- rung a --
-# parsed json ld blocks
+# parse the json ld blocks
 def declared(scr: list[tuple[str, str]]) -> list:
     return [o for t, body in scr if t == "application/ld+json"
             and (o := _loads(body)) is not None]
 
 
 # ---------------------------------------------------------------- rung b --
-# parsed inert json state tags
+# parse the inert json state tags
 def shipped(scr: list[tuple[str, str]]) -> list:
     out = []
     for t, body in scr:
@@ -122,8 +122,8 @@ def computed(scr: list[tuple[str, str]]) -> list:
         return _computed(scr)
 
 
-# boot a fake browser, run the pages state building scripts,
-# then snapshot and return whatever new globals they created
+# boot a fake browser and run the pages state building scripts
+# then snapshot whatever new globals they created
 def _computed(scr: list[tuple[str, str]]) -> list:
     from py_mini_racer import MiniRacer
     ctx = MiniRacer()
@@ -134,7 +134,7 @@ def _computed(scr: list[tuple[str, str]]) -> list:
             continue
         if not _STATEY.search(body):
             continue
-        # a pages broken script is its problem, run the rest
+        # a pages broken script is its own problem so run the rest
         try:
             ctx.eval(body, timeout_sec=1.5, max_memory=256 * 1024 * 1024)
             ran += 1

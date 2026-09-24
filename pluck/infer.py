@@ -1,8 +1,8 @@
 """
-the last rung: one cheap model call for whatever the pages own data didnt answer
-  infer      asks for the missing fields plus a top level category, json in one shot
-  pick_leaf  second half of the category descent, one pick inside the chosen branch
-  clean_text strips the page down to what a human would read
+the last rung where one cheap model call answers what the page didnt
+  infer      ask for the missing fields plus a top level category in one json shot
+  pick_leaf  run the second half of the category descent inside the chosen branch
+  clean_text strip the page down to what a human would read
 """
 
 import json
@@ -23,8 +23,8 @@ def clean_text(html: str, limit: int = 16_000) -> str:
     return re.sub(r"\s+", " ", text)[:limit]
 
 
-# one json call for the missing or disputed fields plus a top level category
-# rules encode the judgment calls, one time price, no other brands compare at
+# ask one json call for the missing or disputed fields plus a top level category
+# the rules encode judgment calls like one time price and no other brands compare at
 async def infer(html: str, missing: list[str], tops: list[str],
                 known_name: str | None) -> tuple[dict, dict]:
     keys = missing + ["category"]
@@ -70,7 +70,7 @@ async def infer(html: str, missing: list[str], tops: list[str],
         return {}, data.get("usage", {})
 
 
-# second half of the category descent, one verbatim pick from the branch
+# run the second half of the category descent with one verbatim pick from the branch
 async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[str | None, dict]:
     async with httpx.AsyncClient(timeout=90) as client:
         r = await client.post(

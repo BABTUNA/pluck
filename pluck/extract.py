@@ -1,10 +1,10 @@
 """
-the router: one page in, one product out
-climbs four sources cheapest first and stops once name, price and currency are filled
-  extract          walk the rungs, referee disputes, let the model fill the rest
-  _Fields          first rung to answer a field wins, disagreements become disputes
-  _visible_prices  a deterministic price must show up on the rendered page
-  _category        taxonomy descent: pick the top level branch then one path inside it
+the router that turns one page into one product
+climbs four sources cheapest first and stops once name price and currency are filled
+  extract          walk the rungs then referee disputes then let the model fill the rest
+  _Fields          hold the answers while climbing and turn disagreements into disputes
+  _visible_prices  grab every price a human can actually see on the rendered page
+  _category        pick the top level branch then one exact path inside it
 """
 
 import asyncio
@@ -27,7 +27,7 @@ class Field(BaseModel):
     source: str  # declared | shipped | computed | inferred | none
 
 
-# the finished extraction, every field carries its provenance
+# the finished extraction where every field says which rung answered it
 class Product(BaseModel):
     name: Field
     price: Field
@@ -38,8 +38,8 @@ class Product(BaseModel):
     meta: dict
 
 
-# accumulator for the climb: first rung to answer a field wins,
-# numeric disagreements between rungs become disputes for the model
+# hold the fields while climbing
+# first rung to answer wins and numeric disagreements become disputes for the model
 class _Fields:
     def __init__(self):
         self.data: dict[str, Field] = {}
@@ -55,15 +55,15 @@ class _Fields:
             elif k == "images":
                 self.images += v
             elif k == "conflict":
-                # the page itself declared several prices, that is a dispute
+                # the page itself declared several prices so that is a dispute
                 self.disputes.add("price")
             elif k not in self.data and v is not None:
                 self.data[k] = Field(value=v, source=source)
             elif k in self.data and _differ(v, self.data[k].value):
-                # two rungs disagree, the model referees
+                # two rungs disagree so the model referees
                 self.disputes.add(k)
 
-    # overwrite a field, used for model answers and final guards
+    # overwrite a field with a model answer or a final guard
     def set(self, k: str, v, source: str):
         self.data[k] = Field(value=v, source=source)
 
@@ -71,19 +71,19 @@ class _Fields:
     def value(self, k: str):
         return self.data[k].value if k in self.data else None
 
-    # which of name, price, currency are still unanswered
+    # check which of name price currency are still unanswered
     def core_missing(self) -> list[str]:
         return [k for k in _CORE if k not in self.data]
 
 
-# two numbers more than one percent apart
+# check if two numbers are more than one percent apart
 def _differ(a, b) -> bool:
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
         return False
     return abs(a - b) > 0.01 * max(a, b)
 
 
-# page title, used to pick the right product out of state blobs
+# grab the page title to pick the right product out of state blobs
 def _hint(html: str) -> str:
     m = re.search(r"<title[^>]*>([^<]{3,150})", html, re.I) \
         or re.search(r'property=["\']og:title["\'][^>]*content=["\']([^"\']{3,150})', html, re.I)
@@ -93,7 +93,7 @@ def _hint(html: str) -> str:
 _VIS = re.compile(r"[$€£¥]\s?(\d[\d.,]*)|(\d[\d.,]*)\s?(?:[$€£¥]|USD|EUR|GBP|kr\b)")
 
 
-# every price a human could actually see on the rendered page
+# grab every price a human can actually see on the rendered page
 def _visible_prices(html: str) -> set[float]:
     text = re.sub(r"<(script|style|svg|noscript)[\s\S]*?</\1>|<[^>]+>", " ", html)
     out = set()
@@ -104,7 +104,7 @@ def _visible_prices(html: str) -> set[float]:
     return out
 
 
-# name plus breadcrumbs plus meta description, the identity the model sees
+# build the identity string the model sees from name breadcrumbs and description
 def _context(f: _Fields, html: str) -> str:
     known = str(f.value("name") or "")
     if f.crumbs:
@@ -116,7 +116,7 @@ def _context(f: _Fields, html: str) -> str:
     return known
 
 
-# descend the taxonomy: the guess names the branch, one pick inside its subtree
+# descend the taxonomy where the guess names the branch and one pick lands inside it
 # only real paths are offered so the answer cannot be invented
 async def _category(guess, known: str, html: str) -> tuple[str | None, dict]:
     top = taxonomy.top(guess)
@@ -126,19 +126,19 @@ async def _category(guess, known: str, html: str) -> tuple[str | None, dict]:
     return taxonomy.snap(leaf) or taxonomy.snap(guess), usage
 
 
-# the whole decision tree for one page: free rungs, sandbox if still short,
-# referee any price the page cannot corroborate, one model call for the rest
+# run the whole decision tree for one page
+# free rungs first then the sandbox then one model call for whatever is left
 async def extract(html: str) -> Product:
     t0 = time.time()
     scr = rungs.scripts(html)
     hint = _hint(html)
     f = _Fields()
 
-    # rungs one and two are free parses, always run both
+    # rungs one and two are free parses so always run both
     f.merge(mine.jsonld(rungs.declared(scr)), "declared")
     f.merge(mine.state(rungs.shipped(scr), hint), "shipped")
 
-    # rung three actually executes the page, only boot it when still short
+    # rung three actually executes the page so only boot it when still short
     if f.core_missing():
         f.merge(mine.state(await asyncio.to_thread(rungs.computed, scr), hint), "computed")
 
@@ -151,7 +151,7 @@ async def extract(html: str) -> Product:
         if vis and not any(abs(p - v) <= 0.011 * max(p, v) for v in vis):
             f.disputes.add("price")
 
-    # one model call for everything missing or disputed, category rides along
+    # one model call for everything missing or disputed and category rides along
     missing = f.core_missing() + sorted(f.disputes)
     if "compare_at" not in f.data and "compare_at" not in missing and _SALE.search(html):
         missing.append("compare_at")

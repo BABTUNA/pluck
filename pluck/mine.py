@@ -1,9 +1,9 @@
 """
-one miner, many sources: every rung produces json, this walks it for product fields
-rungs stay dumb harvesters and the tree stays readable
-  jsonld  mine schema org product objects, the merchants declared answer
-  state   mine framework state for the product the page is about
-  _num    money arrives as 129.9, "129.90", "$129.90", cents ints or amount dicts
+one miner for every source since every rung produces json
+walks any json for product fields so the rungs stay dumb harvesters
+  jsonld  extract the merchants declared answer from schema org blocks
+  state   extract the main product from framework state blobs
+  _num    parse money in any shape like 129.9 or "$129.90" or cents ints or amount dicts
 """
 
 import html as _html
@@ -19,12 +19,12 @@ _CURRENCY_KEYS = {"currency", "currencycode", "currency_code", "pricecurrency"}
 _CRUMB_KEYS = {"category", "product_type", "producttype", "product_category"}
 
 
-# pages double encode entities, unescape twice
+# unescape twice since pages double encode entities
 def _unesc(s: str) -> str:
     return _html.unescape(_html.unescape(s)).strip()
 
 
-# money in any shape to a float, or none
+# parse money in any shape into a float
 def _num(v) -> float | None:
     if isinstance(v, dict):
         v = v.get("amount") or v.get("value") or v.get("price")
@@ -34,7 +34,7 @@ def _num(v) -> float | None:
         return float(v)
     if isinstance(v, str):
         s = re.sub(r"[^\d.,]", "", v)
-        # 1.299,90 european style vs 1,299.90
+        # handle 1.299,90 european style vs 1,299.90
         if s.count(",") == 1 and re.search(r",\d{2}$", s):
             s = s.replace(".", "").replace(",", ".")
         else:
@@ -46,13 +46,13 @@ def _num(v) -> float | None:
     return None
 
 
-# sane price bounds
+# keep prices inside sane bounds
 def _ok_price(v: float | None) -> bool:
     return v is not None and 0.5 <= v <= 500_000
 
 
-# mine schema org product blocks, the merchants declared answer
-# several distinct offer prices is treated as ambiguity so the tree climbs
+# extract the declared answer from schema org product blocks
+# several distinct offer prices counts as ambiguity so the tree climbs
 def jsonld(objs: list) -> dict:
     out: dict = {}
     stack = list(objs)
@@ -92,7 +92,7 @@ def jsonld(objs: list) -> dict:
             if _ok_price(p):
                 out.setdefault("prices", set()).add(round(p, 2))
                 out.setdefault("currency", offer.get("priceCurrency"))
-    # several distinct offer prices is an ambiguity declared, not an answer
+    # several distinct offer prices is ambiguity not an answer
     prices = out.pop("prices", set())
     if len(prices) == 1:
         out["price"] = prices.pop()
@@ -101,8 +101,8 @@ def jsonld(objs: list) -> dict:
     return {k: v for k, v in out.items() if v}
 
 
-# mine framework state for the product the page is about
-# hint is the page title, it breaks ties against recommended product entries
+# extract the main product from framework state
+# the hint is the page title and breaks ties against recommended products
 def state(objs: list, hint: str = "") -> dict:
     hint_toks = set(re.findall(r"[a-z0-9]+", hint.lower()))
     best, best_score, cur_seen = {}, 0, None
@@ -117,13 +117,13 @@ def state(objs: list, hint: str = "") -> dict:
             return
         if not isinstance(o, dict):
             return
-        # shopifys product json is cents encoded, handle is the tell
+        # shopify product json is cents encoded and handle is the tell
         shopify = shopify or "handle" in o or "compare_at_price" in o
         cand = _mine_dict(o, shopify)
         cur_seen = cur_seen or cand.get("currency")
         if cand.get("name") and "price" in cand:
             toks = set(re.findall(r"[a-z0-9]+", str(cand["name"]).lower()))
-            # more filled fields, title overlap, and parent objects beat their own variants
+            # more filled fields plus title overlap win and parent objects beat their own variants
             score = len(cand) + 2 * len(toks & hint_toks) + 2 * ("variants" in o)
             if score > best_score:
                 best, best_score = cand, score

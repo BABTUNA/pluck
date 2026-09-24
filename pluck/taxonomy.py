@@ -1,8 +1,8 @@
 """
-the google product taxonomy, 5595 paths, and how answers get mapped onto it
-  top      case tolerant match of a model answer to a real top level category
-  subtree  every real path under one top level branch
-  snap     map any model written path to a real one: exact, valid prefix, nearest leaf
+the google product taxonomy with 5595 paths and how answers get mapped onto it
+  top      match a model answer to a real top level category ignoring case
+  subtree  list every real path under one top level branch
+  snap     map any model written path to the nearest real one
 """
 
 import re
@@ -13,7 +13,7 @@ _CATS = [l.strip() for l in (Path(__file__).parent.parent / "categories.txt")
          .read_text().splitlines() if l.strip() and not l.startswith("#")]
 
 
-# lowercase stemmed tokens
+# split into lowercase stemmed tokens
 def _toks(text: str) -> set[str]:
     out = set()
     for t in re.findall(r"[a-z0-9]+", text.lower()):
@@ -25,7 +25,7 @@ def _toks(text: str) -> set[str]:
 _PATHS = [(p, _toks(p), _toks(p.rsplit(">", 1)[-1])) for p in _CATS]
 
 
-# local embedding model over all 5595 paths, loaded once, disabled on tiny machines
+# load the local embedding model over all 5595 paths once and skip it on tiny machines
 @lru_cache(maxsize=1)
 def _embedder():
     import os
@@ -51,7 +51,7 @@ _SET = set(_CATS)
 TOPS = sorted({c.split(" > ")[0] for c in _CATS})
 
 
-# case tolerant match of a model answer to a real top level category
+# match a model answer to a real top level category ignoring case
 def top(name) -> str | None:
     if not name:
         return None
@@ -59,13 +59,13 @@ def top(name) -> str | None:
     return next((t for t in TOPS if t.lower() == n.lower()), None)
 
 
-# every real path under one top level branch
+# list every real path under one top level branch
 def subtree(top_name: str) -> list[str]:
     return [c for c in _CATS if c == top_name or c.startswith(top_name + " > ")]
 
 
 # map any model written path to a real one
-# exact match, else best leaf overlap, else embeddings, else deepest valid prefix
+# try exact match then best leaf overlap then embeddings then deepest valid prefix
 def snap(path) -> str | None:
     if not path:
         return None
@@ -73,7 +73,7 @@ def snap(path) -> str | None:
     if p in _SET:
         return p
     segs = p.split(" > ")
-    # the leaf is the signal: find the real path whose leaf matches it best
+    # the leaf is the signal so find the real path whose leaf matches it best
     qleaf, qall = _toks(segs[-1]), _toks(p)
     scored = max(_PATHS, key=lambda t: 3 * len(qleaf & t[2]) + len(qall & t[1]))
     if qleaf & scored[2]:
