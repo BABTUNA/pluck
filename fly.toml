@@ -3,6 +3,9 @@ primary_region = "sjc"
 
 [build]
 
+[env]
+  PLUCK_EMBED = "0"
+
 [processes]
   app = "uvicorn api:app --host 0.0.0.0 --port 8080"
   worker = "python worker.py"

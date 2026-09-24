@@ -25,6 +25,9 @@ _PATHS = [(p, _toks(p), _toks(p.rsplit(">", 1)[-1])) for p in _CATS]
 
 @lru_cache(maxsize=1)
 def _embedder():
+    import os
+    if os.environ.get("PLUCK_EMBED") == "0":  # too heavy for tiny prod machines
+        return None
     try:
         import numpy as np
         from fastembed import TextEmbedding
