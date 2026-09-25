@@ -146,10 +146,13 @@ after running it the sandbox globals come back as real json:
   "currency": "USD"}}}
 ```
 
-the same mine.state finds the product, sees handle so the ints are shopify cents, and returns:
+the same mine.state finds the product, sees handle so the ints are shopify cents, and returns the fields plus the variant matrix and its axis labels:
 
 ```json
-{"name": "Dreamweave Waffle Robe", "price": 89.4, "compare_at": 139.0, "currency": "USD"}
+{"name": "Dreamweave Waffle Robe", "price": 89.4, "compare_at": 139.0, "currency": "USD",
+ "options": ["Color", "Size"],
+ "variants": [{"name": "French Blue Two Tone / XS", "price": 89.4, "compare_at": 139.0, "available": true},
+              {"name": "French Blue Two Tone / S",  "price": 89.4, "compare_at": 139.0, "available": false}]}
 ```
 
 **_visible_prices(html)**
@@ -206,6 +209,14 @@ in, that stray string. out, the nearest real taxonomy path:
 "Hardware > Tools > Drills > Handheld Power Drills"
 ```
 
+**list_variants(known, html)**
+
+only fires when no rung produced variants, like this page. in, the identity line plus page text; out, the selectable configurations as plain strings, run beside the leaf pick with its own prompt:
+
+```json
+{"variants": ["Charcoal Heather / Small", "Charcoal Heather / Medium", "Charcoal Heather / Large"]}
+```
+
 **extract(html), the final product**
 
 ```json
@@ -214,7 +225,11 @@ in, that stray string. out, the nearest real taxonomy path:
  "compare_at": {"value": null,  "source": "none"},
  "currency":   {"value": "USD", "source": "declared"},
  "category":   {"value": "Hardware > Tools > Drills > Handheld Power Drills", "source": "inferred"},
- "images":     ["https://cdn.acehardware.com/2385458.jpg"],
+ "brand":      {"value": "DeWalt", "source": "declared"},
+ "description": "The DCD771C2 20V MAX Lithium Ion Compact Drill/Driver Kit is lightweight and...",
+ "options":    [],
+ "variants":   [],
+ "images":     ["https://cdn-tp6.mozu.com/24645-37138/cms/37138/files/4d099bd2-...", "...6 more"],
  "meta": {"latency_s": 1.5,
           "llm_fields": ["compare_at", "category"],
           "llm_tokens": {"total_tokens": 4570, "cost": 0.0005},
