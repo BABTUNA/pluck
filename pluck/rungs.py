@@ -48,7 +48,11 @@ def declared(scr: list[tuple[str, str]]) -> list:
 
 
 # ---------------------------------------------------------------- rung b --
-# parse the inert json state tags
+# parse the inert json state tags plus plain window assignments of json
+# literals, which saves booting the sandbox for pages like llbean
+_ASSIGN = re.compile(r"window\.__[A-Z_]+__\s*=\s*")
+
+
 def shipped(scr: list[tuple[str, str]]) -> list:
     out = []
     for t, body in scr:
@@ -56,6 +60,12 @@ def shipped(scr: list[tuple[str, str]]) -> list:
             o = _loads(body)
             if o is not None:
                 out.append(o)
+        elif t in ("", "text/javascript") and len(body) > 200:
+            for m in _ASSIGN.finditer(body[:600_000]):
+                try:
+                    out.append(json.JSONDecoder().raw_decode(body, m.end())[0])
+                except (json.JSONDecodeError, ValueError):
+                    pass
     return out
 
 
@@ -103,7 +113,7 @@ _SNAPSHOT = """
       var v = globalThis[k];
       if (typeof v === "object" && v !== null) {
         var j = JSON.stringify(safe(v, 0));
-        if (j && j.length > 300) out[k] = j.slice(0, 400000);
+        if (j && j.length > 300) out[k] = j.slice(0, 1500000);
       }
     } catch (e) {}
   }

@@ -55,6 +55,8 @@ class _Fields:
         self.images: list = []
         self.variants: list = []
         self.options: list = []
+        self.colors: list = []
+        self.video: str | None = None
         self.description: str | None = None
         self.disputes: set[str] = set()
 
@@ -71,6 +73,10 @@ class _Fields:
                     self.variants = v
             elif k == "options":
                 self.options = self.options or v
+            elif k == "colors":
+                self.colors = self.colors or v
+            elif k == "video":
+                self.video = self.video or v
             elif k == "description":
                 self.description = self.description or v
             elif k == "conflict":
@@ -156,6 +162,7 @@ def _image_fallbacks(f: _Fields, html: str):
             r'property=["\'](?:og|twitter):image["\'][^>]*content=["\'](http[^"\']+)', html)[:4]
     if len(f.images) >= 2:
         return
+    seed_dir = f.images[0].rsplit("/", 1)[0] if f.images else None
     for tag in re.findall(r"<img[^>]+>", html, re.I):
         m = re.search(r'srcset=["\']([^"\']+)', tag)
         u = m.group(1).split(",")[-1].strip().split(" ")[0] if m else None
@@ -164,9 +171,10 @@ def _image_fallbacks(f: _Fields, html: str):
         if u and u.startswith("//"):
             u = "https:" + u
         if u and u.startswith("http") \
-                and not re.search(r"logo|icon|sprite|pixel|badge|\.svg|\.gif", u, re.I):
+                and not re.search(r"logo|icon|sprite|pixel|badge|\.svg|\.gif", u, re.I) \
+                and (seed_dir is None or u.startswith(seed_dir)):
             f.images.append(u)
-        if len(f.images) >= 8:
+        if len(f.images) >= 16:
             return
 
 
@@ -180,14 +188,57 @@ def _axis_values(options: list, variants: list, axis: str) -> list[str]:
     return []
 
 
-# product videos sit as plain cdn urls in the state, og video is rare
-def _video(html: str) -> str | None:
-    m = re.search(r'property=["\']og:video[^"\']*["\'][^>]*content=["\'](http[^"\']+)', html, re.I) \
-        or re.search(r'((?:https?:)?(?:\\/\\/|//)[^"\'\s\\]+\.(?:mp4|m3u8|webm)\b[^"\'\s\\]*)', html)
-    if not m:
+# a video mined from the product subtree is trusted, a raw page scan is
+# only trusted when the page holds exactly one video so a colorway or
+# recommendation reel can never be mistaken for the product's own
+def _video(html: str, mined: str | None) -> str | None:
+    if mined:
+        return mined
+    if m := re.search(r'property=["\']og:video[^"\']*["\'][^>]*content=["\'](http[^"\']+)', html, re.I):
+        return m.group(1)
+    found = {u.replace("\\/", "/") for u in re.findall(
+        r'(?:https?:)?(?:\\/\\/|//)[^"\'\s\\]+\.(?:mp4|m3u8|webm)\b[^"\'\s\\]*', html)}
+    if len(found) != 1:
         return None
-    u = m.group(1).replace("\\/", "/")
+    u = found.pop()
     return "https:" + u if u.startswith("//") else u
+
+
+_REND = re.compile(r"[-_](full|max|standard|square|thumb|mini|small|medium|large"
+                   r"|zoom|\d+x\d+)(?=\.|$)", re.I)
+
+
+# one shot often ships as several renditions, keep only the largest of each
+def _dedupe_renditions(images: list[str]) -> list[str]:
+    def rank(u):
+        if re.search(r"[-_](max|original|master)\b", u, re.I):
+            return 0
+        if re.search(r"[-_](full|large|zoom|2048)\b", u, re.I):
+            return 1
+        if re.search(r"[-_](thumb|mini|small|square|standard)\b", u, re.I):
+            return 3
+        return 2
+    best, order = {}, []
+    for u in images:
+        parts = u.rsplit("/", 2)
+        key = (parts[-2] if len(parts) > 2 else "",
+               _REND.sub("", parts[-1]).rsplit(".", 1)[0])
+        if key not in best:
+            order.append(key)
+            best[key] = u
+        elif rank(u) < rank(best[key]):
+            best[key] = u
+    return [best[k] for k in order]
+
+
+# galleries share a filename prefix on most cdns, so when the first image's
+# token has three or more siblings keep only that cluster
+def _cluster(images: list[str]) -> list[str]:
+    if len(images) < 4:
+        return images
+    tok = lambda u: re.split(r"[_-]", u.rsplit("/", 1)[-1])[0]
+    same = [u for u in images if tok(u) == tok(images[0])]
+    return same if len(same) >= 3 else images
 
 
 # descend the taxonomy where the guess names the branch and one pick lands inside it
@@ -251,11 +302,17 @@ async def extract(html: str) -> Product:
         _category(fb.get("category"), known, html), list_details(known, html))
     f.set("category", cat, "inferred" if cat else "none")
     usage = _add_usage(usage, _add_usage(usage2, usage3))
+    # model listed extras only count when the page text actually shows them
+    page_text = re.sub(r"<[^>]+>", " ", html).lower()
+    grounded = lambda t: all(part.strip().lower() in page_text
+                             for part in str(t).split(" / ") if part.strip())
     if not f.variants:
         f.variants = [{"name": str(v)[:80], "price": None, "compare_at": None}
-                      for v in details.get("variants", [])[:30] if str(v).strip()]
-    colors = _axis_values(f.options, f.variants, "color") \
-        or [str(c)[:40] for c in details.get("colors", [])[:20]]
+                      for v in details.get("variants", [])[:30]
+                      if str(v).strip() and grounded(v)]
+    colors = f.colors[:20] \
+        or _axis_values(f.options, f.variants, "color") \
+        or [str(c)[:40] for c in details.get("colors", [])[:20] if grounded(c)]
     features = [str(k)[:120] for k in details.get("key_features", [])[:8]]
 
     for k in ("name", "price", "compare_at", "currency", "category", "brand"):
@@ -276,9 +333,9 @@ async def extract(html: str) -> Product:
         variants=f.variants[:30],
         colors=colors,
         key_features=features,
-        video_url=_video(html),
-        images=[str(u).replace(":////", "://") for u in dict.fromkeys(f.images)
-                if str(u).startswith("http")][:10],
+        video_url=_video(html, f.video),
+        images=_cluster(_dedupe_renditions([u for u in dict.fromkeys(
+            mine.canon(i) for i in f.images) if u]))[:12],
         meta={
             "latency_s": round(time.time() - t0, 2),
             "llm_fields": missing + ["category"],
