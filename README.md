@@ -29,12 +29,12 @@ Most product pages already contain the answer in machine-readable form. Pluck cl
 
 ![Pluck's four-rung extraction decision tree](docs/extraction.drawio.png)
 
-Two guard rules make it honest:
+Two sanity checks sit on top:
 
-- A deterministic price must also appear on the visible page. If the page's data says 299.95 but the rendered page shows 279.95, the rungs disagree and the model referees. Same when two rungs disagree with each other.
-- Category is never on the page, so it always uses the model, as a descent of the taxonomy tree: pick 1 of 21 top-level categories (rides along on the field call), then pick the exact path from only that branch's real subtree. The model can only ever answer with a real taxonomy string.
+- A price pulled from page data has to show up on the rendered page too. If the JSON says 299.95 but the page displays 279.95, something is stale and the price goes to the model with the page text. Same when two sources give different numbers.
+- Category never exists on a page, so the model always answers it. To stop it from making up categories, it first picks one of the 21 top-level branches, then picks from a list of every real path under that branch.
 
-Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rungs 1-2 have no price, rung 3 executes the page's scripts and finds `product.variants[0].price: 8940` (cents, divided to 89.40), the visible-price check confirms it, and the model only gets asked for the category. Cost of the whole page: two sub-cent calls.
+Example, a Shopify robe page with no JSON-LD offers: rung 1 gets the name, rungs 1-2 have no price, rung 3 runs the page's scripts and finds `price: 8940` in cents (89.40), the price shows on the page so it sticks, and the model only handles category. Total for the page: two sub-cent calls.
 
 The full mechanism, with real inputs and outputs at every step: [docs/EXTRACTION.md](docs/EXTRACTION.md).
 
