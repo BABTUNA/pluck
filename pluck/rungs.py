@@ -1,6 +1,5 @@
 """
 three ways to get the pages own data ordered cheapest first
-  scripts   grab every inline script body and everything else works off that list
   declared  parse the json ld the merchant wrote for google
   shipped   parse the json state frameworks embed as inert script tags
   computed  run the pages inline js in a v8 sandbox and read the state it builds
@@ -10,7 +9,6 @@ import json
 import re
 import threading
 
-# v8 isolates dont like concurrent teardown so one page in the sandbox at a time
 _VM_LOCK = threading.Lock()
 _SCRIPT = re.compile(r"<script\b([^>]*)>([\s\S]*?)</script>", re.I)
 _TYPE = re.compile(r"type\s*=\s*[\"']([^\"']+)", re.I)
@@ -23,21 +21,16 @@ def scripts(html: str) -> list[tuple[str, str]]:
         attrs, body = m.group(1) or "", m.group(2)
         if re.search(r"\bsrc\s*=", attrs, re.I) or not body.strip():
             continue
-        t = _TYPE.search(attrs)
-        out.append(((t.group(1).lower() if t else ""), body))
+        out.append((((m := _TYPE.search(attrs)) and m.group(1).lower()) or "", body))
     return out
 
 
-# forgiving json parse
+# forgiving json parse that tolerates trailing garbage after the document
 def _loads(body: str):
     try:
-        return json.loads(body)
-    except json.JSONDecodeError:
-        # tolerate trailing garbage after the json document
-        try:
-            return json.JSONDecoder().raw_decode(body.strip())[0]
-        except (json.JSONDecodeError, ValueError):
-            return None
+        return json.JSONDecoder().raw_decode(body.strip())[0]
+    except (json.JSONDecodeError, ValueError):
+        return None
 
 
 # ---------------------------------------------------------------- rung a --
@@ -56,10 +49,9 @@ _ASSIGN = re.compile(r"window\.__[A-Z_]+__\s*=\s*")
 def shipped(scr: list[tuple[str, str]]) -> list:
     out = []
     for t, body in scr:
-        if "json" in t and t != "application/ld+json" and len(body) > 200:
-            o = _loads(body)
-            if o is not None:
-                out.append(o)
+        if "json" in t and t != "application/ld+json" and len(body) > 200 \
+                and (o := _loads(body)) is not None:
+            out.append(o)
         elif t in ("", "text/javascript") and len(body) > 200:
             for m in _ASSIGN.finditer(body[:600_000]):
                 try:
@@ -72,24 +64,17 @@ def shipped(scr: list[tuple[str, str]]) -> list:
 # ---------------------------------------------------------------- rung c --
 _PRELUDE = """
 var window = globalThis; var self = globalThis; var global = globalThis;
-var document = {
-  getElementById: function(){ return {textContent:"", innerHTML:"", setAttribute:function(){}, appendChild:function(){}}; },
-  querySelector: function(){ return null; }, querySelectorAll: function(){ return []; },
-  createElement: function(){ return {setAttribute:function(){}, appendChild:function(){}, style:{}}; },
-  addEventListener: function(){}, currentScript: {textContent:""},
-  documentElement: {style:{}, setAttribute:function(){}},
-  head: {appendChild:function(){}}, body: {appendChild:function(){}, classList:{add:function(){},remove:function(){}}},
-  cookie: "", readyState: "loading", title: ""
-};
+var noop = function(){}; var el = function(){ return {textContent:"", innerHTML:"", style:{},
+  setAttribute:noop, appendChild:noop, classList:{add:noop, remove:noop}}; };
+var document = { getElementById: el, createElement: el, querySelector: function(){ return null; },
+  querySelectorAll: function(){ return []; }, addEventListener: noop, currentScript: {textContent:""},
+  documentElement: el(), head: el(), body: el(), cookie: "", readyState: "loading", title: "" };
 var location = {href:"https://x.com/", hostname:"x.com", pathname:"/", search:"", protocol:"https:", origin:"https://x.com"};
 var navigator = {userAgent:"Mozilla/5.0", language:"en-US", languages:["en-US"]};
-var localStorage = {getItem:function(){return null;}, setItem:function(){}, removeItem:function(){}};
-var sessionStorage = localStorage;
-var addEventListener = function(){}; var removeEventListener = function(){};
-var setTimeout = function(){return 0;}; var setInterval = function(){return 0;};
-var clearTimeout = function(){}; var clearInterval = function(){};
-var fetch = function(){ throw new Error("no network"); };
-var XMLHttpRequest = function(){ throw new Error("no network"); };
+var localStorage = {getItem:function(){return null;}, setItem:noop, removeItem:noop};
+var sessionStorage = localStorage; var addEventListener = noop; var removeEventListener = noop;
+var setTimeout = function(){return 0;}; var setInterval = setTimeout; var clearTimeout = noop; var clearInterval = noop;
+var fetch = function(){ throw new Error("no network"); }; var XMLHttpRequest = fetch;
 var __baseline = {}; (function(){ for (var k in globalThis) __baseline[k] = true; })();
 """
 
@@ -109,13 +94,10 @@ _SNAPSHOT = """
   }
   for (var k in globalThis) {
     if (__baseline[k] || k === "__baseline") continue;
-    try {
-      var v = globalThis[k];
+    try { var v = globalThis[k];
       if (typeof v === "object" && v !== null) {
         var j = JSON.stringify(safe(v, 0));
-        if (j && j.length > 300) out[k] = j.slice(0, 1500000);
-      }
-    } catch (e) {}
+        if (j && j.length > 300) out[k] = j.slice(0, 1500000); } } catch (e) {}
   }
   return JSON.stringify(out);
 })()
@@ -126,14 +108,14 @@ _STATEY = re.compile(
     r"|JSON\.parse|__remix|Shopify|_state_|__STATE", re.I)
 
 
-# serialize sandbox use across threads
+# boot a fake browser and run the pages state building scripts, then
+# snapshot whatever new globals they created; one page at a time since
+# v8 isolates dont like concurrent teardown
 def computed(scr: list[tuple[str, str]]) -> list:
     with _VM_LOCK:
         return _computed(scr)
 
 
-# boot a fake browser and run the pages state building scripts
-# then snapshot whatever new globals they created
 def _computed(scr: list[tuple[str, str]]) -> list:
     from py_mini_racer import MiniRacer
     ctx = MiniRacer()

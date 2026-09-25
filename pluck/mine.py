@@ -1,28 +1,25 @@
 """
 one miner for every source since every rung produces json
-finds the product subtree the page is about then mines everything beneath it
   jsonld  extract the merchants declared answer, following hasVariant groups
   state   pick the subtree whose name matches the page title, mine descendants
   canon   normalize an image url, strip size params so full res dedupes clean
-  num     parse money in any shape like 129.9 or "$129.90" or cents ints or amount dicts
 """
 
 import html as _html
 import re
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-_NAME_KEYS = {"title", "name", "product_title", "producttitle", "displayname",
-              "productname", "product_name", "fulltitle", "full_title"}
-_PRICE_KEYS = {"price", "current_price", "currentprice", "sale_price", "saleprice",
-               "price_amount", "priceamount"}
-_COMPARE_KEYS = {"compare_at_price", "compareatprice", "compare_at", "list_price",
-                 "listprice", "original_price", "originalprice", "was_price",
-                 "wasprice", "regular_price", "regularprice", "strikethroughprice",
-                 "initialprice", "initial_price", "msrp", "fullprice", "full_price",
-                 "standardprice"}
-_CURRENCY_KEYS = {"currency", "currencycode", "currency_code", "pricecurrency"}
-_CRUMB_KEYS = {"category", "product_type", "producttype", "product_category"}
-_VARIANT_LIST_KEYS = {"variants", "items", "skus", "sizes"}
+_NAME_KEYS = set("title name product_title producttitle displayname productname "
+                 "product_name fulltitle full_title".split())
+_PRICE_KEYS = set("price current_price currentprice sale_price saleprice "
+                  "price_amount priceamount".split())
+_COMPARE_KEYS = set("compare_at_price compareatprice compare_at list_price listprice "
+                    "original_price originalprice was_price wasprice regular_price "
+                    "regularprice strikethroughprice initialprice initial_price msrp "
+                    "fullprice full_price standardprice".split())
+_CURRENCY_KEYS = set("currency currencycode currency_code pricecurrency".split())
+_CRUMB_KEYS = set("category product_type producttype product_category".split())
+_VARIANT_LIST_KEYS = set("variants items skus sizes".split())
 # renditions ranked so a sources dict yields its largest copy
 _BIG = re.compile(r"max|original|master|full|large|2048|1024|zoom", re.I)
 _SMALL = re.compile(r"mini|thumb|small|icon|tiny|micro|swatch", re.I)
@@ -30,9 +27,8 @@ _JUNK_KEY = re.compile(r"related|recommend|styled|similar|upsell|crosssell|recen
                        r"|breadcrumb|navigation|reviews")
 _IMG_URL = re.compile(r"^(?:https?:)?//[^\s\"']+\.(?:jpe?g|png|webp|avif)(?:[?#]|$)", re.I)
 # size and cache params stripped so renditions of one shot dedupe to full res
-_STRIP_PARAM = re.compile(
-    r"^(w|h|q|quality|fit|max|width|height|sw|sh|fm|crop|wid|hei|resmode|_mzcb|v|cb"
-    r"|impolicy|imwidth|imheight|scale|size)$", re.I)
+_STRIP_PARAM = re.compile(r"^(w|h|q|quality|fit|max|width|height|sw|sh|fm|crop|wid|hei"
+                          r"|resmode|_mzcb|v|cb|impolicy|imwidth|imheight|scale|size)$", re.I)
 
 
 # unescape twice since pages double encode entities
@@ -40,11 +36,14 @@ def unesc(s: str) -> str:
     return _html.unescape(_html.unescape(s)).strip()
 
 
+def _key(k) -> str:
+    return str(k).lower().replace("-", "_")
+
+
 # normalize an image url and strip the size params
 def canon(url) -> str | None:
     u = unesc(str(url)).replace("\\/", "/").strip()
-    if u.startswith("//"):
-        u = "https:" + u
+    u = "https:" + u if u.startswith("//") else u
     if not u.startswith("http"):
         return None
     parts = urlsplit(u)
@@ -61,18 +60,18 @@ def num(v) -> float | None:
         return None
     if isinstance(v, (int, float)):
         return float(v)
-    if isinstance(v, str):
-        s = re.sub(r"[^\d.,]", "", v)
-        # handle 1.299,90 european style vs 1,299.90
-        if s.count(",") == 1 and re.search(r",\d{2}$", s):
-            s = s.replace(".", "").replace(",", ".")
-        else:
-            s = s.replace(",", "")
-        try:
-            return float(s)
-        except ValueError:
-            return None
-    return None
+    if not isinstance(v, str):
+        return None
+    s = re.sub(r"[^\d.,]", "", v)
+    # handle 1.299,90 european style vs 1,299.90
+    if s.count(",") == 1 and re.search(r",\d{2}$", s):
+        s = s.replace(".", "").replace(",", ".")
+    else:
+        s = s.replace(",", "")
+    try:
+        return float(s)
+    except ValueError:
+        return None
 
 
 # keep prices inside sane bounds
@@ -96,25 +95,21 @@ def jsonld(objs: list) -> dict:
             continue
         if not isinstance(o, dict):
             continue
-        stack.extend(o.get("@graph") or [])
         # a productgroup declares its size and color matrix under hasvariant
-        variants = o.get("hasVariant") or []
-        stack.extend(variants)
-        t = o.get("@type") or ""
-        t = " ".join(t) if isinstance(t, list) else t
+        stack.extend((o.get("@graph") or []) + (o.get("hasVariant") or []))
+        t = " ".join(o["@type"]) if isinstance(o.get("@type"), list) else (o.get("@type") or "")
         if "BreadcrumbList" in t:
             for el in o.get("itemListElement") or []:
-                item = el.get("item") if isinstance(el, dict) else None
-                nm = (item.get("name") if isinstance(item, dict) else None) \
-                    or (el.get("name") if isinstance(el, dict) else None)
+                el = el if isinstance(el, dict) else {}
+                nm = (el.get("item") or {}).get("name") if isinstance(el.get("item"), dict) \
+                    else el.get("name")
                 if isinstance(nm, str):
                     out.setdefault("crumbs", []).append(nm[:60])
         if "Product" not in t:
             continue
         if isinstance(o.get("name"), str):
             out.setdefault("name", unesc(o["name"]))
-        b = o.get("brand")
-        b = b.get("name") if isinstance(b, dict) else b
+        b = o["brand"].get("name") if isinstance(o.get("brand"), dict) else o.get("brand")
         if isinstance(b, str) and b.strip():
             out.setdefault("brand", unesc(b)[:60])
         if isinstance(o.get("description"), str) and len(o["description"]) > 20:
@@ -124,28 +119,26 @@ def jsonld(objs: list) -> dict:
         if isinstance(o.get("color"), str) and o["color"].strip():
             out.setdefault("colors", []).append(unesc(o["color"])[:60])
         img = o.get("image")
-        imgs = img if isinstance(img, list) else [img] if img else []
-        for i in imgs:
+        for i in img if isinstance(img, list) else [img] if img else []:
             u = canon(i.get("url") if isinstance(i, dict) else i)
             if u and u not in out.setdefault("images", []):
                 out["images"].append(u)
         # a variant product carries its own size and offer
-        size = o.get("size")
         offers = o.get("offers") or {}
         for offer in offers if isinstance(offers, list) else [offers]:
             if not isinstance(offer, dict):
                 continue
             p = num(offer.get("price") or offer.get("lowPrice")
                     or (offer.get("priceSpecification") or {}))
-            if _ok_price(p):
-                out.setdefault("prices", set()).add(round(p, 2))
-                if offer.get("priceCurrency") and not out.get("currency"):
-                    out["currency"] = offer["priceCurrency"]
-                vname = offer.get("name") if isinstance(offer.get("name"), str) else \
-                    (size if isinstance(size, str) else None)
-                if vname and vname.strip():
-                    out.setdefault("variants", []).append(
-                        {"name": unesc(vname)[:80], "price": p, "compare_at": None})
+            if not _ok_price(p):
+                continue
+            out.setdefault("prices", set()).add(round(p, 2))
+            if offer.get("priceCurrency") and not out.get("currency"):
+                out["currency"] = offer["priceCurrency"]
+            vname = offer.get("name") or o.get("size")
+            if isinstance(vname, str) and vname.strip():
+                out.setdefault("variants", []).append(
+                    {"name": unesc(vname)[:80], "price": p, "compare_at": None})
     if out.get("colors"):
         out["colors"] = list(dict.fromkeys(out["colors"]))[:20]
     # sized variants all at one price is a matrix not an ambiguity
@@ -155,7 +148,7 @@ def jsonld(objs: list) -> dict:
     elif len(prices) > 1:
         out["conflict"] = True
     out["images"] = (out.get("images") or [])[:16]
-    return {k: v for k, v in out.items() if v or v == []}
+    return {k: v for k, v in out.items() if v}
 
 
 # extract the main product from framework state
@@ -163,8 +156,7 @@ def jsonld(objs: list) -> dict:
 # under it gets mined so price and images need not share one dict
 def state(objs: list, hint: str = "") -> dict:
     hint_toks = _toks(hint)
-    best, best_score = None, 0
-    cur_seen = None
+    best, best_score, cur_seen, crumbs = None, 0, None, []
 
     def score_walk(o, depth):
         nonlocal best, best_score, cur_seen
@@ -177,16 +169,18 @@ def state(objs: list, hint: str = "") -> dict:
         if not isinstance(o, dict):
             return
         for k, v in o.items():
-            lk = k.lower().replace("-", "_")
+            lk = _key(k)
             if cur_seen is None and lk in _CURRENCY_KEYS:
                 cur_seen = _currency(v)
-        name = _name_of(o)
-        if name:
+            # category style strings ride along, numeric ids are not categories
+            if lk in _CRUMB_KEYS and isinstance(v, str) and len(v) > 2 \
+                    and re.search(r"[a-zA-Z]", v) and v not in crumbs:
+                crumbs.append(v[:60])
+        if name := _name_of(o):
             overlap = len(_toks(name) & hint_toks)
             has_matrix = any(k.lower() in _VARIANT_LIST_KEYS and isinstance(v, list)
                              for k, v in o.items())
-            has_price = any(k.lower().replace("-", "_") in _PRICE_KEYS
-                            or k.lower() == "prices" for k in o)
+            has_price = any(_key(k) in _PRICE_KEYS or k.lower() == "prices" for k in o)
             s = 2 * overlap + 2 * has_matrix + has_price
             if s > best_score and (overlap or has_matrix or has_price):
                 best, best_score = o, s
@@ -197,25 +191,21 @@ def state(objs: list, hint: str = "") -> dict:
     out = _mine_subtree(best) if best is not None else {}
     if cur_seen and not out.get("currency"):
         out["currency"] = cur_seen
-    crumbs = _crumbs(objs)
     if crumbs and not out.get("crumbs"):
-        out["crumbs"] = crumbs
+        out["crumbs"] = crumbs[:6]
     return out
 
 
 # the products name may be a direct key, inside a child info dict, or on
 # the first variant when the parent carries no title of its own
 def _name_of(o: dict) -> str | None:
-    for k, v in o.items():
-        if k.lower().replace("-", "_") in _NAME_KEYS and isinstance(v, str) \
-                and 3 <= len(v) <= 150:
-            return v
-    for v in o.values():
-        if isinstance(v, dict):
-            for kk, vv in v.items():
-                if kk.lower().replace("-", "_") in _NAME_KEYS and isinstance(vv, str) \
-                        and 3 <= len(vv) <= 150:
-                    return vv
+    def direct(d):
+        return next((v for k, v in d.items() if _key(k) in _NAME_KEYS
+                     and isinstance(v, str) and 3 <= len(v) <= 150), None)
+    if n := direct(o):
+        return n
+    if n := next((n for v in o.values() if isinstance(v, dict) and (n := direct(v))), None):
+        return n
     for k, v in o.items():
         if k.lower() in _VARIANT_LIST_KEYS and isinstance(v, list) and v \
                 and isinstance(v[0], dict):
@@ -234,41 +224,34 @@ def _currency(v) -> str | None:
 # mine every field from the winning product subtree, shallowest answer first
 def _mine_subtree(root: dict) -> dict:
     out: dict = {}
-    images: list[str] = []
-    colors: list[str] = []
-    shopify_root = "handle" in root or "compare_at_price" in root
-    queue: list[tuple[dict | list, bool, int]] = [(root, shopify_root, 0)]
-    seen_nodes = 0
-    while queue and seen_nodes < 4000:
+    images, colors = [], []
+    queue = [(root, "handle" in root or "compare_at_price" in root, 0)]
+    seen = 0
+    while queue and seen < 4000:
         node, shopify, depth = queue.pop(0)
-        seen_nodes += 1
+        seen += 1
         if depth > 10:
             continue
         if isinstance(node, list):
-            for v in node[:120]:
-                if isinstance(v, (dict, list)):
-                    queue.append((v, shopify, depth + 1))
+            queue += [(v, shopify, depth + 1) for v in node[:120]
+                      if isinstance(v, (dict, list))]
             continue
         shopify = shopify or "handle" in node or "compare_at_price" in node
         for k, v in node.items():
-            lk = k.lower().replace("-", "_")
+            lk = _key(k)
             if lk in _NAME_KEYS and isinstance(v, str) and 3 <= len(v) <= 150:
                 out.setdefault("name", unesc(v))
-            elif lk in _PRICE_KEYS:
+            elif lk in _PRICE_KEYS or lk in _COMPARE_KEYS:
+                field = "price" if lk in _PRICE_KEYS else "compare_at"
                 p = _cents(num(v), v, shopify)
                 if _ok_price(p):
-                    out.setdefault("price", p)
-            elif lk in _COMPARE_KEYS:
-                p = _cents(num(v), v, shopify)
-                if _ok_price(p):
-                    out.setdefault("compare_at", p)
+                    out.setdefault(field, p)
             elif lk in _CURRENCY_KEYS and not out.get("currency"):
                 if c := _currency(v):
                     out["currency"] = c
             elif lk == "options" and isinstance(v, list) and v and "options" not in out:
                 labels = [x.get("name") if isinstance(x, dict) else x for x in v[:4]]
-                labels = [str(x) for x in labels if isinstance(x, str) and x.strip()]
-                if labels:
+                if labels := [str(x) for x in labels if isinstance(x, str) and x.strip()]:
                     out["options"] = labels
             elif lk in _VARIANT_LIST_KEYS and isinstance(v, list) and v \
                     and "variants" not in out:
@@ -276,19 +259,18 @@ def _mine_subtree(root: dict) -> dict:
                 if len(vs) >= max(2, len(v[:40]) // 2):
                     out["variants"] = vs[:30]
                     # shopify keeps the real prices on the variants
-                    if shopify or lk == "variants":
-                        vr = v[0] if isinstance(v[0], dict) else {}
+                    if (shopify or lk == "variants") and isinstance(v[0], dict):
                         for key, field in (("price", "price"),
                                            ("compare_at_price", "compare_at")):
-                            p = _cents(num(vr.get(key)), vr.get(key), True)
+                            p = _cents(num(v[0].get(key)), v[0].get(key), True)
                             if _ok_price(p):
                                 out[field] = p
             elif ("color" in lk or "swatch" in lk) and isinstance(v, dict):
                 # a name next to a hex code is a color swatch on any platform
                 nm, hx = v.get("name") or v.get("label"), v.get("color") or v.get("hex")
-                if isinstance(nm, str) and isinstance(hx, str) and hx.startswith("#"):
-                    if nm not in colors:
-                        colors.append(unesc(nm)[:40])
+                if isinstance(nm, str) and isinstance(hx, str) and hx.startswith("#") \
+                        and nm not in colors:
+                    colors.append(unesc(nm)[:40])
             if re.search(r"image|media|gallery|photo", lk):
                 _collect_images(v, images, trusted=True)
             elif isinstance(v, str):
@@ -323,19 +305,16 @@ def _collect_images(v, images: list[str], depth: int = 0, trusted: bool = False)
         if looks and (u := canon(v)):
             images.append(u)
     elif isinstance(v, dict):
-        keys = list(v)
         # a dict of rendition names holds copies of one shot, take the biggest
-        ranked = sorted(keys, key=lambda k: (0 if _BIG.search(k) else
-                                             2 if _SMALL.search(k) else 1))
-        if ranked and all(isinstance(v[k], (str, list, dict)) for k in ranked) \
-                and any(_BIG.search(k) or _SMALL.search(k) for k in keys):
-            _collect_images(v[ranked[0]], images, depth + 1, True)
-            return
+        ranked = sorted(v, key=lambda k: 0 if _BIG.search(k) else
+                        2 if _SMALL.search(k) else 1)
+        if ranked and any(_BIG.search(k) or _SMALL.search(k) for k in v) \
+                and all(isinstance(v[k], (str, list, dict)) for k in v):
+            return _collect_images(v[ranked[0]], images, depth + 1, True)
         for k in ("url", "src", "href"):
             if isinstance(v.get(k), str):
-                _collect_images(v[k], images, depth + 1, True)
-                return
-        for k in keys:
+                return _collect_images(v[k], images, depth + 1, True)
+        for k in v:
             if isinstance(v[k], (dict, list)):
                 _collect_images(v[k], images, depth + 1, trusted)
     elif isinstance(v, list):
@@ -345,42 +324,33 @@ def _collect_images(v, images: list[str], depth: int = 0, trusted: bool = False)
 
 # a video url hides under video keys as a string or nested file dict
 def _video_url(v, depth: int = 0):
-    if depth > 3:
-        return None
     if isinstance(v, str) and re.search(r"\.(mp4|m3u8|webm)\b", v):
         u = unesc(v).replace("\\/", "/")
         return "https:" + u if u.startswith("//") else (u if u.startswith("http") else None)
-    if isinstance(v, dict):
-        for k in ("url", "src", "file", "videourl", "videoURL"):
-            for kk, vv in v.items():
-                if kk.lower() == k.lower():
-                    if u := _video_url(vv, depth + 1):
-                        return u
+    if isinstance(v, dict) and depth < 3:
+        for k, vv in v.items():
+            if k.lower() in ("url", "src", "file", "videourl") and (u := _video_url(vv, depth + 1)):
+                return u
     return None
 
 
 # one discrete configuration of the product, like a size or color
+# sku bearing members are the tell that a generic items list is variants
 def _variant(vr) -> dict | None:
     if not isinstance(vr, dict):
         return None
     name = vr.get("title") or vr.get("public_title") or vr.get("name") \
         or vr.get("label") or " / ".join(
             str(vr[k]) for k in ("option1", "option2", "option3") if vr.get(k))
-    if not isinstance(name, str) or not name.strip() or len(name) > 120:
+    if not isinstance(name, str) or not name.strip() or len(name) > 120 \
+            or not any(k.lower() in ("sku", "ean", "merchskuid", "gtin", "gtins",
+                                     "sizeid", "option1", "public_title",
+                                     "compare_at_price", "price") for k in vr):
         return None
-    # sku bearing members are the tell that a generic items list is variants
-    if not any(k.lower() in ("sku", "ean", "merchskuid", "gtin", "gtins", "sizeid",
-                             "option1", "public_title", "compare_at_price", "price")
-               for k in vr):
-        return None
-    v = {"name": unesc(name)[:80],
-         "price": _cents(num(vr.get("price")), vr.get("price"), True),
-         "compare_at": _cents(num(vr.get("compare_at_price")),
-                              vr.get("compare_at_price"), True)}
-    if not _ok_price(v["price"]):
-        v["price"] = None
-    if not _ok_price(v["compare_at"]):
-        v["compare_at"] = None
+    price = _cents(num(vr.get("price")), vr.get("price"), True)
+    comp = _cents(num(vr.get("compare_at_price")), vr.get("compare_at_price"), True)
+    v = {"name": unesc(name)[:80], "price": price if _ok_price(price) else None,
+         "compare_at": comp if _ok_price(comp) else None}
     if vr.get("available") is not None:
         v["available"] = bool(vr["available"])
     elif isinstance(vr.get("stock"), int):
@@ -395,21 +365,3 @@ def _cents(n: float | None, raw, shopify: bool) -> float | None:
     if n is not None and shopify and isinstance(raw, int) and n >= 100:
         return n / 100
     return n
-
-
-# collect category style strings anywhere in the state, ids are not categories
-def _crumbs(objs, depth: int = 0) -> list[str]:
-    found: list[str] = []
-    if depth > 10:
-        return found
-    if isinstance(objs, list):
-        for v in objs[:60]:
-            found += _crumbs(v, depth + 1)
-    elif isinstance(objs, dict):
-        for k, v in objs.items():
-            if k.lower().replace("-", "_") in _CRUMB_KEYS and isinstance(v, str) \
-                    and len(v) > 2 and re.search(r"[a-zA-Z]", v):
-                found.append(v[:60])
-            else:
-                found += _crumbs(v, depth + 1)
-    return list(dict.fromkeys(found))[:6]

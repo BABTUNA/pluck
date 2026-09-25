@@ -3,7 +3,6 @@ the last rung where cheap model calls answer what the page didnt
   infer         ask for the missing fields plus a top level category in one json shot
   pick_leaf     run the second half of the category descent inside the chosen branch
   list_details  list variants colors and key features in one isolated prompt
-  clean_text    strip the page down to what a human would read
 """
 
 import json
@@ -48,30 +47,28 @@ async def _chat(system: str, user: str) -> tuple[dict, dict]:
 
 
 # ask one call for the missing or disputed fields plus a top level category
-# the rules encode judgment calls like one time price and no other brands compare at
 async def infer(html: str, missing: list[str], tops: list[str],
                 known_name: str | None) -> tuple[dict, dict]:
     keys = missing + ["category"]
+    field_rules = {
+        "currency": "'currency' is the ISO 4217 code of the displayed prices; infer "
+                    "it from the symbol and site (a $ price on a US site is USD).",
+        "compare_at": "'compare_at' is the crossed-out / 'was' / list price shown "
+                      "next to the current price; null if there is no higher original "
+                      "price. Never use another product's or brand's price "
+                      "('compare to', 'valued at', 'worth').",
+        "price": "'price' is the number a buyer pays right now for a standard "
+                 "one-time purchase (not a subscription or member price), as a "
+                 "decimal number (write 42,01 as 42.01).",
+    }
     rules = ["Reply with a JSON object with exactly these keys: " + str(keys) + ".",
              "Use null when the page does not state a value.",
              "'category': the best-fitting top-level Google Shopping category, "
-             "copied verbatim from this list: " + json.dumps(tops)]
-    if "currency" in keys:
-        rules.append("'currency' is the ISO 4217 code of the displayed prices; infer "
-                     "it from the symbol and site (a $ price on a US site is USD).")
-    if "compare_at" in keys:
-        rules.append("'compare_at' is the crossed-out / 'was' / list price shown "
-                     "next to the current price; null if there is no higher original "
-                     "price. Never use another product's or brand's price "
-                     "('compare to', 'valued at', 'worth').")
-    if "price" in keys:
-        rules.append("'price' is the number a buyer pays right now for a standard "
-                     "one-time purchase (not a subscription or member price), as a "
-                     "decimal number (write 42,01 as 42.01).")
-    content = clean_text(html) if missing else \
-        f"Product: {known_name}\n{clean_text(html, 4_000)}"
-    return await _chat("Extract product fields from the page text. " + " ".join(rules),
-                       content)
+             "copied verbatim from this list: " + json.dumps(tops)] \
+        + [r for k, r in field_rules.items() if k in keys]
+    return await _chat(
+        "Extract product fields from the page text. " + " ".join(rules),
+        clean_text(html) if missing else f"Product: {known_name}\n{clean_text(html, 4_000)}")
 
 
 # run the second half of the category descent with one verbatim pick from the branch

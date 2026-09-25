@@ -25,7 +25,7 @@ def _toks(text: str) -> set[str]:
 _PATHS = [(p, _toks(p), _toks(p.rsplit(">", 1)[-1])) for p in _CATS]
 
 
-# load the local embedding model over all 5595 paths once and skip it on tiny machines
+# load the local embedding model over all 5595 paths once
 @lru_cache(maxsize=1)
 def _embedder():
     import os
@@ -53,10 +53,8 @@ TOPS = sorted({c.split(" > ")[0] for c in _CATS})
 
 # match a model answer to a real top level category ignoring case
 def top(name) -> str | None:
-    if not name:
-        return None
-    n = str(name).replace("&amp;", "&").strip()
-    return next((t for t in TOPS if t.lower() == n.lower()), None)
+    n = str(name or "").replace("&amp;", "&").strip().lower()
+    return next((t for t in TOPS if t.lower() == n), None)
 
 
 # list every real path under one top level branch
@@ -67,19 +65,16 @@ def subtree(top_name: str) -> list[str]:
 # map any model written path to a real one
 # try exact match then best leaf overlap then embeddings then deepest valid prefix
 def snap(path) -> str | None:
-    if not path:
-        return None
-    p = re.sub(r"\s*>\s*", " > ", str(path).replace("&amp;", "&").strip())
-    if p in _SET:
-        return p
+    p = re.sub(r"\s*>\s*", " > ", str(path or "").replace("&amp;", "&").strip())
+    if not p or p in _SET:
+        return p or None
     segs = p.split(" > ")
     # the leaf is the signal so find the real path whose leaf matches it best
     qleaf, qall = _toks(segs[-1]), _toks(p)
     scored = max(_PATHS, key=lambda t: 3 * len(qleaf & t[2]) + len(qall & t[1]))
     if qleaf & scored[2]:
         return scored[0]
-    emb = _embedder()
-    if emb:  # synonym leaves ("Fragrances" vs "Perfume & Cologne") need vectors
+    if emb := _embedder():  # synonym leaves like fragrances vs perfume need vectors
         model, mat, np = emb
         v = np.array(list(model.embed([p])))[0]
         sims = mat @ v / (np.linalg.norm(mat, axis=1) * np.linalg.norm(v) + 1e-9)

@@ -64,7 +64,7 @@ Against the 50-page eval set, graded against the previous pipeline's manually sp
 | currency | 100% | 100% | - |
 | category | 82% | 92% | 96% |
 | cost per 1K pages | ~$1.30 | ~$6 | $20 |
-| code | ~880 lines | same | ~2,400 lines |
+| code | ~1,000 lines | same | ~2,400 lines |
 
 Measured in production (311 live pages, 18 stores, one crawl):
 
