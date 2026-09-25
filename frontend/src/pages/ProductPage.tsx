@@ -120,7 +120,9 @@ function ProductContent({ id }: { id: string | undefined }) {
             </ul>
           )}
 
-          {product.colors.length > 0 && !product.options.some((o) => /col/i.test(o)) && (
+          {product.colors.length > 0 &&
+            !product.options.some((o) => /col/i.test(o)) &&
+            !product.colors.every((c) => product.variants.some((v) => v.name.includes(c))) && (
             <section className="mt-8">
               <p className="eyebrow mb-2">Colors</p>
               <div className="flex flex-wrap gap-2">

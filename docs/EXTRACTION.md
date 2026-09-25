@@ -151,9 +151,14 @@ the same mine.state finds the product, sees handle so the ints are shopify cents
 
 ```json
 {"name": "Dreamweave Waffle Robe", "price": 89.4, "compare_at": 139.0, "currency": "USD",
- "options": ["Color", "Size"],
  "variants": [{"name": "French Blue Two Tone / XS", "price": 89.4, "compare_at": 139.0, "available": true},
               {"name": "French Blue Two Tone / S",  "price": 89.4, "compare_at": 139.0, "available": false}]}
+```
+
+pages whose product json carries an `options` key also yield the axis labels, like `"options": ["Color", "Size"]`; this one does not, so the frontend falls back to numbered axes.
+
+```json
+
 ```
 
 **_visible_prices(html)**
