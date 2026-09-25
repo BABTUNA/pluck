@@ -52,7 +52,9 @@ export function LivePage() {
         <section className="mb-10 space-y-3">
           <div className="flex items-baseline justify-between text-sm">
             <span className="font-medium">
-              {progress.done} of {progress.total} pages extracted
+              {progress.queued + progress.leased === 0
+                ? `Crawl complete: ${progress.done} pages extracted`
+                : `${progress.done} of ${progress.total} pages extracted`}
             </span>
             <span className="text-muted">
               {progress.queued} queued · {progress.leased} in flight · {progress.dead} dead-lettered

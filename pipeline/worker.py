@@ -30,7 +30,10 @@ def discover(url: str, html: str) -> list[str]:
         link = m.group(1)
         if link.startswith("/"):
             link = f"https://{host}{link}"
-        if link.split("/")[2] == host and not re.search(r"\.(js|css|json|png|jpg)$", link):
+        # api routes and feeds match the product pattern but are not pages
+        if re.search(r"wp-json|oembed|\.(js|css|json|xml|png|jpg)($|\?)", link, re.I):
+            continue
+        if link.split("/")[2] == host:
             out.append(link)
     return out[:25]
 

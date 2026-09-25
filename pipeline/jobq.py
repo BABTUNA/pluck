@@ -27,8 +27,10 @@ CREATE TABLE IF NOT EXISTS results (
   url          text PRIMARY KEY,
   product      jsonb NOT NULL,
   worker       text,
+  batch        text NOT NULL DEFAULT 'live',   -- assignment5 | assignment | live
   processed_at timestamptz NOT NULL DEFAULT now()
 );
+ALTER TABLE results ADD COLUMN IF NOT EXISTS batch text NOT NULL DEFAULT 'live';
 CREATE TABLE IF NOT EXISTS dead_letters (
   url      text PRIMARY KEY,
   error    text,

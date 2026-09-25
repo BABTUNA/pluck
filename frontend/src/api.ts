@@ -9,6 +9,7 @@ async function get<T>(path: string): Promise<T> {
   return res.json();
 }
 
-export const fetchProducts = () => get<ProductSummary[]>("/products");
+export const fetchProducts = (batch = "all") =>
+  get<ProductSummary[]>(`/products?batch=${batch}`);
 export const fetchProduct = (id: string) => get<Product>(`/products/${id}`);
 export const fetchProgress = () => get<Progress>("/progress");

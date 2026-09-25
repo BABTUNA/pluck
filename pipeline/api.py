@@ -108,19 +108,22 @@ def _summary(r) -> dict:
         "image_url": imgs[0] if imgs else None,
         "hover_image_url": imgs[1] if len(imgs) > 1 else None,
         "category": (p["category"]["value"] or "").split(" > ")[-1],
-        "source": "live",
+        "source": r["batch"],
     }
 
 
-# the crawled catalog newest first
+# the crawled catalog newest first, batch picks which collection
 @app.get("/products")
-async def products():
+async def products(batch: str = "all"):
+    where = {"five": "batch = 'assignment5'",
+             "fifty": "batch IN ('assignment5', 'assignment')",
+             "live": "batch = 'live'"}.get(batch, "true")
     pool = await _db()
     async with pool.acquire() as c:
         rows = await c.fetch(
-            "SELECT md5(url) AS id, url, product, processed_at FROM results "
+            "SELECT md5(url) AS id, url, product, batch, processed_at FROM results "
             "WHERE product->'price'->>'value' IS NOT NULL "  # no price means the page gave us nothing worth showing
-            "ORDER BY processed_at DESC LIMIT 500")
+            f"AND {where} ORDER BY processed_at DESC LIMIT 500")
     out, seen = [], set()
     for r in rows:
         s = _summary(r)

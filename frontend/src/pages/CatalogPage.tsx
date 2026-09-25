@@ -3,22 +3,29 @@ import type { ProductSummary } from "../types";
 import { fetchProducts } from "../api";
 import { ProductCard } from "../components/ProductCard";
 
+// three collections: the assignment's 50 pages, its original 5, and the live crawl
+const BATCHES = [
+  { key: "fifty", label: "Original 50" },
+  { key: "five", label: "Original 5" },
+  { key: "live", label: "Live crawl" },
+] as const;
+type Batch = (typeof BATCHES)[number]["key"];
+
 export function CatalogPage() {
   const [products, setProducts] = useState<ProductSummary[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [batch, setBatch] = useState<Batch>("fifty");
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetchProducts().then(setProducts).catch((e) => setError(String(e)));
-  }, []);
+    setProducts(null);
+    fetchProducts(batch).then(setProducts).catch((e) => setError(String(e)));
+  }, [batch]);
 
   const visible = useMemo(() => {
     if (!products) return [];
     const q = query.trim().toLowerCase();
-    return products.filter(
-      (p) =>
-        (!q || `${p.name} ${p.brand}`.toLowerCase().includes(q)),
-    );
+    return products.filter((p) => !q || `${p.name} ${p.brand}`.toLowerCase().includes(q));
   }, [products, query]);
 
   return (
@@ -31,43 +38,47 @@ export function CatalogPage() {
           </h1>
         </div>
         <div className="flex flex-wrap items-center gap-3">
+          <div className="flex border border-line">
+            {BATCHES.map((b) => (
+              <button
+                key={b.key}
+                onClick={() => setBatch(b.key)}
+                className={`px-3 py-1.5 text-sm transition-colors ${
+                  batch === b.key ? "bg-ink text-white" : "text-muted hover:text-ink"
+                }`}
+              >
+                {b.label}
+              </button>
+            ))}
+          </div>
           <input
             type="search"
+            placeholder="Search products, brands..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products, brands…"
-            className="w-56 border border-line px-3 py-1.5 text-sm placeholder:text-faint focus:border-ink focus:outline-none"
+            className="border border-line bg-transparent px-3 py-1.5 text-sm outline-none placeholder:text-faint focus:border-ink"
           />
         </div>
       </header>
 
-      {error && (
-        <p className="py-20 text-center text-muted">
-          Couldn't reach the catalog server ({error}). Is `uv run uvicorn server:app` running?
-        </p>
-      )}
-
+      {error && <p className="text-muted">{error}</p>}
       {!error && !products && (
-        <div className="grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="animate-pulse">
-              <div className="aspect-[4/5] bg-surface" />
-              <div className="mt-3 h-3 w-16 bg-surface" />
-              <div className="mt-2 h-4 w-40 bg-surface" />
-            </div>
+            <div key={i} className="aspect-[4/5] animate-pulse bg-surface" />
           ))}
         </div>
       )}
-
-      {products && visible.length === 0 && (
-        <p className="py-20 text-center text-muted">No products match “{query}”.</p>
+      {products && (
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+          {visible.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
       )}
-
-      <div className="grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
-        {visible.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </div>
+      {products && !visible.length && (
+        <p className="text-muted text-sm">No products match.</p>
+      )}
     </main>
   );
 }
