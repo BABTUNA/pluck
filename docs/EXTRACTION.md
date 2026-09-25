@@ -19,7 +19,8 @@ Two guards keep the deterministic answers honest:
 Beyond the core fields, the rest of the schema comes almost entirely free from the same rungs:
 
 - **images**, in priority order: json-ld image lists, image arrays and `imageUrl` keys in state, `<link rel="preload" as="image">` (pages preload their hero shots), og:image, and finally `<img>` tags taking the largest srcset rendition. The fallbacks only run while fewer than two images are found, so site chrome never outranks structured data.
-- **variants and options**: shopify-shaped state carries the full variant matrix (cents-decoded prices, availability) and the axis labels (`Color`, `Size`); json-ld contributes named offers. When the rungs find none, a tiny dedicated call lists the selectable configurations from the page text. It runs beside the leaf pick with its own prompt: sharing a prompt with the category question measurably cost six points of category accuracy, so one prompt does one job.
+- **variants and options**: shopify-shaped state carries the full variant matrix (cents-decoded prices, availability) and the axis labels (`Color`, `Size`); json-ld contributes named offers. A small dedicated details call fills the gaps from the page text: variants when the rungs found none, plus colors and key features. It runs beside the leaf pick with its own prompt: sharing a prompt with the category question measurably cost six points of category accuracy, so one prompt does one job.
+- **colors** fall out of the variant matrix's Color axis for free, the details call covers the rest; **video_url** is the first video cdn link in the page (og:video, then any mp4/m3u8 url in the state).
 - **brand** (json-ld brand, og:site_name) and **description** (json-ld description).
 
 Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung 2 finds only the shop currency, rung 3 runs the page's scripts and finds `variants[0].price: 8940` -> 89.40 plus the 25-variant matrix, the referee confirms 89.40 shows on the page, and the model answers category plus the details list. Three sub-cent calls total.
@@ -45,7 +46,7 @@ extract(html)                          climbs the rungs, assembles the product  
 ├─ _category(guess, known, html)       taxonomy descent for the category             pluck/extract.py
 │  ├─ pick_leaf(known, html, subtree)  one call: exact path within that branch       pluck/infer.py
 │  └─ taxonomy.snap(answer)            snaps any stray answer to a real path         pluck/taxonomy.py
-└─ list_variants(known, html)          tiny call when the rungs found no variants,   pluck/infer.py
+└─ list_details(known, html)           tiny call for variants, colors and features,  pluck/infer.py
                                        runs beside the leaf pick, separate prompt
                                        because sharing one hurt category accuracy
 ```
@@ -209,12 +210,14 @@ in, that stray string. out, the nearest real taxonomy path:
 "Hardware > Tools > Drills > Handheld Power Drills"
 ```
 
-**list_variants(known, html)**
+**list_details(known, html)**
 
-only fires when no rung produced variants, like this page. in, the identity line plus page text; out, the selectable configurations as plain strings, run beside the leaf pick with its own prompt:
+in, the identity line plus page text; out, three lists in one isolated prompt. variants only get used when no rung produced them:
 
 ```json
-{"variants": ["Charcoal Heather / Small", "Charcoal Heather / Medium", "Charcoal Heather / Large"]}
+{"variants": ["Charcoal Heather / Small", "Charcoal Heather / Medium"],
+ "colors": ["Charcoal Heather"],
+ "key_features": ["Interlock-knit cotton", "Won't shrink", "Tagless neck label"]}
 ```
 
 **extract(html), the final product**
@@ -229,6 +232,9 @@ only fires when no rung produced variants, like this page. in, the identity line
  "description": "The DCD771C2 20V MAX Lithium Ion Compact Drill/Driver Kit is lightweight and...",
  "options":    [],
  "variants":   [],
+ "colors":     [],
+ "key_features": ["20V MAX Cordless Compact Drill Kit", "Includes Battery & Charger"],
+ "video_url":  null,
  "images":     ["https://cdn-tp6.mozu.com/24645-37138/cms/37138/files/4d099bd2-...", "...6 more"],
  "meta": {"latency_s": 1.5,
           "llm_fields": ["compare_at", "category"],
@@ -254,6 +260,7 @@ Product(name, price, compare_at, currency, category, brand: Field,
         description: str | None,
         options: list[str],     # variant axis labels, like Color and Size
         variants: list[dict],   # {name, price, compare_at, available}
+        colors: list[str], key_features: list[str], video_url: str | None,
         images: list[str],
         meta={"latency_s", "llm_fields", "llm_tokens", "sources"})
 
