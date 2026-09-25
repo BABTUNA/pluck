@@ -192,7 +192,7 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
             if isinstance(full, str) and len(full) >= 3:
                 out["name"] = _unesc(full)[:150]
     return {k: v for k, v in out.items()
-            if v is not None and (k in ("name", "currency", "variants")
+            if v is not None and (k in ("name", "currency", "variants", "images")
                                   or _ok_price(v))}
 
 
