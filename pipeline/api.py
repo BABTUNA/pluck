@@ -101,7 +101,7 @@ def _summary(r) -> dict:
     return {
         "id": r["id"],
         "name": p["name"]["value"] or r["url"].split("/")[-1],
-        "brand": r["url"].split("/")[2].removeprefix("www."),
+        "brand": (p.get("brand") or {}).get("value") or r["url"].split("/")[2].removeprefix("www."),
         "price": {"price": p["price"]["value"] or 0,
                   "currency": p["currency"]["value"] or "USD",
                   "compare_at_price": p["compare_at"]["value"]},
@@ -154,6 +154,9 @@ async def product(pid: str):
                   "currency": p["currency"]["value"] or "USD",
                   "compare_at_price": p["compare_at"]["value"]},
         "image_urls": p.get("images") or [],
+        "brand": (p.get("brand") or {}).get("value"),
+        "description": p.get("description"),
+        "variants": p.get("variants") or [],
         "category": p["category"]["value"],
         "sources": p["meta"]["sources"],
         "latency_s": p["meta"]["latency_s"],

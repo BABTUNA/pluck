@@ -17,10 +17,20 @@ export interface ProductSummary {
   source: string;
 }
 
+export interface Variant {
+  name: string;
+  price: number | null;
+  compare_at: number | null;
+  available?: boolean;
+}
+
 export interface Product {
   id: string;
   url: string;
   name: string;
+  brand: string | null;
+  description: string | null;
+  variants: Variant[];
   price: Price;
   image_urls: string[];
   category: string | null;

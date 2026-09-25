@@ -219,7 +219,9 @@ in, that stray string. out, the nearest real taxonomy path:
 
 ```python
 Field(value=89.40, source="computed")   # source: declared | shipped | computed | inferred | none
-Product(name, price, compare_at, currency, category: Field,
+Product(name, price, compare_at, currency, category, brand: Field,
+        description: str | None,
+        variants: list[dict],   # {name, price, compare_at, available}, free from the rungs
         images: list[str],
         meta={"latency_s", "llm_fields", "llm_tokens", "sources"})
 

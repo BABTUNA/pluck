@@ -34,6 +34,9 @@ class Product(BaseModel):
     compare_at: Field
     currency: Field
     category: Field
+    brand: Field
+    description: str | None
+    variants: list[dict]  # discrete configurations, {name, price, compare_at, available}
     images: list[str]
     meta: dict
 
@@ -45,6 +48,8 @@ class _Fields:
         self.data: dict[str, Field] = {}
         self.crumbs: list = []
         self.images: list = []
+        self.variants: list = []
+        self.description: str | None = None
         self.disputes: set[str] = set()
 
     # fold one rungs findings in without overwriting earlier rungs
@@ -54,6 +59,12 @@ class _Fields:
                 self.crumbs += v
             elif k == "images":
                 self.images += v
+            elif k == "variants":
+                # richer rung wins, shopify matrices beat sparse offer lists
+                if len(v) > len(self.variants):
+                    self.variants = v
+            elif k == "description":
+                self.description = self.description or v
             elif k == "conflict":
                 # the page itself declared several prices so that is a dispute
                 self.disputes.add("price")
@@ -144,6 +155,10 @@ async def extract(html: str) -> Product:
 
     if "name" not in f.data and hint:
         f.merge({"name": hint.split("|")[0].strip()}, "declared")
+    if "brand" not in f.data:
+        m = re.search(r'property=["\']og:site_name["\'][^>]*content=["\']([^"\']{2,60})', html, re.I)
+        if m:
+            f.merge({"brand": mine._unesc(m.group(1))}, "declared")
 
     # most stores declare a hero photo in og image even when json ld has none
     if not f.images:
@@ -176,7 +191,7 @@ async def extract(html: str) -> Product:
     usage = {k: (usage.get(k) or 0) + (usage2.get(k) or 0) for k in usage | usage2
              if isinstance(usage.get(k, usage2.get(k)), (int, float))}
 
-    for k in ("name", "price", "compare_at", "currency", "category"):
+    for k in ("name", "price", "compare_at", "currency", "category", "brand"):
         f.data.setdefault(k, Field(value=None, source="none"))
 
     # a compare at equal to the price just means not on sale
@@ -189,6 +204,8 @@ async def extract(html: str) -> Product:
 
     return Product(
         **f.data,
+        description=f.description,
+        variants=f.variants[:30],
         images=[str(u).replace(":////", "://") for u in dict.fromkeys(f.images)
                 if str(u).startswith("http")][:10],
         meta={

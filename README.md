@@ -21,6 +21,8 @@ Most product pages already contain the answer in machine-readable form. Pluck cl
 3. **computed** - run the page's own inline JS in a V8 sandbox and read the state it builds. Free, catches Shopify-style pages that build state at runtime.
 4. **inferred** - one small LLM call over the cleaned page text for whatever is still missing.
 
+![Pluck's four-rung extraction decision tree](docs/extraction.drawio.png)
+
 Two guard rules make it honest:
 
 - A deterministic price must also appear on the visible page. If the page's data says 299.95 but the rendered page shows 279.95, the rungs disagree and the model referees. Same when two rungs disagree with each other.
@@ -134,7 +136,9 @@ Core shapes:
 
 ```python
 Field(value=89.40, source="computed")   # source: declared | shipped | computed | inferred | none
-Product(name, price, compare_at, currency, category: Field,
+Product(name, price, compare_at, currency, category, brand: Field,
+        description: str | None,
+        variants: list[dict],   # {name, price, compare_at, available}, free from the rungs
         images: list[str],
         meta={"latency_s", "llm_fields", "llm_tokens", "sources"})
 

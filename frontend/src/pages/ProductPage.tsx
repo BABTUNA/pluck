@@ -4,6 +4,7 @@ import type { Product } from "../types";
 import { fetchProduct } from "../api";
 import { Gallery } from "../components/Gallery";
 import { PriceBlock } from "../components/PriceBlock";
+import { formatPrice } from "../lib/format";
 
 // which rung answered each field, the provenance is the product story here
 const SOURCE_LABEL: Record<string, string> = {
@@ -55,7 +56,7 @@ function ProductContent({ id }: { id: string | undefined }) {
       </main>
     );
 
-  const brand = product.url.split("/")[2]?.replace(/^www\./, "") ?? "";
+  const brand = product.brand ?? product.url.split("/")[2]?.replace(/^www\./, "") ?? "";
   const crumbs = (product.category ?? "Uncategorized").split(" > ");
 
   return (
@@ -89,6 +90,31 @@ function ProductContent({ id }: { id: string | undefined }) {
           <div className="mt-4">
             <PriceBlock price={product.price} />
           </div>
+
+          {product.description && (
+            <p className="mt-5 max-w-prose text-sm leading-relaxed text-muted">
+              {product.description}
+            </p>
+          )}
+
+          {product.variants.length > 0 && (
+            <section className="mt-8">
+              <p className="eyebrow mb-3">Variants</p>
+              <div className="flex flex-wrap gap-2">
+                {product.variants.map((v, i) => (
+                  <span
+                    key={i}
+                    className={`border border-line px-3 py-1.5 text-xs ${
+                      v.available === false ? "text-faint line-through" : ""
+                    }`}
+                  >
+                    {v.name}
+                    {v.price != null && ` · ${formatPrice(v.price, product.price.currency)}`}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
 
           <a
             href={product.url}

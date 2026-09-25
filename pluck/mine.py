@@ -77,6 +77,12 @@ def jsonld(objs: list) -> dict:
             continue
         if isinstance(o.get("name"), str):
             out.setdefault("name", _unesc(o["name"]))
+        b = o.get("brand")
+        b = b.get("name") if isinstance(b, dict) else b
+        if isinstance(b, str) and b.strip():
+            out.setdefault("brand", _unesc(b)[:60])
+        if isinstance(o.get("description"), str) and len(o["description"]) > 20:
+            out.setdefault("description", _unesc(o["description"])[:600])
         if isinstance(o.get("category"), str):
             out.setdefault("crumbs", []).append(o["category"])
         img = o.get("image")
@@ -92,6 +98,11 @@ def jsonld(objs: list) -> dict:
             if _ok_price(p):
                 out.setdefault("prices", set()).add(round(p, 2))
                 out.setdefault("currency", offer.get("priceCurrency"))
+                # named offers are the json ld flavor of variants
+                if isinstance(offer.get("name"), str) and offer["name"].strip():
+                    out.setdefault("variants", []).append(
+                        {"name": _unesc(offer["name"])[:80], "price": p,
+                         "compare_at": None})
     # several distinct offer prices is ambiguity not an answer
     prices = out.pop("prices", set())
     if len(prices) == 1:
@@ -155,15 +166,42 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
                 v = v.get("active") or v.get("code") or v.get("isoCode") or ""
             if isinstance(v, str) and re.fullmatch(r"[A-Z]{3}", v):
                 out.setdefault("currency", v)
-    # shopify keeps the real prices on the variants
+    # shopify keeps the real prices and the option matrix on the variants
     variants = o.get("variants")
     if isinstance(variants, list) and variants and isinstance(variants[0], dict):
         vr = variants[0]
         for key, field in (("price", "price"), ("compare_at_price", "compare_at")):
             if key in vr:
                 out[field] = _cents(_num(vr[key]), vr[key], True)
+        vs = [v for v in (_variant(x) for x in variants[:30]) if v]
+        if vs:
+            out["variants"] = vs
+        # some shopify product dicts carry no title of their own, the
+        # variants hold the full name so borrow it or the parent never wins
+        if "name" not in out:
+            full = vr.get("name") or vr.get("title")
+            if isinstance(full, str) and len(full) >= 3:
+                out["name"] = _unesc(full)[:150]
     return {k: v for k, v in out.items()
-            if v is not None and (k in ("name", "currency") or _ok_price(v))}
+            if v is not None and (k in ("name", "currency", "variants")
+                                  or _ok_price(v))}
+
+
+# one discrete configuration of the product, like a size or color
+def _variant(vr) -> dict | None:
+    if not isinstance(vr, dict):
+        return None
+    name = vr.get("title") or vr.get("public_title") or " / ".join(
+        str(vr[k]) for k in ("option1", "option2", "option3") if vr.get(k))
+    if not isinstance(name, str) or not name.strip():
+        return None
+    v = {"name": _unesc(name)[:80],
+         "price": _cents(_num(vr.get("price")), vr.get("price"), True),
+         "compare_at": _cents(_num(vr.get("compare_at_price")),
+                              vr.get("compare_at_price"), True)}
+    if vr.get("available") is not None:
+        v["available"] = bool(vr["available"])
+    return v
 
 
 # an integer 8940 in a shopify blob means 89.40
