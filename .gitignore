@@ -1,2 +1,5 @@
 .env
 __pycache__/
+.cache/
+requests.jsonl
+output/

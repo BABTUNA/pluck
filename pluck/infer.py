@@ -1,8 +1,9 @@
 """
-the last rung where one cheap model call answers what the page didnt
-  infer      ask for the missing fields plus a top level category in one json shot
-  pick_leaf  run the second half of the category descent inside the chosen branch
-  clean_text strip the page down to what a human would read
+the last rung where cheap model calls answer what the page didnt
+  infer         ask for the missing fields plus a top level category in one json shot
+  pick_leaf     run the second half of the category descent inside the chosen branch
+  list_details  list variants colors and key features in one isolated prompt
+  clean_text    strip the page down to what a human would read
 """
 
 import json
@@ -23,7 +24,30 @@ def clean_text(html: str, limit: int = 16_000) -> str:
     return re.sub(r"\s+", " ", text)[:limit]
 
 
-# ask one json call for the missing or disputed fields plus a top level category
+# one json mode call, returns (parsed reply, token usage)
+async def _chat(system: str, user: str) -> tuple[dict, dict]:
+    async with httpx.AsyncClient(timeout=90) as client:
+        r = await client.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={"Authorization": f"Bearer {os.environ['OPEN_ROUTER_API_KEY']}"},
+            json={
+                "model": MODEL,
+                "messages": [{"role": "system", "content": system},
+                             {"role": "user", "content": user}],
+                "response_format": {"type": "json_object"},
+                "temperature": 0,
+            },
+        )
+    r.raise_for_status()
+    data = r.json()
+    try:
+        fb = json.loads(data["choices"][0]["message"]["content"])
+        return (fb if isinstance(fb, dict) else {}), data.get("usage", {})
+    except (KeyError, json.JSONDecodeError):
+        return {}, data.get("usage", {})
+
+
+# ask one call for the missing or disputed fields plus a top level category
 # the rules encode judgment calls like one time price and no other brands compare at
 async def infer(html: str, missing: list[str], tops: list[str],
                 known_name: str | None) -> tuple[dict, dict]:
@@ -46,85 +70,28 @@ async def infer(html: str, missing: list[str], tops: list[str],
                      "decimal number (write 42,01 as 42.01).")
     content = clean_text(html) if missing else \
         f"Product: {known_name}\n{clean_text(html, 4_000)}"
-    async with httpx.AsyncClient(timeout=90) as client:
-        r = await client.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": f"Bearer {os.environ['OPEN_ROUTER_API_KEY']}"},
-            json={
-                "model": MODEL,
-                "messages": [
-                    {"role": "system",
-                     "content": "Extract product fields from the page text. " + " ".join(rules)},
-                    {"role": "user", "content": content},
-                ],
-                "response_format": {"type": "json_object"},
-                "temperature": 0,
-            },
-        )
-    r.raise_for_status()
-    data = r.json()
-    try:
-        return (json.loads(data["choices"][0]["message"]["content"]),
-                data.get("usage", {}))
-    except (KeyError, json.JSONDecodeError):
-        return {}, data.get("usage", {})
+    return await _chat("Extract product fields from the page text. " + " ".join(rules),
+                       content)
 
 
 # run the second half of the category descent with one verbatim pick from the branch
 async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[dict, dict]:
-    async with httpx.AsyncClient(timeout=90) as client:
-        r = await client.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": f"Bearer {os.environ['OPEN_ROUTER_API_KEY']}"},
-            json={
-                "model": MODEL,
-                "messages": [
-                    {"role": "system", "content":
-                     "Pick the single best-fitting category path for this product; "
-                     "prefer a general path over a specific one unless the specific "
-                     "clearly applies. Reply JSON {\"category\": \"<one string copied "
-                     "verbatim from the list>\"}. List: " + json.dumps(paths)},
-                    {"role": "user", "content": f"{known}\n{clean_text(html, 4_000)}"},
-                ],
-                "response_format": {"type": "json_object"},
-                "temperature": 0,
-            },
-        )
-    r.raise_for_status()
-    data = r.json()
-    try:
-        return json.loads(data["choices"][0]["message"]["content"]), data.get("usage", {})
-    except (KeyError, json.JSONDecodeError):
-        return {}, data.get("usage", {})
+    return await _chat(
+        "Pick the single best-fitting category path for this product; prefer a "
+        "general path over a specific one unless the specific clearly applies. "
+        'Reply JSON {"category": "<one string copied verbatim from the list>"}. '
+        "List: " + json.dumps(paths),
+        f"{known}\n{clean_text(html, 4_000)}")
 
 
 # a tiny dedicated call for the enumerable extras so the category prompts
 # stay clean, mixing questions into them measurably hurt the category answer
 async def list_details(known: str, html: str) -> tuple[dict, dict]:
-    async with httpx.AsyncClient(timeout=90) as client:
-        r = await client.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": f"Bearer {os.environ['OPEN_ROUTER_API_KEY']}"},
-            json={
-                "model": MODEL,
-                "messages": [
-                    {"role": "system", "content":
-                     "From the page list: 'variants' (the selectable configurations "
-                     "like [\"Black / S\", \"Black / M\"]), 'colors' (the color names "
-                     "offered), 'key_features' (3-6 short feature phrases). Reply JSON "
-                     "{\"variants\": [...], \"colors\": [...], \"key_features\": [...]}, "
-                     "empty arrays when the page shows none."},
-                    {"role": "user", "content": f"{known}\n{clean_text(html, 6_000)}"},
-                ],
-                "response_format": {"type": "json_object"},
-                "temperature": 0,
-            },
-        )
-    r.raise_for_status()
-    data = r.json()
-    try:
-        fb = json.loads(data["choices"][0]["message"]["content"])
-        return ({k: v for k, v in fb.items() if isinstance(v, list)} if isinstance(fb, dict) else {},
-                data.get("usage", {}))
-    except (KeyError, json.JSONDecodeError):
-        return {}, data.get("usage", {})
+    fb, usage = await _chat(
+        "From the page list: 'variants' (the selectable configurations like "
+        '["Black / S", "Black / M"]), \'colors\' (the color names offered), '
+        "'key_features' (3-6 short feature phrases). Reply JSON "
+        '{"variants": [...], "colors": [...], "key_features": [...]}, '
+        "empty arrays when the page shows none.",
+        f"{known}\n{clean_text(html, 6_000)}")
+    return {k: v for k, v in fb.items() if isinstance(v, list)}, usage

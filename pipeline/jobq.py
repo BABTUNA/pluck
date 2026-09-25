@@ -82,7 +82,7 @@ async def enqueue(pool, urls: list[str], per_domain_cap: int = 40) -> int:
 
 # atomically lease one ready job and expired leases are claimable again
 # skip locked means two workers can never get the same row
-async def claim(pool, worker: str) -> asyncpg.Record | None:
+async def claim(pool) -> asyncpg.Record | None:
     async with pool.acquire() as c:
         return await c.fetchrow(
             """UPDATE jobs SET status='leased', lease_until=now() + interval '2 min'
@@ -105,7 +105,7 @@ async def done(pool, job_id: int, url: str, product: str, worker: str):
             url, product, worker)
 
 
-# retry with exponential backoff at 1m then 4m then 16m then dead letter
+# retry with exponential backoff at 1m then 4m then dead letter
 async def fail(pool, job_id: int, url: str, error: str, max_attempts: int = 3):
     async with pool.acquire() as c:
         attempts = await c.fetchval(

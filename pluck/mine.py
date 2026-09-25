@@ -3,7 +3,7 @@ one miner for every source since every rung produces json
 walks any json for product fields so the rungs stay dumb harvesters
   jsonld  extract the merchants declared answer from schema org blocks
   state   extract the main product from framework state blobs
-  _num    parse money in any shape like 129.9 or "$129.90" or cents ints or amount dicts
+  num     parse money in any shape like 129.9 or "$129.90" or cents ints or amount dicts
 """
 
 import html as _html
@@ -20,12 +20,12 @@ _CRUMB_KEYS = {"category", "product_type", "producttype", "product_category"}
 
 
 # unescape twice since pages double encode entities
-def _unesc(s: str) -> str:
+def unesc(s: str) -> str:
     return _html.unescape(_html.unescape(s)).strip()
 
 
 # parse money in any shape into a float
-def _num(v) -> float | None:
+def num(v) -> float | None:
     if isinstance(v, dict):
         v = v.get("amount") or v.get("value") or v.get("price")
     if isinstance(v, bool) or v is None:
@@ -76,32 +76,34 @@ def jsonld(objs: list) -> dict:
         if "Product" not in t:
             continue
         if isinstance(o.get("name"), str):
-            out.setdefault("name", _unesc(o["name"]))
+            out.setdefault("name", unesc(o["name"]))
         b = o.get("brand")
         b = b.get("name") if isinstance(b, dict) else b
         if isinstance(b, str) and b.strip():
-            out.setdefault("brand", _unesc(b)[:60])
+            out.setdefault("brand", unesc(b)[:60])
         if isinstance(o.get("description"), str) and len(o["description"]) > 20:
-            out.setdefault("description", _unesc(o["description"])[:600])
+            out.setdefault("description", unesc(o["description"])[:600])
         if isinstance(o.get("category"), str):
             out.setdefault("crumbs", []).append(o["category"])
         img = o.get("image")
         imgs = img if isinstance(img, list) else [img] if img else []
-        out.setdefault("images", [i.get("url") if isinstance(i, dict) else i
-                                  for i in imgs if i])
+        urls = [i.get("url") if isinstance(i, dict) else i for i in imgs if i]
+        if urls and not out.get("images"):
+            out["images"] = urls
         offers = o.get("offers") or {}
         for offer in offers if isinstance(offers, list) else [offers]:
             if not isinstance(offer, dict):
                 continue
-            p = _num(offer.get("price") or offer.get("lowPrice")
+            p = num(offer.get("price") or offer.get("lowPrice")
                      or (offer.get("priceSpecification") or {}))
             if _ok_price(p):
                 out.setdefault("prices", set()).add(round(p, 2))
-                out.setdefault("currency", offer.get("priceCurrency"))
+                if offer.get("priceCurrency") and not out.get("currency"):
+                    out["currency"] = offer["priceCurrency"]
                 # named offers are the json ld flavor of variants
                 if isinstance(offer.get("name"), str) and offer["name"].strip():
                     out.setdefault("variants", []).append(
-                        {"name": _unesc(offer["name"])[:80], "price": p,
+                        {"name": unesc(offer["name"])[:80], "price": p,
                          "compare_at": None})
     # several distinct offer prices is ambiguity not an answer
     prices = out.pop("prices", set())
@@ -163,11 +165,11 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
     for k, v in o.items():
         lk = k.lower().replace("-", "_")
         if lk in _NAME_KEYS and isinstance(v, str) and 3 <= len(v) <= 150:
-            out.setdefault("name", _unesc(v))
+            out.setdefault("name", unesc(v))
         elif lk in _PRICE_KEYS:
-            out.setdefault("price", _cents(_num(v), v, shopify))
+            out.setdefault("price", _cents(num(v), v, shopify))
         elif lk in _COMPARE_KEYS:
-            out.setdefault("compare_at", _cents(_num(v), v, shopify))
+            out.setdefault("compare_at", _cents(num(v), v, shopify))
         elif lk in ("images", "media") and isinstance(v, list):
             urls = []
             for it in v[:12]:
@@ -188,7 +190,7 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
         vr = variants[0]
         for key, field in (("price", "price"), ("compare_at_price", "compare_at")):
             if key in vr:
-                out[field] = _cents(_num(vr[key]), vr[key], True)
+                out[field] = _cents(num(vr[key]), vr[key], True)
         vs = [v for v in (_variant(x) for x in variants[:30]) if v]
         if vs:
             out["variants"] = vs
@@ -204,7 +206,7 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
         if "name" not in out:
             full = vr.get("name") or vr.get("title")
             if isinstance(full, str) and len(full) >= 3:
-                out["name"] = _unesc(full)[:150]
+                out["name"] = unesc(full)[:150]
     return {k: v for k, v in out.items()
             if v is not None and (k in ("name", "currency", "variants", "images",
                                         "options") or _ok_price(v))}
@@ -218,9 +220,9 @@ def _variant(vr) -> dict | None:
         str(vr[k]) for k in ("option1", "option2", "option3") if vr.get(k))
     if not isinstance(name, str) or not name.strip():
         return None
-    v = {"name": _unesc(name)[:80],
-         "price": _cents(_num(vr.get("price")), vr.get("price"), True),
-         "compare_at": _cents(_num(vr.get("compare_at_price")),
+    v = {"name": unesc(name)[:80],
+         "price": _cents(num(vr.get("price")), vr.get("price"), True),
+         "compare_at": _cents(num(vr.get("compare_at_price")),
                               vr.get("compare_at_price"), True)}
     if vr.get("available") is not None:
         v["available"] = bool(vr["available"])

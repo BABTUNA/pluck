@@ -8,13 +8,13 @@ The extractor is a decision tree over four sources, cheapest first. Core fields 
 
 1. **declared** - parse the JSON-LD blocks the merchant wrote for Google. If a block declares several different offer prices, that is an ambiguity, not an answer, and price stays open.
 2. **shipped** - parse JSON state embedded as inert script tags (`__NEXT_DATA__`, `application/json`). State blobs hold many products (recommendations, upsells), so candidates are scored against the page title and the best match wins.
-3. **computed** - only if core fields are still missing: execute the page's inline JS in a V8 sandbox (stub `window`/`document`, no network, per-script timeouts), snapshot the new globals it built, and mine those. Catches Shopify-style pages that construct state at runtime. Shopify cents (`price: 8940`) are detected by the `handle` key and divided.
+3. **computed** - only if core fields are still missing: execute the page's inline JS in a V8 sandbox (stub `window`/`document`, no network, per-script timeouts), snapshot the new globals it built, and mine those. Catches Shopify-style pages that construct state at runtime. Shopify cents (`price: 8940`) are detected by the `handle` or `compare_at_price` keys and divided.
 4. **inferred** - one small LLM call over the cleaned page text for whatever is missing or disputed.
 
 Two guards keep the deterministic answers honest:
 
 - **the visible-price referee**: a price from rungs 1-3 must appear in the page's visible text within 1%, and two rungs must not disagree; either violation sends price to the model with the page text.
-- **taxonomy descent** for category, which is never on the page: the rung-4 call also picks 1 of 21 top-level categories, then a second call picks the exact path from every real path under that branch. `snap()` maps any stray answer to a real taxonomy string (exact, then valid prefix, then nearest leaf).
+- **taxonomy descent** for category, which is never on the page: the rung-4 call also picks 1 of 21 top-level categories, then a second call picks the exact path from every real path under that branch. `snap()` maps any stray answer to a real taxonomy string (exact match, then best leaf overlap, then embeddings, then deepest valid prefix).
 
 Beyond the core fields, the rest of the schema comes almost entirely free from the same rungs:
 
@@ -33,7 +33,7 @@ extract(html)                          climbs the rungs, assembles the product  
 ├─ mine.jsonld(rungs.declared(scr))    json-ld: name, price, currency, brand,        pluck/mine.py
 │                                      description, images, crumbs, named-offer
 │                                      variants; several offer prices = dispute
-├─ mine.state(rungs.shipped(scr))      embedded state: best product candidate with   pluck/mine.py
+├─ mine.state(rungs.shipped(scr), hint) embedded state: best product candidate with  pluck/mine.py
 │                                      prices, variant matrix + option labels,
 │                                      image arrays and imageUrl keys
 ├─ mine.state(rungs.computed(scr))     same miner over globals a v8 sandbox built    pluck/rungs.py
@@ -157,10 +157,6 @@ the same mine.state finds the product, sees handle so the ints are shopify cents
 
 pages whose product json carries an `options` key also yield the axis labels, like `"options": ["Color", "Size"]`; this one does not, so the frontend falls back to numbered axes.
 
-```json
-
-```
-
 **_visible_prices(html)**
 
 in, the same raw html. out, every price a human can see on the rendered page. 129.0 is in the set so the declared price is trusted and there is no dispute:
@@ -217,7 +213,7 @@ in, that stray string. out, the nearest real taxonomy path:
 
 **list_details(known, html)**
 
-in, the identity line plus page text; out, three lists in one isolated prompt. variants only get used when no rung produced them:
+in, the identity line plus page text; out, three lists in one isolated prompt (example from the llbean tee, the drill has no variants). variants only get used when no rung produced them:
 
 ```json
 {"variants": ["Charcoal Heather / Small", "Charcoal Heather / Medium"],

@@ -9,8 +9,8 @@ import re
 from functools import lru_cache
 from pathlib import Path
 
-_CATS = [l.strip() for l in (Path(__file__).parent.parent / "categories.txt")
-         .read_text().splitlines() if l.strip() and not l.startswith("#")]
+_CATS = [line.strip() for line in (Path(__file__).parent.parent / "categories.txt")
+         .read_text().splitlines() if line.strip() and not line.startswith("#")]
 
 
 # split into lowercase stemmed tokens
@@ -88,5 +88,3 @@ def snap(path) -> str | None:
         if (q := " > ".join(segs[:i])) in _SET:
             return q
     return scored[0] if qall & scored[1] else None
-
-

@@ -5,16 +5,22 @@ Usage: uv run python eval.py [n_pages]
 
 import asyncio
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
 
 from pluck.extract import extract
 
-OLD = Path("/Users/benba/projects/interviews/take-home-2026")
+# the graded set lives in the original take-home checkout, point at yours
+OLD = Path(os.environ.get("PLUCK_EVAL_DIR",
+                          "/Users/benba/projects/interviews/take-home-2026"))
 
 
 async def main():
+    if not (OLD / "output").exists():
+        sys.exit("set PLUCK_EVAL_DIR to a take-home checkout with data/ and output/ "
+                 "(the 50 graded pages are not vendored into this repo)")
     limit = int(sys.argv[1]) if len(sys.argv) > 1 else 999
     pages = (sorted((OLD / "data").glob("*.html"))
              + sorted((OLD / "data_unseen").glob("*.html")))[:limit]
@@ -77,11 +83,15 @@ async def main():
         cells = "  ".join(f"{s}:{good}/{good + bad}" for s, (bad, good) in row.items()
                           if good + bad)
         print(f"  {k:11} {cells}")
+    from ai import MODEL_PRICES
+    model = os.environ.get("PLUCK_MODEL", "google/gemini-2.5-flash-lite")
+    rate = MODEL_PRICES.get(model, {"input": 0.10})["input"]
     print(f"\n  llm tokens total: {total_tokens}  "
-          f"(~${total_tokens / 1e6 * 0.10:.4f} at flash-lite rates)")
+          f"(~${total_tokens / 1e6 * rate:.4f} at {model.split('/')[-1]} input rates)")
     print(f"\nmisses ({len(misses)}):")
     for m in misses[:30]:
         print("  " + m)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

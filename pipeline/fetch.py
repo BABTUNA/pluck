@@ -1,7 +1,8 @@
 """
 fetch a live product page with realistic headers and honest errors
 a block is data for the analysis not something to hide
-  fetch  get a url and return html or an error string
+  fetch    get a url with one retry and return (html, error), exactly one set
+  blocked  reject urls that point anywhere internal
 """
 
 import asyncio
@@ -17,9 +18,11 @@ HEADERS = {
 
 
 # get the page with one retry and return (html, error) where exactly one is set
-# user supplied urls must not reach anything internal
+# user supplied urls must not reach anything internal, literal hosts and
+# their dns answers are checked, a redirect chain is not
 def blocked(url: str) -> str | None:
     import ipaddress
+    import socket
     from urllib.parse import urlsplit
     if len(url) > 2000:
         return "url too long"
@@ -34,13 +37,19 @@ def blocked(url: str) -> str | None:
         return "blocked host"
     try:
         ip = ipaddress.ip_address(host)
-        if not ip.is_global:
-            return "blocked host"
+        return None if ip.is_global else "blocked host"
     except ValueError:
-        pass  # a normal hostname
+        pass  # a normal hostname, check what it resolves to
+    try:
+        infos = socket.getaddrinfo(host, None)
+        if any(not ipaddress.ip_address(i[4][0]).is_global for i in infos):
+            return "blocked host"
+    except (OSError, ValueError):
+        return "unresolvable host"
     return None
 
 
+# get the page with one retry and return (html, error) where exactly one is set
 async def fetch(url: str) -> tuple[str | None, str | None]:
     if err := blocked(url):
         return None, err

@@ -42,7 +42,7 @@ class Product(BaseModel):
     category: Category
     brand: str
     colors: list[str]
-    variants: list[Any] # TODO (@dev): Define variant model
+    variants: list["Variant"]  # defined below, one discrete configuration
 
 # the extractor's own models (Product with per-field provenance, Field) live
 # in pluck/extract.py, this file keeps the assignment's output schema

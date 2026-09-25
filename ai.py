@@ -1,3 +1,5 @@
+# the assignment's starter wrapper, kept verbatim; extraction talks to
+# openrouter directly in pluck/infer.py and main.py reads MODEL_PRICES
 import logging
 import os
 from functools import lru_cache

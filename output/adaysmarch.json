@@ -21,7 +21,9 @@
   "name": "Apparel & Accessories > Clothing > Pants"
  },
  "brand": "A Day's March",
- "colors": [],
+ "colors": [
+  "Iron"
+ ],
  "variants": [
   {
    "name": "44",

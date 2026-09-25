@@ -42,7 +42,7 @@ async def main():
     totals = await asyncio.gather(*(one(p) for p in pages))
     per_page = sum(totals) / max(len(pages), 1)
     logging.info(f"\n{len(pages)} pages, {sum(totals)} tokens total")
-    # the extrapolation ai.py's _log_usage prints, for the whole pipeline
+    # the cost extrapolation the assignment asks for, using ai.py's price table
     import ai
     import os
     model = os.environ.get("PLUCK_MODEL", "google/gemini-2.5-flash-lite")

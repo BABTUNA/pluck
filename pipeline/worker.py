@@ -66,7 +66,7 @@ async def loop(pool):
             if await q.get_flag(pool, "paused") == "1":
                 await asyncio.sleep(10)
                 continue
-            job = await q.claim(pool, WORKER)
+            job = await q.claim(pool)
             if job is None:
                 idle += 1
                 await asyncio.sleep(min(30, 2 * idle))  # queue empty: back off

@@ -15,7 +15,6 @@ import os
 import time
 from pathlib import Path
 
-import time as _time
 from collections import defaultdict
 
 from fastapi import FastAPI, Header, HTTPException, Request
@@ -32,12 +31,15 @@ _hits: dict = defaultdict(list)
 
 def _limit(request: Request, key: str, n: int, window: int = 60):
     ip = request.headers.get("fly-client-ip") or (request.client.host if request.client else "?")
-    now = _time.time()
+    now = time.time()
     bucket = _hits[f"{key}:{ip}"]
     bucket[:] = [t for t in bucket if now - t < window]
     if len(bucket) >= n:
         raise HTTPException(429, "slow down")
     bucket.append(now)
+
+
+
 LOG = Path(os.environ.get("PLUCK_LOG", "requests.jsonl"))
 TOKEN = os.environ.get("PLUCK_TOKEN")  # unset = open
 
@@ -86,7 +88,7 @@ async def stats():
     return {
         "pages": len(rows),
         "extracted": len(done),
-        "fetch_blocked_or_failed": len(rows) - len(done),
+        "failed": len(rows) - len(done),
         "field_sources": sources,
         "llm_tokens": tokens,
         "latency_p50_s": lat[len(lat) // 2] if lat else None,
@@ -212,8 +214,11 @@ if _dist.exists():
 
     @app.get("/{path:path}")
     async def spa(path: str):
-        f = _dist / path
-        return FileResponse(f if f.is_file() else _dist / "index.html")
+        # resolve and confine to the dist dir so encoded dots cannot escape it
+        f = (_dist / path).resolve()
+        if not (f.is_relative_to(_dist.resolve()) and f.is_file()):
+            f = _dist / "index.html"
+        return FileResponse(f)
 
 
 # ---- crawl controls for the live view -------------------------------------

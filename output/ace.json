@@ -7,10 +7,9 @@
  },
  "description": "The DCD771C2 20V MAX Lithium Ion Compact Drill/Driver Kit is lightweight and compact for working in tight spaces for long periods of time. High-speed transmission delivers 2-Speed variations allowing users to choose the level of performance needed for various applications.",
  "key_features": [
-  "20V MAX Cordless Compact Drill Kit",
-  "Includes Battery & Charger",
-  "Brushed Motor",
-  "1/2 inch Chuck Size"
+  "Lightweight and compact for working in tight spaces",
+  "High-speed transmission delivers 2-Speed variations",
+  "Choose the level of performance needed for various applications"
  ],
  "image_urls": [
   "https://cdn-tp6.mozu.com/24645-37138/cms/37138/files/4d099bd2-35d7-4e18-bc01-cf949601998b",
@@ -28,6 +27,8 @@
   "name": "Hardware > Tools > Drills > Handheld Power Drills"
  },
  "brand": "DeWalt",
- "colors": [],
+ "colors": [
+  "Black"
+ ],
  "variants": []
 }
