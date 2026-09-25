@@ -34,7 +34,7 @@ Two sanity checks sit on top:
 - A price pulled from page data has to show up on the rendered page too. If the JSON says 299.95 but the page displays 279.95, something is stale and the price goes to the model with the page text. Same when two sources give different numbers.
 - Category never exists on a page, so the model always answers it. To stop it from making up categories, it first picks one of the 21 top-level branches, then picks from a list of every real path under that branch.
 
-Example, a Shopify robe page with no JSON-LD offers: rung 1 gets the name, rungs 1-2 have no price, rung 3 runs the page's scripts and finds `price: 8940` in cents (89.40), the price shows on the page so it sticks, and the model only handles category. Total for the page: two sub-cent calls.
+Example, a Shopify robe page with no JSON-LD offers: rung 1 gets the name, rungs 1-2 have no price, rung 3 runs the page's scripts and finds `price: 8940` in cents (89.40), the price shows on the page so it sticks, and the model handles category plus the feature list. Total for the page: three sub-cent calls.
 
 The full mechanism, with real inputs and outputs at every step: [docs/EXTRACTION.md](docs/EXTRACTION.md).
 

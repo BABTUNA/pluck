@@ -22,7 +22,7 @@ Beyond the core fields, the rest of the schema comes almost entirely free from t
 - **variants and options**: shopify-shaped state carries the full variant matrix (cents-decoded prices, availability) and the axis labels (`Color`, `Size`); json-ld contributes named offers. When the rungs find none, a tiny dedicated call lists the selectable configurations from the page text. It runs beside the leaf pick with its own prompt: sharing a prompt with the category question measurably cost six points of category accuracy, so one prompt does one job.
 - **brand** (json-ld brand, og:site_name) and **description** (json-ld description).
 
-Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung 2 finds only the shop currency, rung 3 runs the page's scripts and finds `variants[0].price: 8940` -> 89.40 plus the 25-variant matrix, the referee confirms 89.40 shows on the page, and the model answers only category. Two sub-cent calls total.
+Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung 2 finds only the shop currency, rung 3 runs the page's scripts and finds `variants[0].price: 8940` -> 89.40 plus the 25-variant matrix, the referee confirms 89.40 shows on the page, and the model answers category plus the details list. Three sub-cent calls total.
 
 ## Call trace
 
