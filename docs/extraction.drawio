@@ -29,21 +29,24 @@
         <mxCell id="computed" value="3 · Computed&#xa;V8 sandbox if needed" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#e2f1e2;strokeColor=#7fb777;strokeWidth=1.5;fontFamily=Arial;fontSize=14;fontStyle=1;fontColor=#213122;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
           <mxGeometry x="645" y="105" width="185" height="105" as="geometry" />
         </mxCell>
-        <mxCell id="inferred" value="4 · Inferred&#xa;gaps, conflicts, category" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#fff3d9;strokeColor=#d9a948;strokeWidth=1.5;fontFamily=Arial;fontSize=14;fontStyle=1;fontColor=#3b3424;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
+        <mxCell id="inferred" value="4 · Inferred&#xa;missing fields + branch" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#fff3d9;strokeColor=#d9a948;strokeWidth=1.5;fontFamily=Arial;fontSize=14;fontStyle=1;fontColor=#3b3424;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
           <mxGeometry x="870" y="105" width="185" height="105" as="geometry" />
         </mxCell>
         <mxCell id="product" value="Product&#xa;values + provenance" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff0db;strokeColor=#df9e35;strokeWidth=1.5;fontFamily=Arial;fontSize=14;fontStyle=1;fontColor=#3e2c19;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
           <mxGeometry x="1100" y="100" width="205" height="115" as="geometry" />
         </mxCell>
 
-        <mxCell id="miner" value="Shared JSON miner&#xa;find product fields" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#e6efff;strokeColor=#7da5df;strokeWidth=1.5;fontFamily=Arial;fontSize=13;fontStyle=1;fontColor=#213c68;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
-          <mxGeometry x="315" y="280" width="310" height="70" as="geometry" />
+        <mxCell id="miner" value="Shared JSON miner&#xa;fields · media · variants" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#e6efff;strokeColor=#7da5df;strokeWidth=1.5;fontFamily=Arial;fontSize=13;fontStyle=1;fontColor=#213c68;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
+          <mxGeometry x="315" y="280" width="285" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="guard" value="Field state + price guard&#xa;keep answers, escalate conflicts" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#e6efff;strokeColor=#7da5df;strokeWidth=1.5;fontFamily=Arial;fontSize=13;fontStyle=1;fontColor=#213c68;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
-          <mxGeometry x="665" y="280" width="335" height="70" as="geometry" />
+        <mxCell id="guard" value="Field state + guards&#xa;keep answers · verify price" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#e6efff;strokeColor=#7da5df;strokeWidth=1.5;fontFamily=Arial;fontSize=13;fontStyle=1;fontColor=#213c68;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
+          <mxGeometry x="635" y="280" width="290" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="taxonomy" value="Taxonomy descent&#xa;branch → exact path" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#fff8e7;strokeColor=#d8b44d;strokeWidth=1.5;fontFamily=Arial;fontSize=13;fontStyle=1;fontColor=#3b3424;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
-          <mxGeometry x="1040" y="280" width="265" height="70" as="geometry" />
+        <mxCell id="taxonomy" value="Category leaf&#xa;exact taxonomy path" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#fff8e7;strokeColor=#d8b44d;strokeWidth=1.5;fontFamily=Arial;fontSize=13;fontStyle=1;fontColor=#3b3424;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
+          <mxGeometry x="960" y="280" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="variants" value="Variant fallback&#xa;if page data has none" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#fff8e7;strokeColor=#d8b44d;strokeWidth=1.5;fontFamily=Arial;fontSize=13;fontStyle=1;fontColor=#3b3424;align=center;verticalAlign=middle;" vertex="1" parent="pipeline">
+          <mxGeometry x="1150" y="280" width="165" height="70" as="geometry" />
         </mxCell>
 
         <mxCell id="legend1" value="page / output" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#fff0db;strokeColor=#df9e35;fontFamily=Arial;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle;" vertex="1" parent="1">
@@ -71,7 +74,9 @@
         <mxCell id="miner_guard" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5f7fac;strokeWidth=1.7;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="pipeline" source="miner" target="guard"><mxGeometry relative="1" as="geometry" /></mxCell>
         <mxCell id="guard_inferred" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=4 4;strokeColor=#9b844d;strokeWidth=1.5;endArrow=open;exitX=0.78;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="pipeline" source="guard" target="inferred"><mxGeometry relative="1" as="geometry" /></mxCell>
         <mxCell id="inferred_taxonomy" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=4 4;strokeColor=#9b844d;strokeWidth=1.5;endArrow=open;exitX=0.75;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="pipeline" source="inferred" target="taxonomy"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="taxonomy_product" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=4 4;strokeColor=#9b844d;strokeWidth=1.5;endArrow=open;exitX=0.75;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="pipeline" source="taxonomy" target="product"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="inferred_variants" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=4 4;strokeColor=#9b844d;strokeWidth=1.5;endArrow=open;exitX=0.9;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="pipeline" source="inferred" target="variants"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="taxonomy_product" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=4 4;strokeColor=#9b844d;strokeWidth=1.5;endArrow=open;exitX=0.75;exitY=0;entryX=0.25;entryY=1;" edge="1" parent="pipeline" source="taxonomy" target="product"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="variants_product" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=4 4;strokeColor=#9b844d;strokeWidth=1.5;endArrow=open;exitX=0.5;exitY=0;entryX=0.75;entryY=1;" edge="1" parent="pipeline" source="variants" target="product"><mxGeometry relative="1" as="geometry" /></mxCell>
       </root>
     </mxGraphModel>
   </diagram>

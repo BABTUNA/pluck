@@ -91,6 +91,9 @@ async def _db():
     global _pool
     if _pool is None:
         _pool = await asyncpg.create_pool(os.environ["DATABASE_URL"], min_size=1, max_size=4)
+        from pipeline.jobq import SCHEMA
+        async with _pool.acquire() as c:
+            await c.execute(SCHEMA)
     return _pool
 
 
@@ -176,8 +179,10 @@ async def progress():
         dead = await c.fetchval("SELECT count(*) FROM dead_letters")
     done = counts.get("done", 0)
     total = sum(counts.values()) + dead
+    paused = await jobq.get_flag(pool, "paused") == "1"
     return {"done": done, "queued": counts.get("queued", 0),
-            "leased": counts.get("leased", 0), "dead": dead, "total": total}
+            "leased": counts.get("leased", 0), "dead": dead, "total": total,
+            "paused": paused}
 
 
 # serve the built storefront when it exists
@@ -189,3 +194,49 @@ if _dist.exists():
     async def spa(path: str):
         f = _dist / path
         return FileResponse(f if f.is_file() else _dist / "index.html")
+
+
+# ---- crawl controls for the live view -------------------------------------
+
+from pipeline import jobq
+from pipeline.seed import seed_defaults
+
+
+class Crawl(BaseModel):
+    url: str | None = None
+
+
+# start a crawl: a given url, or requeue everything plus the default stores
+@app.post("/crawl/start")
+async def crawl_start(body: Crawl):
+    pool = await _db()
+    await jobq.set_flag(pool, "paused", "0")
+    if body.url:
+        n = await jobq.requeue(pool, [body.url])
+    else:
+        n = await jobq.requeue_all(pool)
+        n += await seed_defaults(pool)
+    return {"queued": n}
+
+
+@app.post("/crawl/pause")
+async def crawl_pause():
+    await jobq.set_flag(await _db(), "paused", "1")
+    return {"paused": True}
+
+
+@app.post("/crawl/resume")
+async def crawl_resume():
+    await jobq.set_flag(await _db(), "paused", "0")
+    return {"paused": False}
+
+
+# wipe the live crawl, the assignment batches always survive
+@app.post("/crawl/clear")
+async def crawl_clear():
+    pool = await _db()
+    async with pool.acquire() as c:
+        dropped = await c.execute("DELETE FROM results WHERE batch = 'live'")
+        await c.execute("DELETE FROM jobs")
+        await c.execute("DELETE FROM dead_letters")
+    return {"dropped": int(dropped.split()[-1])}

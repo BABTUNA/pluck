@@ -31,6 +31,10 @@ CREATE TABLE IF NOT EXISTS results (
   processed_at timestamptz NOT NULL DEFAULT now()
 );
 ALTER TABLE results ADD COLUMN IF NOT EXISTS batch text NOT NULL DEFAULT 'live';
+CREATE TABLE IF NOT EXISTS settings (
+  k text PRIMARY KEY,
+  v text NOT NULL
+);
 CREATE TABLE IF NOT EXISTS dead_letters (
   url      text PRIMARY KEY,
   error    text,
@@ -114,3 +118,37 @@ async def fail(pool, job_id: int, url: str, error: str, max_attempts: int = 3):
                 """UPDATE jobs SET status='queued',
                    next_retry = now() + (interval '1 min' * power(4, attempts - 1))
                    WHERE id=$1""", job_id)
+
+
+# crawl wide flags, the pause switch lives here
+async def set_flag(pool, k: str, v: str):
+    async with pool.acquire() as c:
+        await c.execute("""INSERT INTO settings (k, v) VALUES ($1, $2)
+                           ON CONFLICT (k) DO UPDATE SET v=$2""", k, v)
+
+
+async def get_flag(pool, k: str) -> str | None:
+    async with pool.acquire() as c:
+        return await c.fetchval("SELECT v FROM settings WHERE k=$1", k)
+
+
+# put urls back on the queue whether or not they were done before
+async def requeue(pool, urls: list[str]) -> int:
+    n = 0
+    async with pool.acquire() as c:
+        for u in {norm(u) for u in urls}:
+            await c.execute(
+                """INSERT INTO jobs (url, domain, status) VALUES ($1, $2, 'queued')
+                   ON CONFLICT (url) DO UPDATE
+                   SET status='queued', attempts=0, next_retry=now()""",
+                u, u.split("/")[2])
+            n += 1
+    return n
+
+
+# a full rerun sends every known page through again
+async def requeue_all(pool) -> int:
+    async with pool.acquire() as c:
+        r = await c.execute(
+            "UPDATE jobs SET status='queued', attempts=0, next_retry=now()")
+        return int(r.split()[-1])

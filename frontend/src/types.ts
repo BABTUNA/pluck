@@ -42,6 +42,7 @@ export interface Product {
 }
 
 export interface Progress {
+  paused?: boolean;
   done: number;
   queued: number;
   leased: number;

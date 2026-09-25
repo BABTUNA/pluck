@@ -39,14 +39,21 @@ async def store_products(client, domain: str) -> list[str]:
         return []
 
 
+# seed every store, callable from the api for a rerun
+async def seed_defaults(pool) -> int:
+    async with httpx.AsyncClient(headers=HEADERS, follow_redirects=True, timeout=20) as c:
+        found = await asyncio.gather(*(store_products(c, d) for d in STORES))
+    total = 0
+    for urls in found:
+        total += await q.requeue(pool, urls)
+    return total
+
+
 # seed every store and print what got enqueued
 async def main():
     pool = await q.connect()
-    async with httpx.AsyncClient(headers=HEADERS, follow_redirects=True, timeout=20) as c:
-        found = await asyncio.gather(*(store_products(c, d) for d in STORES))
-    for d, urls in zip(STORES, found):
-        n = await q.enqueue(pool, urls)
-        print(f"{d}: {len(urls)} found, {n} enqueued")
+    n = await seed_defaults(pool)
+    print(f"seeded {n} urls across {len(STORES)} stores")
 
 
 if __name__ == "__main__":
