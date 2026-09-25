@@ -16,14 +16,12 @@
  "image_urls": [
   "https://adaysmarch.centracdn.net/client/dynamic/images/8521_d363c12cd7-miller-cotton-lyocell-iron.jpg"
  ],
- "video_url": null,
+ "video_url": "https://adaysmarch.centracdn.net/client/dynamic/attributes/531/miller_2x3.mp4",
  "category": {
   "name": "Apparel & Accessories > Clothing > Pants"
  },
  "brand": "A Day's March",
- "colors": [
-  "Iron"
- ],
+ "colors": [],
  "variants": [
   {
    "name": "44",

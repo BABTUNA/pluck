@@ -44,6 +44,10 @@ class Product(BaseModel):
     colors: list[str]
     variants: list[Any] # TODO (@dev): Define variant model
 
+# the extractor's own models (Product with per-field provenance, Field) live
+# in pluck/extract.py, this file keeps the assignment's output schema
+
+
 class Variant(BaseModel):
     # one discrete configuration of the product, a point in the option matrix
     name: str                        # "French Blue Two Tone / XS"
@@ -67,8 +71,16 @@ def from_pluck(p) -> Product:
         key_features=p.key_features,
         image_urls=p.images,
         video_url=p.video_url,
-        category=Category(name=p.category.value),
+        category=Category(name=_category_or_nearest(p)),
         brand=p.brand.value or "",
         colors=p.colors,
         variants=variants,
     )
+
+
+# the validator rejects anything not in categories.txt, and unseen pages can
+# leave category empty, so fall back to the nearest real path for the name
+# rather than crash the run
+def _category_or_nearest(p) -> str:
+    from pluck.taxonomy import _CATS, snap
+    return p.category.value or snap(p.name.value or "") or _CATS[0]

@@ -16,6 +16,15 @@ OUT = Path("output")
 
 
 async def one(page: Path) -> int:
+    # one broken page must never sink the batch
+    try:
+        return await _one(page)
+    except Exception as e:  # noqa: BLE001
+        logging.error(f"{page.stem:12} FAILED {type(e).__name__}: {e}")
+        return 0
+
+
+async def _one(page: Path) -> int:
     html = page.read_text(errors="ignore")
     raw = await extract(html)
     product = models.from_pluck(raw)  # their schema, category validator included
@@ -34,9 +43,12 @@ async def main():
     per_page = sum(totals) / max(len(pages), 1)
     logging.info(f"\n{len(pages)} pages, {sum(totals)} tokens total")
     # the extrapolation ai.py's _log_usage prints, for the whole pipeline
+    import ai
+    import os
+    model = os.environ.get("PLUCK_MODEL", "google/gemini-2.5-flash-lite")
+    rate = ai.MODEL_PRICES.get(model, {"input": 0.10})["input"]  # input dominates
     for scale in (1_000_000, 10_000_000):
-        est = per_page * scale / 1e6 * 0.10  # flash-lite input rate dominates
-        logging.info(f"  ~${est:,.0f} for {scale:,} products")
+        logging.info(f"  ~${per_page * scale / 1e6 * rate:,.0f} for {scale:,} products")
 
 
 if __name__ == "__main__":
