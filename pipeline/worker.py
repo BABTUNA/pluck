@@ -28,7 +28,9 @@ def discover(url: str, html: str) -> list[str]:
     out = []
     for m in _LINK.finditer(html):
         link = m.group(1)
-        if link.startswith("/"):
+        if link.startswith("//"):
+            link = "https:" + link
+        elif link.startswith("/"):
             link = f"https://{host}{link}"
         # api routes and feeds match the product pattern but are not pages
         if re.search(r"wp-json|oembed|\.(js|css|json|xml|png|jpg)($|\?)", link, re.I):

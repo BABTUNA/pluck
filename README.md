@@ -85,7 +85,7 @@ Ablations over the 50 verified pages, both models (correct counts out of 50):
 | no v8 sandbox rung (lite) | 47 | 48 | 45 | 50 | 41 |
 | no visible-price check (lite) | 48 | 46 | 45 | 50 | 40 |
 
-The sandbox rung barely moves this static set (the model fallback catches those pages) but earns its keep live, answering name and price free on the third of the crawl that ships code instead of data. The naive gap shrinks as the model gets stronger, so the tree matters most exactly where it saves the most money: it is what makes the cheap model viable.
+Flash-lite swings a page or two between identical runs even at temperature zero, which is why these cells and the results table above differ slightly: same code, different rolls. The sandbox rung barely moves this static set (the model fallback catches those pages) but earns its keep live, answering name and price free on the third of the crawl that ships code instead of data. The naive gap shrinks as the model gets stronger, so the tree matters most exactly where it saves the most money: it is what makes the cheap model viable.
 
 Live throughput: 9 pages/min at 1 worker, 21 at 4, 57 peak at 8. A spot check of 30 random live-crawled products (judged by a stronger model against freshly fetched pages) held at 87-100% per field.
 
@@ -110,4 +110,4 @@ DATABASE_URL=... python -m pipeline.worker        # a worker
 cd frontend && npm install && npm run build       # the storefront the api serves
 ```
 
-`PLUCK_MODEL` picks the model for all calls: `google/gemini-2.5-flash-lite` (default, cheapest) or `google/gemini-3-flash-preview` (category 82% -> 92% at ~6x the LLM cost).
+`PLUCK_MODEL` picks the model for all calls: `google/gemini-2.5-flash-lite` (default, cheapest) or `google/gemini-3-flash-preview` (category 82% -> 92% at ~5x the LLM cost).

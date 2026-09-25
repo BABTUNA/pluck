@@ -124,9 +124,8 @@ def _context(f: _Fields, html: str) -> str:
     return known
 
 
-# fill the gallery from the pages own markup when the rungs found little
-# preload links are the hero shots, og image next, img tags last at the
-# largest srcset rendition since the assignment wants full resolution
+# fill the gallery from markup when the rungs found little: preload hero
+# shots, then og image, then img tags at the largest srcset rendition
 def _image_fallbacks(f: _Fields, html: str):
     if not f.images:
         for tag in re.findall(r"<link[^>]+>", html, re.I):
@@ -136,10 +135,10 @@ def _image_fallbacks(f: _Fields, html: str):
                 f.images.append("https:" + u if u.startswith("//") else u)
     if not f.images:
         f.images += re.findall(
-            r'property=["\'](?:og|twitter):image["\'][^>]*content=["\'](http[^"\']+)', html)[:4]
+            r'property=["\'](?:og|twitter):image["\'][^>]*content=["\'](http[^"\']+)', html, re.I)[:4]
     if len(f.images) >= 2:
         return
-    seed_dir = "/".join(f.images[0].split("/")[:5]) if f.images else None
+    seed_dir = f.images[0].rsplit("/", 1)[0] if f.images else None
     for tag in re.findall(r"<img[^>]+>", html, re.I):
         m = re.search(r'srcset=["\']([^"\']+)', tag) \
             or re.search(r'src=["\'](//[^"\']+|https?://[^"\']+)', tag)
@@ -164,16 +163,15 @@ def _axis_values(options: list, variants: list, axis: str) -> list[str]:
     return []
 
 
-# a video mined from the product subtree is trusted, a raw page scan is
-# only trusted when the page holds exactly one video so a colorway or
-# recommendation reel can never be mistaken for the product's own
+# subtree videos are trusted, a raw page scan only counts when the page
+# holds exactly one video so another colorways reel can never win
 def _video(html: str, mined: str | None) -> str | None:
     if mined:
         return mined
     if m := re.search(r'property=["\']og:video[^"\']*["\'][^>]*content=["\'](http[^"\']+)', html, re.I):
         return m.group(1)
     found = {u.replace("\\/", "/") for u in re.findall(
-        r'(?:https?:)?(?:\\/\\/|//)[^"\'\s\\]+\.(?:mp4|m3u8|webm)\b[^"\'\s\\]*', html)}
+        r'(?:https?:)?(?:\\/\\/|//)(?:[^"\'\s\\]|\\/)+\.(?:mp4|m3u8|webm)\b(?:[^"\'\s\\]|\\/)*', html)}
     if len(found) != 1:
         return None
     u = found.pop()
@@ -253,7 +251,7 @@ async def extract(html: str) -> Product:
             f.disputes.add("price")
 
     # one model call for everything missing or disputed and category rides along
-    missing = f.core_missing() + sorted(f.disputes)
+    missing = list(dict.fromkeys(f.core_missing() + sorted(f.disputes)))
     if "compare_at" not in f.data and "compare_at" not in missing and _SALE.search(html):
         missing.append("compare_at")
     known = _context(f, html)
@@ -275,7 +273,9 @@ async def extract(html: str) -> Product:
     usage = _add_usage(usage, _add_usage(usage2, usage3))
     # model listed extras only count when the page text actually shows them
     text = re.sub(r"<[^>]+>", " ", html).lower()
-    grounded = lambda t: all(p.strip().lower() in text for p in str(t).split(" / ") if p.strip())
+    grounded = lambda t: str(t).lower() not in ("black / s", "black / m") and all(
+        re.search(rf"\b{re.escape(w.strip())}\b", text, re.I)
+        for w in str(t).split(" / ") if w.strip())
     if not f.variants:
         f.variants = [{"name": str(v)[:80], "price": None, "compare_at": None}
                       for v in details.get("variants", [])[:30]

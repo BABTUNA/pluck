@@ -34,6 +34,8 @@ def _limit(request: Request, key: str, n: int, window: int = 60):
     now = time.time()
     bucket = _hits[f"{key}:{ip}"]
     bucket[:] = [t for t in bucket if now - t < window]
+    if not bucket and len(_hits) > 10_000:
+        _hits.clear()  # crude but bounded
     if len(bucket) >= n:
         raise HTTPException(429, "slow down")
     bucket.append(now)

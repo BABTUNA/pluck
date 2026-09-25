@@ -2,7 +2,7 @@
 
 ## Goal and how it works
 
-Turn one product page's HTML into `{name, price, compare_at, currency, category, images}`, spending as close to nothing as the page allows.
+Turn one product page's HTML into `{name, price, compare_at, currency, category, brand, description, options, variants, colors, key_features, video_url, images}`, spending as close to nothing as the page allows.
 
 The extractor is a decision tree over four sources, cheapest first. Core fields (name, price, currency) stop the climb as soon as they are filled:
 
@@ -36,7 +36,7 @@ extract(html)                          climbs the rungs, assembles the product  
 ├─ mine.state(rungs.shipped(scr), hint) embedded state: the best matching product    pluck/mine.py
 │                                      subtree mined whole, prices, variant matrix
 │                                      + option labels, images, swatches, video
-├─ mine.state(rungs.computed(scr))     same miner over globals a v8 sandbox built    pluck/rungs.py
+├─ mine.state(rungs.computed(scr), hint) same miner over globals a v8 sandbox built  pluck/rungs.py
 │                                      by running the page's own js (shopify cents)
 ├─ image fallbacks (inline)            while under 2 images: preload links, og,      pluck/extract.py
 │                                      then <img> tags at largest srcset rendition
@@ -147,13 +147,13 @@ after running it the sandbox globals come back as real json:
   "currency": "USD"}}}
 ```
 
-the same mine.state finds the product, sees handle so the ints are shopify cents, and returns the fields plus the variant matrix and its axis labels:
+the same mine.state finds the product, sees handle so the ints are shopify cents, and returns:
 
 ```json
-{"name": "Dreamweave Waffle Robe", "price": 89.4, "compare_at": 139.0, "currency": "USD",
- "variants": [{"name": "French Blue Two Tone / XS", "price": 89.4, "compare_at": 139.0, "available": true},
-              {"name": "French Blue Two Tone / S",  "price": 89.4, "compare_at": 139.0, "available": false}]}
+{"name": "Dreamweave Waffle Robe", "price": 89.4, "compare_at": 139.0, "currency": "USD"}
 ```
+
+this snippet's single variant row is below the two row threshold; the real page ships a 25 row matrix, and that does come through as `variants` with per row prices and availability.
 
 pages whose product json carries an `options` key also yield the axis labels, like `"options": ["Color", "Size"]`; this one does not, so the frontend falls back to numbered axes.
 
@@ -241,7 +241,7 @@ in, the identity line plus page text; out, three lists in one isolated prompt (e
           "llm_fields": ["compare_at", "category"],
           "llm_tokens": {"total_tokens": 4570, "cost": 0.0005},
           "sources": {"name": "declared", "price": "declared", "compare_at": "none",
-                      "currency": "declared", "category": "inferred"}}}
+                      "currency": "declared", "category": "inferred", "brand": "declared"}}}
 ```
 
 ## Files and data structures
@@ -251,7 +251,7 @@ in, the identity line plus page text; out, three lists in one isolated prompt (e
 | `pluck/extract.py` | the router: climbs rungs, detects conflicts, assembles the `Product` |
 | `pluck/rungs.py` | the three deterministic harvesters, all returning parsed JSON objects |
 | `pluck/mine.py` | one miner that walks any JSON for product fields (shared by all rungs) |
-| `pluck/infer.py` | the two model calls (missing fields + category leaf), OpenRouter |
+| `pluck/infer.py` | the three model calls: fields, category leaf, details, OpenRouter |
 | `pluck/taxonomy.py` | Google taxonomy: top-level list, subtree slices, snap-to-real-path |
 | `eval.py` | grades 50 pages against the previous project's verified outputs |
 

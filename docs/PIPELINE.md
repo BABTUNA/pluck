@@ -29,7 +29,7 @@ pipeline/worker.py main()              one process, N concurrent claim loops    
    ├─ fetch(url)                       live GET, browser headers, one retry          pipeline/fetch.py
    ├─ extract(html)                    the whole decision tree (see EXTRACTION.md)   pluck/extract.py
    ├─ jobq.done(...)                   mark done, upsert product into results        pipeline/jobq.py
-   ├─ jobq.fail(...)                   backoff 1m/4m/16m, then dead_letters          pipeline/jobq.py
+   ├─ jobq.fail(...)                   backoff 1m then 4m, then dead_letters         pipeline/jobq.py
    └─ jobq.enqueue(discover(url, html))   same-domain product links, deduped, capped,   pipeline/jobq.py
                                        api routes and feeds filtered out
 

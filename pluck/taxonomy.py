@@ -79,7 +79,7 @@ def snap(path) -> str | None:
         v = np.array(list(model.embed([p])))[0]
         sims = mat @ v / (np.linalg.norm(mat, axis=1) * np.linalg.norm(v) + 1e-9)
         return _CATS[int(np.argmax(sims))]
-    for i in range(len(segs) - 1, 1, -1):  # else deepest valid prefix
+    for i in range(len(segs) - 1, 0, -1):  # else deepest valid prefix
         if (q := " > ".join(segs[:i])) in _SET:
             return q
     return scored[0] if qall & scored[1] else None

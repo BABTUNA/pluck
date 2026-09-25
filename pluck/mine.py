@@ -23,8 +23,7 @@ _VARIANT_LIST_KEYS = set("variants items skus sizes".split())
 # renditions ranked so a sources dict yields its largest copy
 _BIG = re.compile(r"max|original|master|full|large|2048|1024|zoom", re.I)
 _SMALL = re.compile(r"mini|thumb|small|icon|tiny|micro|swatch", re.I)
-_JUNK_KEY = re.compile(r"related|recommend|styled|similar|upsell|crosssell|recently"
-                       r"|breadcrumb|navigation|reviews")
+_JUNK_KEY = re.compile(r"related|recommend|styled|similar|upsell|crosssell|recently|breadcrumb|navigation|reviews")
 _IMG_URL = re.compile(r"^(?:https?:)?//[^\s\"']+\.(?:jpe?g|png|webp|avif)(?:[?#]|$)", re.I)
 # size and cache params stripped so renditions of one shot dedupe to full res
 _STRIP_PARAM = re.compile(r"^(w|h|q|quality|fit|max|width|height|sw|sh|fm|crop|wid|hei"
@@ -44,7 +43,7 @@ def _key(k) -> str:
 def canon(url) -> str | None:
     u = unesc(str(url)).replace("\\/", "/").strip()
     u = "https:" + u if u.startswith("//") else u
-    if not u.startswith("http"):
+    if not u.lower().startswith("http"):
         return None
     parts = urlsplit(u)
     kept = [(k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True)
@@ -89,7 +88,7 @@ def jsonld(objs: list) -> dict:
     out: dict = {}
     stack = list(objs)
     while stack:
-        o = stack.pop()
+        o = stack.pop(0)
         if isinstance(o, list):
             stack.extend(o)
             continue
@@ -128,8 +127,9 @@ def jsonld(objs: list) -> dict:
         for offer in offers if isinstance(offers, list) else [offers]:
             if not isinstance(offer, dict):
                 continue
+            spec = offer.get("priceSpecification")
             p = num(offer.get("price") or offer.get("lowPrice")
-                    or (offer.get("priceSpecification") or {}))
+                    or (spec[0] if isinstance(spec, list) and spec else spec) or {})
             if not _ok_price(p):
                 continue
             out.setdefault("prices", set()).add(round(p, 2))
@@ -196,8 +196,7 @@ def state(objs: list, hint: str = "") -> dict:
     return out
 
 
-# the products name may be a direct key, inside a child info dict, or on
-# the first variant when the parent carries no title of its own
+# a direct name key, a child info dicts name, or the first variants name
 def _name_of(o: dict) -> str | None:
     def direct(d):
         return next((v for k, v in d.items() if _key(k) in _NAME_KEYS
@@ -255,22 +254,25 @@ def _mine_subtree(root: dict) -> dict:
                     out["options"] = labels
             elif lk in _VARIANT_LIST_KEYS and isinstance(v, list) and v \
                     and "variants" not in out:
-                vs = [x for x in (_variant(i) for i in v[:40]) if x]
+                sh = shopify or (isinstance(v[0], dict) and "compare_at_price" in v[0])
+                vs = [x for x in (_variant(i, sh) for i in v[:40]) if x]
                 if len(vs) >= max(2, len(v[:40]) // 2):
                     out["variants"] = vs[:30]
                     # shopify keeps the real prices on the variants
-                    if (shopify or lk == "variants") and isinstance(v[0], dict):
+                    if sh and isinstance(v[0], dict):
                         for key, field in (("price", "price"),
                                            ("compare_at_price", "compare_at")):
                             p = _cents(num(v[0].get(key)), v[0].get(key), True)
                             if _ok_price(p):
                                 out[field] = p
-            elif ("color" in lk or "swatch" in lk) and isinstance(v, dict):
+            elif ("color" in lk or "swatch" in lk) and isinstance(v, (dict, list)):
                 # a name next to a hex code is a color swatch on any platform
-                nm, hx = v.get("name") or v.get("label"), v.get("color") or v.get("hex")
-                if isinstance(nm, str) and isinstance(hx, str) and hx.startswith("#") \
-                        and nm not in colors:
-                    colors.append(unesc(nm)[:40])
+                for sw in v if isinstance(v, list) else [v]:
+                    sw = sw if isinstance(sw, dict) else {}
+                    nm, hx = sw.get("name") or sw.get("label"), sw.get("color") or sw.get("hex")
+                    if isinstance(nm, str) and isinstance(hx, str) and hx.startswith("#") \
+                            and nm not in colors:
+                        colors.append(unesc(nm)[:40])
             if re.search(r"image|media|gallery|photo", lk):
                 _collect_images(v, images, trusted=True)
             elif isinstance(v, str):
@@ -293,8 +295,7 @@ def _mine_subtree(root: dict) -> dict:
 
 
 # pull image urls out of a value, ranking rendition dicts largest first
-# trusted means we arrived through an image keyed path, so scene7 and mozu
-# style urls without file extensions still count
+# trusted means an image keyed path, so extensionless cdn urls still count
 def _collect_images(v, images: list[str], depth: int = 0, trusted: bool = False):
     if len(images) >= 16 or depth > 3:
         return
@@ -336,7 +337,7 @@ def _video_url(v, depth: int = 0):
 
 # one discrete configuration of the product, like a size or color
 # sku bearing members are the tell that a generic items list is variants
-def _variant(vr) -> dict | None:
+def _variant(vr, shopify: bool = True) -> dict | None:
     if not isinstance(vr, dict):
         return None
     name = vr.get("title") or vr.get("public_title") or vr.get("name") \
@@ -347,8 +348,8 @@ def _variant(vr) -> dict | None:
                                      "sizeid", "option1", "public_title",
                                      "compare_at_price", "price") for k in vr):
         return None
-    price = _cents(num(vr.get("price")), vr.get("price"), True)
-    comp = _cents(num(vr.get("compare_at_price")), vr.get("compare_at_price"), True)
+    price = _cents(num(vr.get("price")), vr.get("price"), shopify)
+    comp = _cents(num(vr.get("compare_at_price")), vr.get("compare_at_price"), shopify)
     v = {"name": unesc(name)[:80], "price": price if _ok_price(price) else None,
          "compare_at": comp if _ok_price(comp) else None}
     if vr.get("available") is not None:

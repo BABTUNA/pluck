@@ -41,8 +41,7 @@ def declared(scr: list[tuple[str, str]]) -> list:
 
 
 # ---------------------------------------------------------------- rung b --
-# parse the inert json state tags plus plain window assignments of json
-# literals, which saves booting the sandbox for pages like llbean
+# parse inert json state tags plus window assignments of json literals
 _ASSIGN = re.compile(r"window\.__[A-Z_]+__\s*=\s*")
 
 
