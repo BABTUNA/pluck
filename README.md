@@ -1,6 +1,6 @@
 # pluck
 
-Extract product data (name, price, compare-at, currency, category, images) from any product page. One decision tree: the page's own data answers first, a model only speaks when the page can't.
+Extract product data (name, price, compare-at, currency, category, brand, description, variants, images) from any product page. One decision tree: the page's own data answers first, a model only speaks when the page can't.
 
 It is deployed. Try any product URL:
 
@@ -9,6 +9,8 @@ curl -X POST https://pluck-extract.fly.dev/extract \
   -H 'content-type: application/json' \
   -d '{"url": "https://www.brooklinen.com/products/luxe-core-sheet-set"}'
 ```
+
+Or browse the storefront it feeds: [pluck-extract.fly.dev](https://pluck-extract.fly.dev) has the assignment's 50 pages, the original 5, a live-crawled catalog, and a live view where you can run, pause, cap, or clear the crawl and feed it single urls.
 
 Deep dives: [EXTRACTION.md](docs/EXTRACTION.md) for the decision tree, [PIPELINE.md](docs/PIPELINE.md) for the distributed crawler and deployment.
 
@@ -40,9 +42,9 @@ Against 50 verified pages (same eval set as the previous full-pipeline project):
 | price | 96% | 96% | ~96% |
 | compare-at | 90-94% | 92% | ~94% |
 | currency | 100% | 100% | - |
-| category | 80% | 92% | 96% |
-| cost per 1K pages | ~$1 | ~$6 | $20 |
-| code | 634 lines | same | ~2,400 lines |
+| category | 82% | 92% | 96% |
+| cost per 1K pages | ~$1.30 | ~$6 | $20 |
+| code | ~880 lines | same | ~2,400 lines |
 
 Measured in production (311 live pages, 18 stores, one crawl):
 
@@ -115,7 +117,8 @@ The deployed system is a crawler x extractor with real big-data mechanics, run a
 ![Pluck's distributed crawl and serving architecture](docs/distributed-pipeline.drawio.png)
 
 - Workers coordinate only through atomic claims (`FOR UPDATE SKIP LOCKED`); duplicates are impossible by construction (`url` is unique, inserts are `ON CONFLICT DO NOTHING` on normalized urls).
-- Measured scaling: 9 pages/min at 1 worker, 21 pages/min at 4, changed with one command (`fly scale count worker=4`). A worker did freeze mid-crawl once; its leased pages were reclaimed automatically and nothing was lost.
+- Measured scaling: 9 pages/min at 1 worker, 21 pages/min at 4, changed with one command (`fly scale count worker=4`); the deployment runs 4. A worker did freeze mid-crawl once; its leased pages were reclaimed automatically and nothing was lost.
+- The live view drives it all: rerun the default stores or a single url, pause and resume the fleet, cap the frontier with max pages, and clear the live catalog (the assignment batches always survive).
 - At 50M products the shape stays the same and the parts grow: partitioned job/result storage, per-domain rate-limit coordination, a headless-browser fetch tier for the stores that ship empty HTML, and re-crawl scheduling off the `processed_at` column that already exists.
 
 ## Files and data structures
@@ -125,13 +128,14 @@ The deployed system is a crawler x extractor with real big-data mechanics, run a
 | `pluck/extract.py` | the router: climbs rungs, detects conflicts, assembles the `Product` |
 | `pluck/rungs.py` | the three deterministic harvesters, all returning parsed JSON objects |
 | `pluck/mine.py` | one miner that walks any JSON for product fields (shared by all rungs) |
-| `pluck/infer.py` | the two model calls (missing fields + category leaf), OpenRouter |
+| `pluck/infer.py` | the three small model calls: fields, category leaf, variants fallback |
 | `pluck/taxonomy.py` | Google taxonomy: top-level list, subtree slices, snap-to-real-path |
-| `pipeline/api.py` | `POST /extract {url}` and `GET /stats`, the deployed front door |
+| `pipeline/api.py` | `POST /extract`, the catalog endpoints, and the crawl controls |
 | `pipeline/fetch.py` | live fetching with honest error reporting |
 | `pipeline/jobq.py` | the queue: leases, backoff, dead letters, deduped enqueue |
 | `pipeline/worker.py` | claim -> fetch -> extract -> store -> discover, forever |
 | `pipeline/seed.py` | seeds the queue from store sitemaps |
+| `frontend/` | the storefront: catalog tabs, PDPs with provenance, the live crawl view |
 | `eval.py` | grades 50 pages against the previous project's verified outputs |
 
 Core shapes:
@@ -158,6 +162,7 @@ uv run python eval.py                    # 50-page accuracy eval
 uv run uvicorn pipeline.api:app --port 8080       # the api, locally
 DATABASE_URL=... python -m pipeline.seed          # seed the queue
 DATABASE_URL=... python -m pipeline.worker        # a worker
+cd frontend && npm install && npm run build       # the storefront the api serves
 ```
 
-`PLUCK_MODEL` picks the model for both calls: `google/gemini-2.5-flash-lite` (default, cheapest) or `google/gemini-3-flash-preview` (category 80% -> 92% at ~6x the LLM cost).
+`PLUCK_MODEL` picks the model for all calls: `google/gemini-2.5-flash-lite` (default, cheapest) or `google/gemini-3-flash-preview` (category 80% -> 92% at ~6x the LLM cost).
