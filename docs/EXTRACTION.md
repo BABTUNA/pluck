@@ -29,9 +29,12 @@ extract(html)                          climbs the rungs, assembles the product  
 ├─ _visible_prices(html)               price must show on the page or model referees pluck/extract.py
 ├─ _context(f, html)                   name + breadcrumbs + description for the model pluck/extract.py
 ├─ infer(html, missing, TOPS, known)   one call: missing fields + top-level category pluck/infer.py
-└─ _category(guess, known, html)       taxonomy descent for the category             pluck/extract.py
-   ├─ pick_leaf(known, html, subtree)  one call: exact path within that branch       pluck/infer.py
-   └─ taxonomy.snap(answer)            snaps any stray answer to a real path         pluck/taxonomy.py
+├─ _category(guess, known, html)       taxonomy descent for the category             pluck/extract.py
+│  ├─ pick_leaf(known, html, subtree)  one call: exact path within that branch       pluck/infer.py
+│  └─ taxonomy.snap(answer)            snaps any stray answer to a real path         pluck/taxonomy.py
+└─ list_variants(known, html)          tiny call when the rungs found no variants,   pluck/infer.py
+                                       runs beside the leaf pick, separate prompt
+                                       because sharing one hurt category accuracy
 ```
 
 ## Trace inputs and outputs

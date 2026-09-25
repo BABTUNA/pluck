@@ -139,8 +139,8 @@ def state(objs: list, hint: str = "") -> dict:
                 imgs_seen.append("https:" + v if v.startswith("//") else v)
         if cand.get("name") and "price" in cand:
             toks = set(re.findall(r"[a-z0-9]+", str(cand["name"]).lower()))
-            # more filled fields plus title overlap win and parent objects beat their own variants
-            score = len(cand) + 2 * len(toks & hint_toks) + 2 * ("variants" in o)
+            # core fields plus title overlap win and parent objects beat their own variants
+            score = sum(k in cand for k in ("name", "price", "compare_at", "currency"))                 + 2 * len(toks & hint_toks) + 2 * ("variants" in o)
             if score > best_score:
                 best, best_score = cand, score
         for v in o.values():

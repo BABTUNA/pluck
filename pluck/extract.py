@@ -14,7 +14,7 @@ import time
 from pydantic import BaseModel
 
 from . import mine, rungs, taxonomy
-from .infer import infer, pick_leaf
+from .infer import infer, list_variants, pick_leaf
 
 _CORE = ("name", "price", "currency")
 _SALE = re.compile(r"was \$|% off|you save|original price|compare at|-\d+%", re.I)
@@ -133,8 +133,8 @@ async def _category(guess, known: str, html: str) -> tuple[str | None, dict]:
     top = taxonomy.top(guess)
     if not top:
         return None, {}
-    leaf, usage = await pick_leaf(known, html, taxonomy.subtree(top))
-    return taxonomy.snap(leaf) or taxonomy.snap(guess), usage
+    fb, usage = await pick_leaf(known, html, taxonomy.subtree(top))
+    return taxonomy.snap(fb.get("category")) or taxonomy.snap(guess), usage
 
 
 # run the whole decision tree for one page
@@ -200,9 +200,7 @@ async def extract(html: str) -> Product:
     if "compare_at" not in f.data and "compare_at" not in missing and _SALE.search(html):
         missing.append("compare_at")
     known = _context(f, html)
-    # variants ride the same call when the rungs found none, names only
-    fb, usage = await infer(html, missing, taxonomy.TOPS, known,
-                            want_variants=not f.variants)
+    fb, usage = await infer(html, missing, taxonomy.TOPS, known)
     for k in missing:
         v = fb.get(k)
         if k in ("price", "compare_at") and v is not None:
@@ -212,12 +210,20 @@ async def extract(html: str) -> Product:
         elif k not in f.data:
             f.set(k, None, "none")
 
-    if not f.variants and isinstance(fb.get("variants"), list):
-        f.variants = [{"name": str(v)[:80], "price": None, "compare_at": None}
-                      for v in fb["variants"][:30] if str(v).strip()]
-
-    cat, usage2 = await _category(fb.get("category"), known, html)
+    # the leaf pick and the variants ask run side by side, separate prompts
+    # because sharing one measurably hurt the category answer
+    cat_task = _category(fb.get("category"), known, html)
+    if f.variants:
+        (cat, usage2), vs, usage3 = await cat_task, [], {}
+    else:
+        (cat, usage2), (vs, usage3) = await asyncio.gather(
+            cat_task, list_variants(known, html))
     f.set("category", cat, "inferred" if cat else "none")
+    if vs and not f.variants:
+        f.variants = [{"name": str(v)[:80], "price": None, "compare_at": None}
+                      for v in vs[:30] if str(v).strip()]
+    usage2 = {k: (usage2.get(k) or 0) + (usage3.get(k) or 0) for k in usage2 | usage3
+              if isinstance(usage2.get(k, usage3.get(k)), (int, float))}
     usage = {k: (usage.get(k) or 0) + (usage2.get(k) or 0) for k in usage | usage2
              if isinstance(usage.get(k, usage2.get(k)), (int, float))}
 

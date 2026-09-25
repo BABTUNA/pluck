@@ -26,18 +26,12 @@ def clean_text(html: str, limit: int = 16_000) -> str:
 # ask one json call for the missing or disputed fields plus a top level category
 # the rules encode judgment calls like one time price and no other brands compare at
 async def infer(html: str, missing: list[str], tops: list[str],
-                known_name: str | None, want_variants: bool = False) -> tuple[dict, dict]:
+                known_name: str | None) -> tuple[dict, dict]:
     keys = missing + ["category"]
-    if want_variants:
-        keys.append("variants")
     rules = ["Reply with a JSON object with exactly these keys: " + str(keys) + ".",
              "Use null when the page does not state a value.",
              "'category': the best-fitting top-level Google Shopping category, "
              "copied verbatim from this list: " + json.dumps(tops)]
-    if want_variants:
-        rules.append("'variants': the selectable configurations of this product shown "
-                     "on the page (sizes, colors, fits) as an array of short strings "
-                     "like [\"Black / S\", \"Black / M\"], or [] if there are none.")
     if "currency" in keys:
         rules.append("'currency' is the ISO 4217 code of the displayed prices; infer "
                      "it from the symbol and site (a $ price on a US site is USD).")
@@ -77,7 +71,7 @@ async def infer(html: str, missing: list[str], tops: list[str],
 
 
 # run the second half of the category descent with one verbatim pick from the branch
-async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[str | None, dict]:
+async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[dict, dict]:
     async with httpx.AsyncClient(timeout=90) as client:
         r = await client.post(
             "https://openrouter.ai/api/v1/chat/completions",
@@ -99,7 +93,36 @@ async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[str | None
     r.raise_for_status()
     data = r.json()
     try:
-        return (json.loads(data["choices"][0]["message"]["content"]).get("category"),
-                data.get("usage", {}))
+        return json.loads(data["choices"][0]["message"]["content"]), data.get("usage", {})
     except (KeyError, json.JSONDecodeError):
-        return None, data.get("usage", {})
+        return {}, data.get("usage", {})
+
+
+# a tiny dedicated call for variants so the category prompts stay clean
+# mixing the two questions measurably hurt the category answer
+async def list_variants(known: str, html: str) -> tuple[list, dict]:
+    async with httpx.AsyncClient(timeout=90) as client:
+        r = await client.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={"Authorization": f"Bearer {os.environ['OPEN_ROUTER_API_KEY']}"},
+            json={
+                "model": MODEL,
+                "messages": [
+                    {"role": "system", "content":
+                     "List the selectable configurations of this product shown on the "
+                     "page (sizes, colors, fits) as an array of short strings like "
+                     "[\"Black / S\", \"Black / M\"]. Reply JSON "
+                     "{\"variants\": [...]}, [] if there are none."},
+                    {"role": "user", "content": f"{known}\n{clean_text(html, 6_000)}"},
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0,
+            },
+        )
+    r.raise_for_status()
+    data = r.json()
+    try:
+        vs = json.loads(data["choices"][0]["message"]["content"]).get("variants")
+        return (vs if isinstance(vs, list) else []), data.get("usage", {})
+    except (KeyError, json.JSONDecodeError):
+        return [], data.get("usage", {})
