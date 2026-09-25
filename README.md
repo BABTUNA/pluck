@@ -44,6 +44,7 @@ The deployed system is a crawler x extractor with real big-data mechanics, run a
 
 ![Pluck's distributed crawl and serving architecture](docs/distributed-pipeline.drawio.png)
 
+- It all runs on [Fly.io](https://fly.io): one Docker image, two process groups (`app` serves the api and storefront, `worker` crawls), a small Fly Postgres as the only shared state, and secrets kept in Fly instead of the image. `fly deploy` ships both groups; `fly scale count worker=N` is the throughput dial.
 - Workers coordinate only through atomic claims (`FOR UPDATE SKIP LOCKED`); duplicates are impossible by construction (`url` is unique, inserts are `ON CONFLICT DO NOTHING` on normalized urls).
 - Measured scaling: 9 pages/min at 1 worker, 21 pages/min at 4, changed with one command (`fly scale count worker=4`); the deployment runs 4. A worker did freeze mid-crawl once; its leased pages were reclaimed automatically and nothing was lost.
 - The live view drives it all: rerun the default stores or a single url, pause and resume the fleet, cap the frontier with max pages, and clear the live catalog (the assignment batches always survive).
