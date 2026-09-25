@@ -15,13 +15,29 @@ import os
 import time
 from pathlib import Path
 
-from fastapi import FastAPI, Header, HTTPException
+import time as _time
+from collections import defaultdict
+
+from fastapi import FastAPI, Header, HTTPException, Request
 from pydantic import BaseModel
 
-from pipeline.fetch import fetch
+from pipeline.fetch import blocked, fetch
 from pluck.extract import extract
 
 app = FastAPI(title="pluck")
+
+# a small in-memory rate limiter, enough to blunt abuse of a demo box
+_hits: dict = defaultdict(list)
+
+
+def _limit(request: Request, key: str, n: int, window: int = 60):
+    ip = request.headers.get("fly-client-ip") or (request.client.host if request.client else "?")
+    now = _time.time()
+    bucket = _hits[f"{key}:{ip}"]
+    bucket[:] = [t for t in bucket if now - t < window]
+    if len(bucket) >= n:
+        raise HTTPException(429, "slow down")
+    bucket.append(now)
 LOG = Path(os.environ.get("PLUCK_LOG", "requests.jsonl"))
 TOKEN = os.environ.get("PLUCK_TOKEN")  # unset = open
 
@@ -33,9 +49,10 @@ class Job(BaseModel):
 
 # fetch then extract one url and append the outcome to the log
 @app.post("/extract")
-async def run(job: Job, authorization: str | None = Header(None)):
+async def run(job: Job, request: Request, authorization: str | None = Header(None)):
     if TOKEN and authorization != f"Bearer {TOKEN}":
         raise HTTPException(401)
+    _limit(request, "extract", 10)
     t0 = time.time()
     html, err = await fetch(job.url)
     row = {"url": job.url, "ts": int(t0), "fetch_s": round(time.time() - t0, 2)}
@@ -209,11 +226,14 @@ class Crawl(BaseModel):
 
 # start a crawl: a given url, or requeue everything plus the default stores
 @app.post("/crawl/start")
-async def crawl_start(body: Crawl):
+async def crawl_start(body: Crawl, request: Request):
+    _limit(request, "crawl", 5)
+    if body.url and (why := blocked(body.url)):
+        raise HTTPException(422, why)
     pool = await _db()
     await jobq.set_flag(pool, "paused", "0")
-    # the cap bounds the whole frontier, discovery stops enqueueing past it
-    await jobq.set_flag(pool, "max_pages", str(body.max_pages or 100000))
+    # the cap bounds the whole frontier, 10k is the hard ceiling either way
+    await jobq.set_flag(pool, "max_pages", str(min(body.max_pages or 10000, 10000)))
     if body.url:
         n = await jobq.requeue(pool, [body.url])
     else:
@@ -223,20 +243,23 @@ async def crawl_start(body: Crawl):
 
 
 @app.post("/crawl/pause")
-async def crawl_pause():
+async def crawl_pause(request: Request):
+    _limit(request, "crawl", 10)
     await jobq.set_flag(await _db(), "paused", "1")
     return {"paused": True}
 
 
 @app.post("/crawl/resume")
-async def crawl_resume():
+async def crawl_resume(request: Request):
+    _limit(request, "crawl", 10)
     await jobq.set_flag(await _db(), "paused", "0")
     return {"paused": False}
 
 
 # wipe the live crawl, the assignment batches always survive
 @app.post("/crawl/clear")
-async def crawl_clear():
+async def crawl_clear(request: Request):
+    _limit(request, "clear", 2, window=600)
     pool = await _db()
     async with pool.acquire() as c:
         dropped = await c.execute("DELETE FROM results WHERE batch = 'live'")

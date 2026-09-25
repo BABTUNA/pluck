@@ -74,7 +74,7 @@ async def enqueue(pool, urls: list[str], per_domain_cap: int = 40) -> int:
                    SELECT $1, $2 WHERE
                      (SELECT count(*) FROM jobs WHERE domain = $2) < $3
                      AND (SELECT count(*) FROM jobs) <
-                         COALESCE((SELECT v::int FROM settings WHERE k='max_pages'), 100000)
+                         LEAST(COALESCE((SELECT v::int FROM settings WHERE k='max_pages'), 10000), 10000)
                    ON CONFLICT (url) DO NOTHING RETURNING 1""",
                 u, domain, per_domain_cap) or 0
     return n

@@ -17,7 +17,33 @@ HEADERS = {
 
 
 # get the page with one retry and return (html, error) where exactly one is set
+# user supplied urls must not reach anything internal
+def blocked(url: str) -> str | None:
+    import ipaddress
+    from urllib.parse import urlsplit
+    if len(url) > 2000:
+        return "url too long"
+    try:
+        parts = urlsplit(url)
+    except ValueError:
+        return "bad url"
+    if parts.scheme not in ("http", "https") or not parts.hostname:
+        return "http(s) urls only"
+    host = parts.hostname.lower()
+    if host == "localhost" or host.endswith((".local", ".internal", ".localhost")):
+        return "blocked host"
+    try:
+        ip = ipaddress.ip_address(host)
+        if not ip.is_global:
+            return "blocked host"
+    except ValueError:
+        pass  # a normal hostname
+    return None
+
+
 async def fetch(url: str) -> tuple[str | None, str | None]:
+    if err := blocked(url):
+        return None, err
     last = "unknown"
     for attempt in range(2):
         try:
