@@ -18,9 +18,9 @@ Two guards keep the deterministic answers honest:
 
 Beyond the core fields, the rest of the schema comes almost entirely free from the same rungs:
 
-- **images**, in priority order: json-ld image lists, image arrays and `imageUrl` keys in state, `<link rel="preload" as="image">` (pages preload their hero shots), og:image, and finally `<img>` tags taking the largest srcset rendition. The fallbacks only run while fewer than two images are found, so site chrome never outranks structured data.
+- **images**, in priority order: json-ld image lists, then whatever image structures live inside the winning product subtree (rendition dicts yield their largest copy), then `<link rel="preload" as="image">` hero shots, og:image, and finally `<img>` tags at the largest srcset rendition, filtered to the known product's directory. Every url is canonicalized (entities unescaped, size params stripped), renditions of one shot dedupe to the largest, and a filename-prefix cluster drops other products' galleries.
 - **variants and options**: shopify-shaped state carries the full variant matrix (cents-decoded prices, availability) and the axis labels (`Color`, `Size`); json-ld contributes named offers. A small dedicated details call fills the gaps from the page text: variants when the rungs found none, plus colors and key features. It runs beside the leaf pick with its own prompt: sharing a prompt with the category question measurably cost six points of category accuracy, so one prompt does one job.
-- **colors** fall out of the variant matrix's Color axis for free, the details call covers the rest; **video_url** is the first video cdn link in the page (og:video, then any mp4/m3u8 url in the state).
+- **colors** come from swatch dicts in state or the variant matrix's Color axis, the details call covers the rest and its answers only count when they appear in the page text; **video_url** is trusted from the product subtree or og:video, and a raw page scan only counts when the page holds exactly one video, so another colorway's reel can never be mistaken for the product's own.
 - **brand** (json-ld brand, og:site_name) and **description** (json-ld description).
 
 Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung 2 finds only the shop currency, rung 3 runs the page's scripts and finds `variants[0].price: 8940` -> 89.40 plus the 25-variant matrix, the referee confirms 89.40 shows on the page, and the model answers category plus the details list. Three sub-cent calls total.
@@ -33,9 +33,9 @@ extract(html)                          climbs the rungs, assembles the product  
 ├─ mine.jsonld(rungs.declared(scr))    json-ld: name, price, currency, brand,        pluck/mine.py
 │                                      description, images, crumbs, named-offer
 │                                      variants; several offer prices = dispute
-├─ mine.state(rungs.shipped(scr), hint) embedded state: best product candidate with  pluck/mine.py
-│                                      prices, variant matrix + option labels,
-│                                      image arrays and imageUrl keys
+├─ mine.state(rungs.shipped(scr), hint) embedded state: the best matching product    pluck/mine.py
+│                                      subtree mined whole, prices, variant matrix
+│                                      + option labels, images, swatches, video
 ├─ mine.state(rungs.computed(scr))     same miner over globals a v8 sandbox built    pluck/rungs.py
 │                                      by running the page's own js (shopify cents)
 ├─ image fallbacks (inline)            while under 2 images: preload links, og,      pluck/extract.py
@@ -100,7 +100,7 @@ out, the merchants declared answer:
 
 **mine.state(rungs.shipped(scr), hint)**
 
-some sites leave their data in the page as plain json, like a config file nothing runs. rungs.shipped grabs those blobs, mine.state digs through them for the dict that is actually the product, and the page title as hint picks the right one over recommended products.
+some sites leave their data in the page as plain json, like a config file nothing runs, either in json typed script tags or as `window.__STATE__ = {...}` assignments that parse as text. rungs.shipped grabs those blobs, mine.state picks the subtree whose name best matches the page title, then mines everything beneath it, so the price, images and variants need not sit in one dict.
 
 in, an embedded blob plus hint "Wool Runner | Allbirds":
 
