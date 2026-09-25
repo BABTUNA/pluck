@@ -133,7 +133,8 @@ Core shapes:
 Field(value=89.40, source="computed")   # source: declared | shipped | computed | inferred | none
 Product(name, price, compare_at, currency, category, brand: Field,
         description: str | None,
-        variants: list[dict],   # {name, price, compare_at, available}, free from the rungs
+        options: list[str],     # variant axis labels, like Color and Size
+        variants: list[dict],   # {name, price, compare_at, available}
         images: list[str],
         meta={"latency_s", "llm_fields", "llm_tokens", "sources"})
 

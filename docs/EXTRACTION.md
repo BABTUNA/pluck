@@ -16,7 +16,13 @@ Two guards keep the deterministic answers honest:
 - **the visible-price referee**: a price from rungs 1-3 must appear in the page's visible text within 1%, and two rungs must not disagree; either violation sends price to the model with the page text.
 - **taxonomy descent** for category, which is never on the page: the rung-4 call also picks 1 of 21 top-level categories, then a second call picks the exact path from every real path under that branch. `snap()` maps any stray answer to a real taxonomy string (exact, then valid prefix, then nearest leaf).
 
-Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung 2 finds only the shop currency, rung 3 runs the page's scripts and finds `variants[0].price: 8940` -> 89.40, the referee confirms 89.40 shows on the page, and the model answers only category. Two sub-cent calls total.
+Beyond the core fields, the rest of the schema comes almost entirely free from the same rungs:
+
+- **images**, in priority order: json-ld image lists, image arrays and `imageUrl` keys in state, `<link rel="preload" as="image">` (pages preload their hero shots), og:image, and finally `<img>` tags taking the largest srcset rendition. The fallbacks only run while fewer than two images are found, so site chrome never outranks structured data.
+- **variants and options**: shopify-shaped state carries the full variant matrix (cents-decoded prices, availability) and the axis labels (`Color`, `Size`); json-ld contributes named offers. When the rungs find none, a tiny dedicated call lists the selectable configurations from the page text. It runs beside the leaf pick with its own prompt: sharing a prompt with the category question measurably cost six points of category accuracy, so one prompt does one job.
+- **brand** (json-ld brand, og:site_name) and **description** (json-ld description).
+
+Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung 2 finds only the shop currency, rung 3 runs the page's scripts and finds `variants[0].price: 8940` -> 89.40 plus the 25-variant matrix, the referee confirms 89.40 shows on the page, and the model answers only category. Two sub-cent calls total.
 
 ## Call trace
 
@@ -224,7 +230,8 @@ in, that stray string. out, the nearest real taxonomy path:
 Field(value=89.40, source="computed")   # source: declared | shipped | computed | inferred | none
 Product(name, price, compare_at, currency, category, brand: Field,
         description: str | None,
-        variants: list[dict],   # {name, price, compare_at, available}, free from the rungs
+        options: list[str],     # variant axis labels, like Color and Size
+        variants: list[dict],   # {name, price, compare_at, available}
         images: list[str],
         meta={"latency_s", "llm_fields", "llm_tokens", "sources"})
 
