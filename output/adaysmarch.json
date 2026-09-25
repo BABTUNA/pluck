@@ -1,0 +1,65 @@
+{
+ "name": "Miller Cotton Lyocell Trousers",
+ "price": {
+  "price": 170.0,
+  "currency": "USD",
+  "compare_at_price": null
+ },
+ "description": "- 65% TENCEL™ Lyocell, 35% cotton \r\n- One visible button and one button inside\r\n- Topstitch at waistband\r\n- Side pockets\r\n- Two back pockets with buttoning",
+ "key_features": [
+  "65% TENCEL™ Lyocell, 35% cotton",
+  "One visible button and one button inside",
+  "Topstitch at waistband",
+  "Side pockets",
+  "Two back pockets with buttoning"
+ ],
+ "image_urls": [
+  "https://adaysmarch.centracdn.net/client/dynamic/images/8521_d363c12cd7-miller-cotton-lyocell-iron.jpg"
+ ],
+ "video_url": null,
+ "category": {
+  "name": "Apparel & Accessories > Clothing > Pants"
+ },
+ "brand": "A Day's March",
+ "colors": [
+  "Iron"
+ ],
+ "variants": [
+  {
+   "name": "44",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "46",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "48",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "50",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "52",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "54",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  }
+ ]
+}

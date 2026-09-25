@@ -14,7 +14,7 @@ import time
 from pydantic import BaseModel
 
 from . import mine, rungs, taxonomy
-from .infer import infer, list_variants, pick_leaf
+from .infer import infer, list_details, pick_leaf
 
 _CORE = ("name", "price", "currency")
 _SALE = re.compile(r"was \$|% off|you save|original price|compare at|-\d+%", re.I)
@@ -38,6 +38,9 @@ class Product(BaseModel):
     description: str | None
     options: list[str]    # the axis labels for variant names, like Color and Size
     variants: list[dict]  # discrete configurations, {name, price, compare_at, available}
+    colors: list[str]
+    key_features: list[str]
+    video_url: str | None
     images: list[str]
     meta: dict
 
@@ -131,6 +134,16 @@ def _context(f: _Fields, html: str) -> str:
     return known
 
 
+# the values along one named axis, colors fall out of the variant matrix free
+def _axis_values(options: list, variants: list, axis: str) -> list[str]:
+    for i, label in enumerate(options):
+        if axis in str(label).lower():
+            vals = [v["name"].split(" / ")[i] for v in variants
+                    if isinstance(v.get("name"), str) and len(v["name"].split(" / ")) > i]
+            return list(dict.fromkeys(vals))[:20]
+    return []
+
+
 # descend the taxonomy where the guess names the branch and one pick lands inside it
 # only real paths are offered so the answer cannot be invented
 async def _category(guess, known: str, html: str) -> tuple[str | None, dict]:
@@ -214,18 +227,19 @@ async def extract(html: str) -> Product:
         elif k not in f.data:
             f.set(k, None, "none")
 
-    # the leaf pick and the variants ask run side by side, separate prompts
+    # the leaf pick and the details ask run side by side, separate prompts
     # because sharing one measurably hurt the category answer
-    cat_task = _category(fb.get("category"), known, html)
-    if f.variants:
-        (cat, usage2), vs, usage3 = await cat_task, [], {}
-    else:
-        (cat, usage2), (vs, usage3) = await asyncio.gather(
-            cat_task, list_variants(known, html))
+    (cat, usage2), (details, usage3) = await asyncio.gather(
+        _category(fb.get("category"), known, html), list_details(known, html))
     f.set("category", cat, "inferred" if cat else "none")
-    if vs and not f.variants:
+    if not f.variants:
         f.variants = [{"name": str(v)[:80], "price": None, "compare_at": None}
-                      for v in vs[:30] if str(v).strip()]
+                      for v in details.get("variants", [])[:30] if str(v).strip()]
+    colors = _axis_values(f.options, f.variants, "color") \
+        or [str(c)[:40] for c in details.get("colors", [])[:20]]
+    features = [str(k)[:120] for k in details.get("key_features", [])[:8]]
+    video = re.search(r'property=["\']og:video[^"\']*["\'][^>]*content=["\'](http[^"\']+)', html, re.I) \
+        or re.search(r'"contentUrl"\s*:\s*"(http[^"]+\.(?:mp4|m3u8|webm)[^"]*)"', html)
     usage2 = {k: (usage2.get(k) or 0) + (usage3.get(k) or 0) for k in usage2 | usage3
               if isinstance(usage2.get(k, usage3.get(k)), (int, float))}
     usage = {k: (usage.get(k) or 0) + (usage2.get(k) or 0) for k in usage | usage2
@@ -247,6 +261,9 @@ async def extract(html: str) -> Product:
         description=f.description,
         options=f.options[:4],
         variants=f.variants[:30],
+        colors=colors,
+        key_features=features,
+        video_url=video.group(1) if video else None,
         images=[str(u).replace(":////", "://") for u in dict.fromkeys(f.images)
                 if str(u).startswith("http")][:10],
         meta={

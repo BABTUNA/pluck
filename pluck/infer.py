@@ -98,9 +98,9 @@ async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[dict, dict
         return {}, data.get("usage", {})
 
 
-# a tiny dedicated call for variants so the category prompts stay clean
-# mixing the two questions measurably hurt the category answer
-async def list_variants(known: str, html: str) -> tuple[list, dict]:
+# a tiny dedicated call for the enumerable extras so the category prompts
+# stay clean, mixing questions into them measurably hurt the category answer
+async def list_details(known: str, html: str) -> tuple[dict, dict]:
     async with httpx.AsyncClient(timeout=90) as client:
         r = await client.post(
             "https://openrouter.ai/api/v1/chat/completions",
@@ -109,10 +109,11 @@ async def list_variants(known: str, html: str) -> tuple[list, dict]:
                 "model": MODEL,
                 "messages": [
                     {"role": "system", "content":
-                     "List the selectable configurations of this product shown on the "
-                     "page (sizes, colors, fits) as an array of short strings like "
-                     "[\"Black / S\", \"Black / M\"]. Reply JSON "
-                     "{\"variants\": [...]}, [] if there are none."},
+                     "From the page list: 'variants' (the selectable configurations "
+                     "like [\"Black / S\", \"Black / M\"]), 'colors' (the color names "
+                     "offered), 'key_features' (3-6 short feature phrases). Reply JSON "
+                     "{\"variants\": [...], \"colors\": [...], \"key_features\": [...]}, "
+                     "empty arrays when the page shows none."},
                     {"role": "user", "content": f"{known}\n{clean_text(html, 6_000)}"},
                 ],
                 "response_format": {"type": "json_object"},
@@ -122,7 +123,8 @@ async def list_variants(known: str, html: str) -> tuple[list, dict]:
     r.raise_for_status()
     data = r.json()
     try:
-        vs = json.loads(data["choices"][0]["message"]["content"]).get("variants")
-        return (vs if isinstance(vs, list) else []), data.get("usage", {})
+        fb = json.loads(data["choices"][0]["message"]["content"])
+        return ({k: v for k, v in fb.items() if isinstance(v, list)} if isinstance(fb, dict) else {},
+                data.get("usage", {}))
     except (KeyError, json.JSONDecodeError):
-        return [], data.get("usage", {})
+        return {}, data.get("usage", {})

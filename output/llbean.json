@@ -1,0 +1,111 @@
+{
+ "name": "Men's Carefree Unshrinkable Tee, Traditional Fit, Henley",
+ "price": {
+  "price": 29.95,
+  "currency": "USD",
+  "compare_at_price": null
+ },
+ "description": "",
+ "key_features": [
+  "Resists wrinkles, shrinking, fading, and pilling",
+  "Keeps its shape wash after wash",
+  "Traditional Fit: Relaxed through the chest, sleeve and waist",
+  "100% cotton jersey-knit fabric",
+  "Durable double-needle stitching",
+  "Straight hem can be worn tucked or untucked"
+ ],
+ "image_urls": [
+  "https://cdni.llbean.net",
+  "https://cdni.llbean.net/is/image/wim/228533_292_44?defaultImage=llbprod/228533_292_41",
+  "https://cdni.llbean.net/is/image/wim/228533_1_44?defaultImage=llbprod/228533_1_41",
+  "https://cdni.llbean.net/is/image/wim/298277_1704_44?defaultImage=llbprod/298277_1704_41",
+  "https://cdni.llbean.net/is/image/wim/224547_1_44?defaultImage=llbprod/224547_1_41",
+  "https://cdni.llbean.net/is/image/wim/523199_39493_44?defaultImage=llbprod/523199_39493_41",
+  "https://cdni.llbean.net/is/image/wim/287889_45732_41",
+  "https://cdni.llbean.net/is/image/wim/525894_37061_41",
+  "https://cdni.llbean.net/is/image/wim/288293_49200_41",
+  "https://cdni.llbean.net/is/image/wim/300454_464_44?defaultImage=llbprod/300454_464_41"
+ ],
+ "video_url": null,
+ "category": {
+  "name": "Apparel & Accessories > Clothing > Shirts & Tops"
+ },
+ "brand": "L.L.Bean",
+ "colors": [
+  "Charcoal Heather"
+ ],
+ "variants": [
+  {
+   "name": "Charcoal Heather / Regular / Small",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Regular / Medium",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Regular / Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Regular / X-Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Regular / XX-Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Regular / XXX-Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Tall / Small",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Tall / Medium",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Tall / Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Tall / X-Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Tall / XX-Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "Charcoal Heather / Tall / XXX-Large",
+   "price": null,
+   "compare_at_price": null,
+   "available": null
+  }
+ ]
+}

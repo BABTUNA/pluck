@@ -136,6 +136,7 @@ The deployed system is a crawler x extractor with real big-data mechanics, run a
 | `pipeline/worker.py` | claim -> fetch -> extract -> store -> discover, forever |
 | `pipeline/seed.py` | seeds the queue from store sitemaps |
 | `frontend/` | the storefront: catalog tabs, PDPs with provenance, the live crawl view |
+| `models.py`, `main.py`, `data/` | the take-home shape: their `Product` schema (plus a `Variant` model), the ingest entry point, the provided pages |
 | `eval.py` | grades 50 pages against the previous project's verified outputs |
 
 Core shapes:
@@ -158,6 +159,7 @@ mine.state(objs, hint) -> {"name": "...", "price": 89.4, "compare_at": 139.0,
 
 ```bash
 uv sync                                  # deps
+uv run python main.py                    # hydrate the schema from data/*.html -> output/
 uv run python eval.py                    # 50-page accuracy eval
 uv run uvicorn pipeline.api:app --port 8080       # the api, locally
 DATABASE_URL=... python -m pipeline.seed          # seed the queue
