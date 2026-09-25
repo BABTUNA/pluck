@@ -204,6 +204,7 @@ from pipeline.seed import seed_defaults
 
 class Crawl(BaseModel):
     url: str | None = None
+    max_pages: int | None = None
 
 
 # start a crawl: a given url, or requeue everything plus the default stores
@@ -211,6 +212,8 @@ class Crawl(BaseModel):
 async def crawl_start(body: Crawl):
     pool = await _db()
     await jobq.set_flag(pool, "paused", "0")
+    # the cap bounds the whole frontier, discovery stops enqueueing past it
+    await jobq.set_flag(pool, "max_pages", str(body.max_pages or 100000))
     if body.url:
         n = await jobq.requeue(pool, [body.url])
     else:

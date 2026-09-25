@@ -14,11 +14,11 @@ export const fetchProducts = (batch = "all") =>
 export const fetchProduct = (id: string) => get<Product>(`/products/${id}`);
 export const fetchProgress = () => get<Progress>("/progress");
 
-export const crawlStart = (url?: string) =>
+export const crawlStart = (url?: string, maxPages?: number) =>
   fetch(`${BASE}/crawl/start`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ url: url || null }),
+    body: JSON.stringify({ url: url || null, max_pages: maxPages || null }),
   }).then((r) => r.json());
 export const crawlPause = () => fetch(`${BASE}/crawl/pause`, { method: "POST" });
 export const crawlResume = () => fetch(`${BASE}/crawl/resume`, { method: "POST" });

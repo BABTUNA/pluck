@@ -10,6 +10,7 @@ export function LivePage() {
   const [products, setProducts] = useState<ProductSummary[]>([]);
   const [fresh, setFresh] = useState<Set<string>>(new Set());
   const [url, setUrl] = useState("");
+  const [maxPages, setMaxPages] = useState("");
   const known = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -57,7 +58,15 @@ export function LivePage() {
           onChange={(e) => setUrl(e.target.value)}
           className="w-80 border border-line bg-transparent px-3 py-1.5 text-sm outline-none placeholder:text-faint focus:border-ink"
         />
-        <button onClick={() => { crawlStart(url.trim() || undefined); setUrl(""); }}
+        <input
+          type="number"
+          min="1"
+          placeholder="max pages"
+          value={maxPages}
+          onChange={(e) => setMaxPages(e.target.value)}
+          className="w-28 border border-line bg-transparent px-3 py-1.5 text-sm outline-none placeholder:text-faint focus:border-ink"
+        />
+        <button onClick={() => { crawlStart(url.trim() || undefined, Number(maxPages) || undefined); setUrl(""); }}
           className="border border-ink bg-ink px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-transparent hover:text-ink">
           {url.trim() ? "Extract URL" : "Run crawl"}
         </button>
