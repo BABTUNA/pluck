@@ -87,9 +87,16 @@ LLM spend dominates at scale, which is the argument for the free rungs: every fi
 ```
 extract(html)                          climbs the rungs, assembles the product       pluck/extract.py
 ├─ rungs.scripts(html)                 pulls every inline <script> body              pluck/rungs.py
-├─ mine.jsonld(rungs.declared(scr))    reads the merchant's json-ld for google       pluck/mine.py
-├─ mine.state(rungs.shipped(scr))      parses embedded json state, scores candidates pluck/mine.py
-├─ mine.state(rungs.computed(scr))     runs page js in a v8 sandbox, reads state     pluck/rungs.py
+├─ mine.jsonld(rungs.declared(scr))    json-ld: name, price, currency, brand,        pluck/mine.py
+│                                      description, images, crumbs, named-offer
+│                                      variants; several offer prices = dispute
+├─ mine.state(rungs.shipped(scr))      embedded state: best product candidate with   pluck/mine.py
+│                                      prices, variant matrix + option labels,
+│                                      image arrays and imageUrl keys
+├─ mine.state(rungs.computed(scr))     same miner over globals a v8 sandbox built    pluck/rungs.py
+│                                      by running the page's own js (shopify cents)
+├─ image fallbacks (inline)            while under 2 images: preload links, og,      pluck/extract.py
+│                                      then <img> tags at largest srcset rendition
 ├─ _visible_prices(html)               price must show on the page or model referees pluck/extract.py
 ├─ _context(f, html)                   name + breadcrumbs + description for the model pluck/extract.py
 ├─ infer(html, missing, TOPS, known)   one call: missing fields + top-level category pluck/infer.py
