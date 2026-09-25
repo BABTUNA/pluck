@@ -12,6 +12,12 @@ curl -X POST https://pluck-extract.fly.dev/extract \
 
 Or browse the storefront it feeds: [pluck-extract.fly.dev](https://pluck-extract.fly.dev) has the assignment's 50 pages, the original 5, a live-crawled catalog, and a live view where you can run, pause, cap, or clear the crawl and feed it single urls.
 
+## Demo
+
+[![Demo video](docs/demo-thumbnail.jpg)](https://www.youtube.com/watch?v=blkHG3OnneM)
+
+*Click to watch the walkthrough on YouTube.*
+
 ## Goal and how it works
 
 Most product pages already contain the answer in machine-readable form. Pluck climbs four rungs, cheapest first, and stops as soon as the core fields (name, price, currency) are filled:
