@@ -117,6 +117,7 @@ def jsonld(objs: list) -> dict:
 def state(objs: list, hint: str = "") -> dict:
     hint_toks = set(re.findall(r"[a-z0-9]+", hint.lower()))
     best, best_score, cur_seen = {}, 0, None
+    imgs_seen: list[str] = []
 
     def walk(o, shopify: bool, depth: int):
         nonlocal best, best_score, cur_seen
@@ -132,6 +133,10 @@ def state(objs: list, hint: str = "") -> dict:
         shopify = shopify or "handle" in o or "compare_at_price" in o
         cand = _mine_dict(o, shopify)
         cur_seen = cur_seen or cand.get("currency")
+        for k, v in o.items():
+            if k.lower() in ("imageurl", "mainimage", "image") and isinstance(v, str) \
+                    and "//" in v and len(imgs_seen) < 10:
+                imgs_seen.append("https:" + v if v.startswith("//") else v)
         if cand.get("name") and "price" in cand:
             toks = set(re.findall(r"[a-z0-9]+", str(cand["name"]).lower()))
             # more filled fields plus title overlap win and parent objects beat their own variants
@@ -144,6 +149,8 @@ def state(objs: list, hint: str = "") -> dict:
     walk(objs, False, 0)
     if cur_seen:
         best.setdefault("currency", cur_seen)
+    if imgs_seen and not best.get("images"):
+        best["images"] = list(dict.fromkeys(imgs_seen))
     crumbs = _crumbs(objs)
     if crumbs:
         best.setdefault("crumbs", crumbs)

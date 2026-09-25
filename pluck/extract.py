@@ -160,6 +160,14 @@ async def extract(html: str) -> Product:
         if m:
             f.merge({"brand": mine._unesc(m.group(1))}, "declared")
 
+    # pages preload their hero product shots, a high precision signal
+    if not f.images:
+        for tag in re.findall(r"<link[^>]+>", html, re.I):
+            if re.search(r'rel=["\']preload["\']', tag) and re.search(r'as=["\']image["\']', tag):
+                m = re.search(r'href=["\'](//[^"\']+|https?://[^"\']+)', tag)
+                if m:
+                    u = m.group(1)
+                    f.images.append("https:" + u if u.startswith("//") else u)
     # most stores declare a hero photo in og image even when json ld has none
     if not f.images:
         f.images += re.findall(
