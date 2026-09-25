@@ -73,14 +73,18 @@ Measured in production (311 live pages, 18 stores, one crawl):
 
 ## Benchmarks
 
-Ablations over the 50 verified pages, run on the default flash-lite config since they isolate the architecture, not the model. The deltas are the point: the decision tree is what makes the cheap model viable.
+Ablations over the 50 verified pages, both models (correct counts out of 50):
 
-| config | name | price | compare-at | currency | category | llm tokens |
-|---|---|---|---|---|---|---|
-| full decision tree | 48 | 48 | 45 | 50 | 41 | 569K |
-| without the v8 sandbox rung | 47 | 48 | 45 | 50 | 41 | 569K |
-| without the visible-price referee | 48 | 46 | 45 | 50 | 40 | 581K |
-| naive: one llm call, no rungs | 42 | 42 | 47 | 43 | 25 | 129K |
+| config | name | price | compare-at | currency | category |
+|---|---|---|---|---|---|
+| full tree, flash-lite | 48 | 48 | 45 | 50 | 41 |
+| full tree, gemini-3-flash | 47 | 47 | 46 | 49 | 45 |
+| naive one-call, flash-lite | 42 | 42 | 47 | 43 | 25 |
+| naive one-call, gemini-3-flash | 44 | 44 | 46 | 48 | 33 |
+| no v8 sandbox rung (lite) | 47 | 48 | 45 | 50 | 41 |
+| no visible-price check (lite) | 48 | 46 | 45 | 50 | 40 |
+
+The naive gap shrinks as the model gets stronger, so the tree matters most exactly where it saves the most money: it is what makes the cheap model viable.
 
 Live throughput: 9 pages/min at 1 worker, 21 at 4, 57 peak at 8. A spot check of 30 random live-crawled products (judged by a stronger model against freshly fetched pages) held at 87-100% per field.
 
