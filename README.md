@@ -73,7 +73,7 @@ Measured in production (311 live pages, 18 stores, one crawl):
 
 ## Benchmarks
 
-Ablations over the 50 verified pages (flash-lite, correct counts out of 50):
+Ablations over the 50 verified pages, run on the default flash-lite config since they isolate the architecture, not the model. The deltas are the point: the decision tree is what makes the cheap model viable.
 
 | config | name | price | compare-at | currency | category | llm tokens |
 |---|---|---|---|---|---|---|
@@ -82,26 +82,16 @@ Ablations over the 50 verified pages (flash-lite, correct counts out of 50):
 | without the visible-price referee | 48 | 46 | 45 | 50 | 40 | 581K |
 | naive: one llm call, no rungs | 42 | 42 | 47 | 43 | 25 | 129K |
 
-The naive baseline is 4x cheaper in tokens and loses everywhere that matters. The sandbox rung barely moves eval accuracy (the model fallback catches those pages) but on the live crawl it answers name and price for free on the pages that ship code instead of data.
+Live throughput: 9 pages/min at 1 worker, 21 at 4, 57 peak at 8. A spot check of 30 random live-crawled products (judged by a stronger model against freshly fetched pages) held at 87-100% per field.
 
-Live throughput (same code, more machines):
-
-| workers | pages/min |
-|---|---|
-| 1 | 9 |
-| 4 | 21 |
-| 8 | 57 peak, tailing as the per-domain frontier empties |
-
-Live accuracy spot check (30 random crawled products, judged by gemini-3-flash against freshly fetched pages): name 100%, price 87%, compare-at 100%, currency 100%, category 90%. The price misses cluster on one store that ran a sale between crawl and check.
-
-Scaling theory from the measured numbers (one worker sustains ~390K pages/month at $5.70/mo):
+Scaling from the measured numbers (one worker sustains ~390K pages/month at $5.70/mo):
 
 | scale | workers | infra | llm (flash-lite) |
 |---|---|---|---|
 | 1M pages/mo | 3 | ~$40/mo | ~$710/mo |
 | 50M pages/mo | ~130 | ~$800/mo | ~$35K/mo |
 
-LLM spend dominates at scale, which is the argument for the free rungs: every field they answer is model spend that never happens.
+LLM spend dominates at scale, which is the argument for the free rungs.
 
 ## Running it
 
