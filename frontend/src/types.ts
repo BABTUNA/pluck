@@ -32,6 +32,9 @@ export interface Product {
   description: string | null;
   options: string[];
   variants: Variant[];
+  colors: string[];
+  key_features: string[];
+  video_url: string | null;
   price: Price;
   image_urls: string[];
   category: string | null;

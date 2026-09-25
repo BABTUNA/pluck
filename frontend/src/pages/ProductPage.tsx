@@ -90,7 +90,7 @@ function ProductContent({ id }: { id: string | undefined }) {
         <div className="min-w-0">
           <Gallery
             images={product.image_urls}
-            videoUrl={null}
+            videoUrl={product.video_url}
             name={product.name}
             brand={brand}
             jumpToUrl={null}
@@ -110,6 +110,25 @@ function ProductContent({ id }: { id: string | undefined }) {
             <p className="mt-5 max-w-prose text-sm leading-relaxed text-muted">
               {product.description}
             </p>
+          )}
+
+          {product.key_features.length > 0 && (
+            <ul className="mt-5 max-w-prose list-disc space-y-1 pl-5 text-sm text-muted">
+              {product.key_features.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+          )}
+
+          {product.colors.length > 0 && !product.options.some((o) => /col/i.test(o)) && (
+            <section className="mt-8">
+              <p className="eyebrow mb-2">Colors</p>
+              <div className="flex flex-wrap gap-2">
+                {product.colors.map((c) => (
+                  <span key={c} className="border border-line px-3 py-1.5 text-xs">{c}</span>
+                ))}
+              </div>
+            </section>
           )}
 
           {product.variants.length > 0 && (
