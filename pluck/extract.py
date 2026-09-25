@@ -165,10 +165,19 @@ async def extract(html: str) -> Product:
         f.images += re.findall(
             r'property=["\'](?:og|twitter):image["\'][^>]*content=["\'](http[^"\']+)', html)[:4]
     # last resort for the gallery, the pages own img tags minus the chrome
+    # srcset lists renditions smallest to largest so take the last, the
+    # assignment wants full resolution not the lazy loader thumb
     if len(f.images) < 2:
-        for u in re.findall(r'<img[^>]+src=["\'](//[^"\']+|https?://[^"\']+)', html, re.I):
-            if not re.search(r"logo|icon|sprite|pixel|badge|\.svg|\.gif", u, re.I):
-                f.images.append("https:" + u if u.startswith("//") else u)
+        for tag in re.findall(r"<img[^>]+>", html, re.I):
+            m = re.search(r'srcset=["\']([^"\']+)', tag)
+            u = m.group(1).split(",")[-1].strip().split(" ")[0] if m else None
+            if not u:
+                m = re.search(r'src=["\'](//[^"\']+|https?://[^"\']+)', tag)
+                u = m.group(1) if m else None
+            if u and u.startswith("//"):
+                u = "https:" + u
+            if u and u.startswith("http")                     and not re.search(r"logo|icon|sprite|pixel|badge|\.svg|\.gif", u, re.I):
+                f.images.append(u)
             if len(f.images) >= 8:
                 break
 
