@@ -4,6 +4,8 @@
 
 Run the extractor against the live web as a crawler that scales by adding identical machines, survives crashes, and records every failure. Deployed on Fly.io: an `app` process serving the public API, N `worker` machines, and a small Postgres (`pluck-pg`) that is the only shared state.
 
+![Pluck's distributed crawl and serving architecture](distributed-pipeline.drawio.png)
+
 The queue is a Postgres table and workers coordinate only through atomic claims:
 
 - **seed**: `pipeline/seed.py` pulls real product URLs from each store's public sitemap and inserts them. URLs are normalized (host lowercased, query/fragment stripped) and unique, so a page can only ever be one row.

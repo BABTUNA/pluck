@@ -102,15 +102,7 @@ extract(html)                          climbs the rungs, assembles the product  
 
 The deployed system is a crawler x extractor with real big-data mechanics, run at demo scale:
 
-```
-pipeline/seed.py ── real product urls from store sitemaps ──▶ Postgres jobs table
-                                                       │
-   worker × N (fly machines, identical, stateless) ◀───┘
-   claim with a 2-min lease ─ fetch ─ extract ─ store result
-   ├─ crash: lease expires, another worker reclaims the job
-   ├─ failure: retry with exponential backoff (1m, 4m, 16m), then dead-letter
-   └─ discovery: same-domain product links go back into the queue (capped per domain)
-```
+![Pluck's distributed crawl and serving architecture](docs/distributed-pipeline.drawio.png)
 
 - Workers coordinate only through atomic claims (`FOR UPDATE SKIP LOCKED`); duplicates are impossible by construction (`url` is unique, inserts are `ON CONFLICT DO NOTHING` on normalized urls).
 - Measured scaling: 9 pages/min at 1 worker, 21 pages/min at 4, changed with one command (`fly scale count worker=4`). A worker did freeze mid-crawl once; its leased pages were reclaimed automatically and nothing was lost.

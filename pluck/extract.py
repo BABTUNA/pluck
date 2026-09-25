@@ -192,7 +192,9 @@ async def extract(html: str) -> Product:
     if "compare_at" not in f.data and "compare_at" not in missing and _SALE.search(html):
         missing.append("compare_at")
     known = _context(f, html)
-    fb, usage = await infer(html, missing, taxonomy.TOPS, known)
+    # variants ride the same call when the rungs found none, names only
+    fb, usage = await infer(html, missing, taxonomy.TOPS, known,
+                            want_variants=not f.variants)
     for k in missing:
         v = fb.get(k)
         if k in ("price", "compare_at") and v is not None:
@@ -201,6 +203,10 @@ async def extract(html: str) -> Product:
             f.set(k, v, "inferred")
         elif k not in f.data:
             f.set(k, None, "none")
+
+    if not f.variants and isinstance(fb.get("variants"), list):
+        f.variants = [{"name": str(v)[:80], "price": None, "compare_at": None}
+                      for v in fb["variants"][:30] if str(v).strip()]
 
     cat, usage2 = await _category(fb.get("category"), known, html)
     f.set("category", cat, "inferred" if cat else "none")

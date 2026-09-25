@@ -26,12 +26,18 @@ def clean_text(html: str, limit: int = 16_000) -> str:
 # ask one json call for the missing or disputed fields plus a top level category
 # the rules encode judgment calls like one time price and no other brands compare at
 async def infer(html: str, missing: list[str], tops: list[str],
-                known_name: str | None) -> tuple[dict, dict]:
+                known_name: str | None, want_variants: bool = False) -> tuple[dict, dict]:
     keys = missing + ["category"]
+    if want_variants:
+        keys.append("variants")
     rules = ["Reply with a JSON object with exactly these keys: " + str(keys) + ".",
              "Use null when the page does not state a value.",
              "'category': the best-fitting top-level Google Shopping category, "
              "copied verbatim from this list: " + json.dumps(tops)]
+    if want_variants:
+        rules.append("'variants': the selectable configurations of this product shown "
+                     "on the page (sizes, colors, fits) as an array of short strings "
+                     "like [\"Black / S\", \"Black / M\"], or [] if there are none.")
     if "currency" in keys:
         rules.append("'currency' is the ISO 4217 code of the displayed prices; infer "
                      "it from the symbol and site (a $ price on a US site is USD).")
