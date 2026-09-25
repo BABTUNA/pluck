@@ -161,6 +161,15 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
             out.setdefault("price", _cents(_num(v), v, shopify))
         elif lk in _COMPARE_KEYS:
             out.setdefault("compare_at", _cents(_num(v), v, shopify))
+        elif lk in ("images", "media") and isinstance(v, list):
+            urls = []
+            for it in v[:12]:
+                if isinstance(it, dict):
+                    it = it.get("src") or it.get("url") or (it.get("preview_image") or {}).get("src")
+                if isinstance(it, str) and ("//" in it):
+                    urls.append("https:" + it if it.startswith("//") else it)
+            if urls:
+                out.setdefault("images", urls)
         elif lk in _CURRENCY_KEYS:
             if isinstance(v, dict):
                 v = v.get("active") or v.get("code") or v.get("isoCode") or ""

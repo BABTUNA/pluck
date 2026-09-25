@@ -6,13 +6,13 @@ import { Gallery } from "../components/Gallery";
 import { PriceBlock } from "../components/PriceBlock";
 import { formatPrice } from "../lib/format";
 
-// which rung answered each field, the provenance is the product story here
+// short provenance tags, the values themselves are the star
 const SOURCE_LABEL: Record<string, string> = {
-  declared: "read from the page's declared data",
-  shipped: "parsed from embedded state",
-  computed: "computed by running the page's js",
-  inferred: "answered by the model",
-  none: "not found",
+  declared: "page data",
+  shipped: "embedded state",
+  computed: "page js",
+  inferred: "model",
+  none: "",
 };
 
 export function ProductPage() {
@@ -126,20 +126,34 @@ function ProductContent({ id }: { id: string | undefined }) {
           </a>
 
           <section className="mt-10">
-            <p className="eyebrow mb-3">Where each field came from</p>
+            <p className="eyebrow mb-3">Extracted data</p>
             <ul className="divide-y divide-line border-y border-line text-sm">
-              {Object.entries(product.sources).map(([field, source]) => (
-                <li key={field} className="flex items-center justify-between py-2.5">
-                  <span className="font-medium">{field.replace("_", " ")}</span>
-                  <span className={source === "none" ? "text-faint" : "text-muted"}>
-                    {SOURCE_LABEL[source] ?? source}
-                  </span>
-                </li>
-              ))}
+              {[
+                ["name", product.name],
+                ["brand", product.brand],
+                ["price", formatPrice(product.price.price, product.price.currency)],
+                ["compare at", product.price.compare_at_price != null
+                  ? formatPrice(product.price.compare_at_price, product.price.currency)
+                  : null],
+                ["currency", product.price.currency],
+                ["category", product.category],
+              ].map(([field, value]) => {
+                const source = product.sources[String(field).replace(" ", "_")] ?? "";
+                return (
+                  <li key={String(field)} className="flex items-baseline gap-4 py-2.5">
+                    <span className="w-24 shrink-0 text-muted">{field}</span>
+                    <span className={`min-w-0 flex-1 font-medium ${value ? "" : "text-faint"}`}>
+                      {value ?? "—"}
+                    </span>
+                    {SOURCE_LABEL[source] && (
+                      <span className="shrink-0 text-xs text-faint">{SOURCE_LABEL[source]}</span>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
             <p className="mt-3 text-xs text-faint">
               Extracted in {product.latency_s}s
-              {product.worker ? ` by worker ${product.worker}` : ""}
             </p>
           </section>
         </div>

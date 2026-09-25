@@ -164,6 +164,13 @@ async def extract(html: str) -> Product:
     if not f.images:
         f.images += re.findall(
             r'property=["\'](?:og|twitter):image["\'][^>]*content=["\'](http[^"\']+)', html)[:4]
+    # last resort for the gallery, the pages own img tags minus the chrome
+    if len(f.images) < 2:
+        for u in re.findall(r'<img[^>]+src=["\'](//[^"\']+|https?://[^"\']+)', html, re.I):
+            if not re.search(r"logo|icon|sprite|pixel|badge|\.svg|\.gif", u, re.I):
+                f.images.append("https:" + u if u.startswith("//") else u)
+            if len(f.images) >= 8:
+                break
 
     # a price the rendered page never shows is suspect
     if "price" in f.data:
