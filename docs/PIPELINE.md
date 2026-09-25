@@ -23,14 +23,15 @@ Measured on the demo crawl (311 live pages, 18 stores): 9 pages/min at 1 worker 
 ## Call trace
 
 ```
-pipeline/worker.py main()                       one process, N concurrent claim loops         worker.py
+pipeline/worker.py main()              one process, N concurrent claim loops         worker.py
 └─ loop(pool)                          claim -> work -> repeat, backs off when idle  worker.py
    ├─ jobq.claim(pool)                 atomic lease via FOR UPDATE SKIP LOCKED       pipeline/jobq.py
    ├─ fetch(url)                       live GET, browser headers, one retry          pipeline/fetch.py
    ├─ extract(html)                    the whole decision tree (see EXTRACTION.md)   pluck/extract.py
    ├─ jobq.done(...)                   mark done, upsert product into results        pipeline/jobq.py
    ├─ jobq.fail(...)                   backoff 1m/4m/16m, then dead_letters          pipeline/jobq.py
-   └─ jobq.enqueue(discover(url, html))     same-domain product links, deduped, capped    pipeline/jobq.py
+   └─ jobq.enqueue(discover(url, html))   same-domain product links, deduped, capped,   pipeline/jobq.py
+                                       api routes and feeds filtered out
 
 pipeline/seed.py main()                         store sitemaps -> first product urls          seed.py
 pipeline/api.py  POST /extract                  fetch + extract for one url, logs every call  api.py
@@ -41,11 +42,11 @@ pipeline/api.py  GET /stats                     success rate, rung %, latency fr
 
 | file | what it does |
 |---|---|
-| `pipeline/jobq.py` | schema + the four queue operations: enqueue, claim, done, fail |
+| `pipeline/jobq.py` | schema + the queue operations: enqueue, claim, done, fail, requeue, flags |
 | `pipeline/worker.py` | stateless worker: claim -> fetch -> extract -> store -> discover |
 | `pipeline/seed.py` | seeds the queue from store sitemaps |
 | `pipeline/fetch.py` | live fetching with honest error strings |
-| `pipeline/api.py` | the public demo endpoint on Fly |
+| `pipeline/api.py` | the extract endpoint, catalog reads, and crawl controls on Fly |
 | `Dockerfile`, `fly.toml` | one image, two process groups (`app`, `worker`) |
 
 ```sql
