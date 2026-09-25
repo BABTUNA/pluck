@@ -238,8 +238,9 @@ async def extract(html: str) -> Product:
     colors = _axis_values(f.options, f.variants, "color") \
         or [str(c)[:40] for c in details.get("colors", [])[:20]]
     features = [str(k)[:120] for k in details.get("key_features", [])[:8]]
+    # product videos sit as plain cdn urls in the state, og video is rare
     video = re.search(r'property=["\']og:video[^"\']*["\'][^>]*content=["\'](http[^"\']+)', html, re.I) \
-        or re.search(r'"contentUrl"\s*:\s*"(http[^"]+\.(?:mp4|m3u8|webm)[^"]*)"', html)
+        or re.search(r'((?:https?:)?(?:\\/\\/|//)[^"\'\s\\]+\.(?:mp4|m3u8|webm)\b[^"\'\s\\]*)', html)
     usage2 = {k: (usage2.get(k) or 0) + (usage3.get(k) or 0) for k in usage2 | usage3
               if isinstance(usage2.get(k, usage3.get(k)), (int, float))}
     usage = {k: (usage.get(k) or 0) + (usage2.get(k) or 0) for k in usage | usage2
@@ -263,7 +264,8 @@ async def extract(html: str) -> Product:
         variants=f.variants[:30],
         colors=colors,
         key_features=features,
-        video_url=video.group(1) if video else None,
+        video_url=("https:" + v if (v := video.group(1).replace("\\/", "/")).startswith("//")
+                   else v) if video else None,
         images=[str(u).replace(":////", "://") for u in dict.fromkeys(f.images)
                 if str(u).startswith("http")][:10],
         meta={
