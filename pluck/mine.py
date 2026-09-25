@@ -192,6 +192,13 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
         vs = [v for v in (_variant(x) for x in variants[:30]) if v]
         if vs:
             out["variants"] = vs
+        # the option axis labels, shopify ships ["Color", "Size"] or dicts
+        opts = o.get("options")
+        if isinstance(opts, list) and opts:
+            labels = [x.get("name") if isinstance(x, dict) else x for x in opts[:4]]
+            labels = [str(x) for x in labels if isinstance(x, str) and x.strip()]
+            if labels:
+                out["options"] = labels
         # some shopify product dicts carry no title of their own, the
         # variants hold the full name so borrow it or the parent never wins
         if "name" not in out:
@@ -199,8 +206,8 @@ def _mine_dict(o: dict, shopify: bool) -> dict:
             if isinstance(full, str) and len(full) >= 3:
                 out["name"] = _unesc(full)[:150]
     return {k: v for k, v in out.items()
-            if v is not None and (k in ("name", "currency", "variants", "images")
-                                  or _ok_price(v))}
+            if v is not None and (k in ("name", "currency", "variants", "images",
+                                        "options") or _ok_price(v))}
 
 
 # one discrete configuration of the product, like a size or color

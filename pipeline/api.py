@@ -156,6 +156,7 @@ async def product(pid: str):
         "image_urls": p.get("images") or [],
         "brand": (p.get("brand") or {}).get("value"),
         "description": p.get("description"),
+        "options": p.get("options") or [],
         "variants": p.get("variants") or [],
         "category": p["category"]["value"],
         "sources": p["meta"]["sources"],

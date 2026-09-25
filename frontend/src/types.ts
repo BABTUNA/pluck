@@ -30,6 +30,7 @@ export interface Product {
   name: string;
   brand: string | null;
   description: string | null;
+  options: string[];
   variants: Variant[];
   price: Price;
   image_urls: string[];

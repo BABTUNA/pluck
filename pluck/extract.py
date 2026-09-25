@@ -36,6 +36,7 @@ class Product(BaseModel):
     category: Field
     brand: Field
     description: str | None
+    options: list[str]    # the axis labels for variant names, like Color and Size
     variants: list[dict]  # discrete configurations, {name, price, compare_at, available}
     images: list[str]
     meta: dict
@@ -49,6 +50,7 @@ class _Fields:
         self.crumbs: list = []
         self.images: list = []
         self.variants: list = []
+        self.options: list = []
         self.description: str | None = None
         self.disputes: set[str] = set()
 
@@ -63,6 +65,8 @@ class _Fields:
                 # richer rung wins, shopify matrices beat sparse offer lists
                 if len(v) > len(self.variants):
                     self.variants = v
+            elif k == "options":
+                self.options = self.options or v
             elif k == "description":
                 self.description = self.description or v
             elif k == "conflict":
@@ -241,6 +245,7 @@ async def extract(html: str) -> Product:
     return Product(
         **f.data,
         description=f.description,
+        options=f.options[:4],
         variants=f.variants[:30],
         images=[str(u).replace(":////", "://") for u in dict.fromkeys(f.images)
                 if str(u).startswith("http")][:10],

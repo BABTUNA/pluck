@@ -15,6 +15,21 @@ const SOURCE_LABEL: Record<string, string> = {
   none: "",
 };
 
+// flat "Charcoal / Small" names regroup into one list per axis, labeled by
+// the page's own option names when the rungs captured them
+function groupVariants(variants: { name: string }[], options: string[]) {
+  const parts = variants.map((v) => v.name.split(" / "));
+  const width = Math.max(...parts.map((p) => p.length));
+  if (width < 2 && options.length < 2)
+    return [{ label: options[0] ?? "Variants", values: [...new Set(variants.map((v) => v.name))] }];
+  const axes = [];
+  for (let i = 0; i < width; i++) {
+    const values = [...new Set(parts.map((p) => p[i]).filter(Boolean))];
+    if (values.length) axes.push({ label: options[i] ?? `Option ${i + 1}`, values });
+  }
+  return axes;
+}
+
 export function ProductPage() {
   const { id } = useParams();
   return <ProductContent key={id} id={id} />;
@@ -98,21 +113,19 @@ function ProductContent({ id }: { id: string | undefined }) {
           )}
 
           {product.variants.length > 0 && (
-            <section className="mt-8">
-              <p className="eyebrow mb-3">Variants</p>
-              <div className="flex flex-wrap gap-2">
-                {product.variants.map((v, i) => (
-                  <span
-                    key={i}
-                    className={`border border-line px-3 py-1.5 text-xs ${
-                      v.available === false ? "text-faint line-through" : ""
-                    }`}
-                  >
-                    {v.name}
-                    {v.price != null && ` · ${formatPrice(v.price, product.price.currency)}`}
-                  </span>
-                ))}
-              </div>
+            <section className="mt-8 space-y-4">
+              {groupVariants(product.variants, product.options).map((axis) => (
+                <div key={axis.label}>
+                  <p className="eyebrow mb-2">{axis.label}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {axis.values.map((v) => (
+                      <span key={v} className="border border-line px-3 py-1.5 text-xs">
+                        {v}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </section>
           )}
 
