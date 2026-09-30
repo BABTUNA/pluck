@@ -29,33 +29,45 @@ Example, a Shopify robe page with no JSON-LD offers: rung 1 gives the name, rung
 
 ```
 extract(html)                          climbs the rungs, assembles the product       pluck/extract.py
+│
 ├─ rungs.scripts(html)                 pulls every inline <script> body              pluck/rungs.py
+│
 ├─ mine.jsonld(rungs.declared(scr))    json-ld: name, price, currency, brand,        pluck/mine.py
 │                                      description, images, colors, crumbs, and
 │                                      variants via named offers or hasVariant;
 │                                      several offer prices = dispute
+│
 ├─ mine.state(rungs.shipped(scr), hint) embedded state: the best matching product    pluck/mine.py
 │                                      subtree mined whole, prices, variant matrix
 │                                      + option labels, images, swatches, video
+│
 ├─ mine.state(rungs.computed(scr), hint) same miner over globals a v8 sandbox built  pluck/rungs.py
 │                                      by running the page's own js (shopify cents),
 │                                      boots only when core fields are still missing
+│
 ├─ name + brand guards (inline)        a mined name must share a word with the page  pluck/extract.py
 │                                      title or the title-derived name wins; brand
 │                                      falls back to og:site_name
+│
 ├─ image fallbacks (inline)            when empty: preload links, then og image;     pluck/extract.py
 │                                      while under 2: <img> tags at the largest
 │                                      srcset rendition, seeded to the hero's dir
+│
 ├─ _visible_prices(html)               price must show on the page or model referees pluck/extract.py
+│
 ├─ _context(f, html)                   name + breadcrumbs + description for the model pluck/extract.py
+│
 ├─ infer(html, missing, TOPS, known)   one call: missing fields + top-level category pluck/infer.py
+│
 ├─ _category(guess, known, html)       taxonomy descent for the category             pluck/extract.py
 │  ├─ pick_leaf(known, html, subtree)  one call: exact path within that branch       pluck/infer.py
 │  └─ taxonomy.snap(answer)            snaps any stray answer to a real path         pluck/taxonomy.py
+│
 ├─ list_details(known, html)           tiny call for variants, colors and features,  pluck/infer.py
 │                                      runs beside the leaf pick, separate prompt
 │                                      because sharing one hurt category accuracy;
 │                                      answers must appear in the page text
+│
 └─ image assembly (inline)             canonicalize urls, dedupe renditions keeping  pluck/extract.py
                                        the largest, cluster by filename prefix, cap 12
 ```
