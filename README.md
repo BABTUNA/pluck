@@ -91,10 +91,10 @@ Live throughput: 9 pages/min at 1 worker, 21 at 4, 57 peak at 8. A spot check of
 
 Back-of-envelope scaling from the measured numbers (one worker sustains ~390K pages/month at $5.70/mo):
 
-| scale | workers | infra | llm (flash-lite) |
-|---|---|---|---|
-| 1M pages/mo | 3 | ~$40/mo | ~$710/mo |
-| 50M pages/mo | ~130 | ~$800/mo | ~$35K/mo |
+| scale | workers | infra | llm (flash-lite) | llm (gemini-3-flash) |
+|---|---|---|---|---|
+| 1M pages/mo | 3 | ~$40/mo | ~$710/mo | ~$3.3K/mo |
+| 50M pages/mo | ~130 | ~$800/mo | ~$35K/mo | ~$160K/mo |
 
 LLM spend dominates at scale, which is the argument for the free rungs.
 
