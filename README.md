@@ -17,6 +17,7 @@ Or browse the storefront it feeds: [pluck-extract.fly.dev](https://pluck-extract
 ```bash
 uv sync                                                    # deps (put any OpenRouter key in .env first)
 uv run python main.py                                      # hydrate the schema from data/*.html -> output/
+PLUCK_MODEL=google/gemini-3-flash-preview uv run python main.py   # same ingest on the bigger model
 python3 -m json.tool output/ace.json | head -40            # look at one hydrated Product
 uv run python eval.py 10                                   # grade 10 vendored pages (drop the 10 for all 50)
 wc -l pluck/*.py                                           # the extraction core, line for line
