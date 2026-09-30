@@ -50,7 +50,7 @@ The deployed system is a crawler x extractor with real big-data mechanics, run a
 - The live view drives it all: rerun the default stores or a single url, pause and resume the fleet, cap the frontier with max pages, and clear the live catalog (the assignment batches always survive).
 - At 50M products the shape stays the same and the parts grow: partitioned job/result storage, per-domain rate-limit coordination, a headless-browser fetch tier for the stores that ship empty HTML, and re-crawl scheduling off the `processed_at` column that already exists.
 
-Queue mechanics, worker lifecycle and ops commands: [docs/PIPELINE.md](docs/PIPELINE.md).
+Queue mechanics, worker lifecycle and ops commands: [docs/PIPELINE.md](docs/PIPELINE.md). The storefront itself: [docs/FRONTEND.md](docs/FRONTEND.md).
 
 ## Results
 
