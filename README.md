@@ -12,13 +12,23 @@ curl -X POST https://pluck-extract.fly.dev/extract \
 
 Or browse the storefront it feeds: [pluck-extract.fly.dev](https://pluck-extract.fly.dev) has the assignment's 50 pages, the original 5, a live-crawled catalog, and a live view where you can run, pause, cap, or clear the crawl and feed it single urls.
 
-## Run it in four commands
+## Run it
 
 ```bash
-uv sync                                  # deps (put any OpenRouter key in .env first)
-uv run python main.py                    # hydrate the schema from data/*.html -> output/, with cost log
-python3 -m json.tool output/ace.json     # look at one hydrated Product
-uv run python eval.py                    # grade all 50 vendored pages against the reference answers
+uv sync                                                    # deps (put any OpenRouter key in .env first)
+uv run python main.py                                      # hydrate the schema from data/*.html -> output/
+python3 -m json.tool output/ace.json | head -40            # look at one hydrated Product
+uv run python eval.py 10                                   # grade 10 vendored pages (drop the 10 for all 50)
+wc -l pluck/*.py                                           # the extraction core, line for line
+PLUCK_MODEL=google/gemini-3-flash-preview uv run python eval.py 10   # same eval on the bigger model
+```
+
+And against the live deployment, any product URL you like:
+
+```bash
+curl -X POST https://pluck-extract.fly.dev/extract \
+  -H 'content-type: application/json' \
+  -d '{"url": "https://www.brooklinen.com/products/luxe-core-sheet-set"}'
 ```
 
 ## Demo
