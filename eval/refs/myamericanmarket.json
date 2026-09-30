@@ -1,0 +1,35 @@
+{
+  "name": "M&M's - Almond",
+  "price": {
+    "price": 4.95,
+    "currency": "EUR",
+    "compare_at_price": null
+  },
+  "description": "To pick at together: M&M's Almond, crunchy candies filled with a whole almond coated in chocolate. The sharing size for treat lovers.",
+  "key_features": [
+    "Whole roasted almond center",
+    "Coated in milk chocolate",
+    "Colorful, crunchy shell",
+    "Gluten free",
+    "Vegetarian",
+    "OU Kosher D",
+    "Country of origin: United States",
+    "Net weight: 80.2g / 2.83oz"
+  ],
+  "image_urls": [
+    "https://www.myamericanmarket.com/5318-thickbox_default/m-ms-almond-big.jpg",
+    "https://www.myamericanmarket.com/7086-thickbox_default/m-ms-almond-big.jpg",
+    "https://www.myamericanmarket.com/7085-thickbox_default/m-ms-almond-big.jpg",
+    "https://www.myamericanmarket.com/7087-thickbox_default/m-ms-almond-big.jpg",
+    "https://www.myamericanmarket.com/7088-thickbox_default/m-ms-almond-big.jpg",
+    "https://www.myamericanmarket.com/7089-thickbox_default/m-ms-almond-big.jpg"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Food, Beverages & Tobacco > Food Items > Candy & Chocolate"
+  },
+  "brand": "M&M's",
+  "colors": [],
+  "options": [],
+  "variants": []
+}

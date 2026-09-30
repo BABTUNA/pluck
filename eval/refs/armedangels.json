@@ -1,0 +1,684 @@
+{
+  "name": "BAARLY HIGH WAIST BARREL JEANS",
+  "price": {
+    "price": 129.9,
+    "currency": "EUR",
+    "compare_at_price": null
+  },
+  "description": "Die BAARLY Jeans überzeugt mit einem hohen Bund, Barrel-Schnitt und knöchellanger Passform. Sie besteht aus einem Bio-Baumwolle, sowie TENCEL™ Lyocell in stretchfreier Qualität und verleiht jedem Outfit einen lässigen, authentischen Jeans-Look.",
+  "key_features": [
+    "Optik: Einfarbig",
+    "Taschen: 5-Pocket",
+    "Verschlussart: Knopfleiste",
+    "Schnitt: Loose Fit",
+    "Beinform: Barrel Leg",
+    "Bundhöhe: High waist",
+    "Länge: Knöchellang",
+    "Hauptmaterial: 64% Baumwolle (bio), 36% Lyocell (TENCEL™)",
+    "Trimming: Knöpfe aus Metall",
+    "Material Info: Schwerer Denim",
+    "Materialmerkmal: Non-Stretch",
+    "30° Pflegeleicht",
+    "Nicht bleichen",
+    "Trocknen im Trockner nicht möglich",
+    "Mäßig heiß bügeln",
+    "keine Chemische Reinigung möglich"
+  ],
+  "image_urls": [
+    "https://www.armedangels.com/cdn/shop/files/30009185-3045_111.jpg?v=1789057159",
+    "https://www.armedangels.com/cdn/shop/files/30009185-3045_211.jpg?v=1789057159",
+    "https://www.armedangels.com/cdn/shop/files/30009185-3045_311.jpg?v=1789057159",
+    "https://www.armedangels.com/cdn/shop/files/30009185-3045_301.jpg?v=1789057159",
+    "https://www.armedangels.com/cdn/shop/files/30009185-3045_411.jpg?v=1789057159",
+    "https://www.armedangels.com/cdn/shop/files/30009185-3045_611.jpg?v=1789057159",
+    "https://www.armedangels.com/cdn/shop/files/30009185-3045_101.jpg?v=1789057159"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Clothing > Pants"
+  },
+  "brand": "ARMEDANGELS",
+  "colors": [
+    "Crunchy",
+    "White",
+    "Pink Mist",
+    "Loa",
+    "Nutmeg",
+    "Fluid Ink",
+    "Noise",
+    "Ebony Black"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "noise"
+      ]
+    },
+    {
+      "name": "Waist",
+      "values": [
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34"
+      ]
+    },
+    {
+      "name": "Length",
+      "values": [
+        "30",
+        "32",
+        "34"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "25"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000001",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "26"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000004",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "27"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000007",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "28"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000010",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "29"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000013",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "30"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000016",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "31"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000019",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "32"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000022",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "33"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000025",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "34"
+        },
+        {
+          "name": "Length",
+          "value": "30"
+        }
+      ],
+      "sku": "30009185000028",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "25"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000002",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "26"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000005",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "27"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000008",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "28"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000011",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "29"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000014",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "30"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000017",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "31"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000020",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "32"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000023",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "33"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000026",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "34"
+        },
+        {
+          "name": "Length",
+          "value": "32"
+        }
+      ],
+      "sku": "30009185000029",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "25"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000003",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "26"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000006",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "27"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000009",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "28"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000012",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "29"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000015",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "30"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000018",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "31"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000021",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "32"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000024",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "33"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000027",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "noise"
+        },
+        {
+          "name": "Waist",
+          "value": "34"
+        },
+        {
+          "name": "Length",
+          "value": "34"
+        }
+      ],
+      "sku": "30009185000030",
+      "price": 129.9,
+      "available": true,
+      "image_urls": []
+    }
+  ]
+}

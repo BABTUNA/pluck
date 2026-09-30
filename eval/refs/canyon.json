@@ -1,0 +1,194 @@
+{
+  "name": "Endurace CF 7 Di2",
+  "price": {
+    "price": 3599.0,
+    "currency": "USD",
+    "compare_at_price": 3799.0
+  },
+  "description": "Versatile carbon all-road endurance bike. 38 mm tyre clearance. VCLS Technology: iconic comfort seatpost. Shimano 105 Di2 electronic groupset. DT Swiss Endurance LN aluminum wheels.",
+  "key_features": [
+    "Versatile carbon all-road endurance bike",
+    "38 mm tyre clearance",
+    "VCLS Technology: iconic comfort seatpost",
+    "Shimano 105 Di2 electronic groupset",
+    "DT Swiss Endurance LN aluminum wheels",
+    "Material: Carbon (CF)",
+    "Weight: 18.96 lbs",
+    "Shimano 105 Di2 12-speed electronic drivetrain",
+    "Canyon FK0154 CF Disc Carbon Fork",
+    "Continental Grand Prix TR 32 mm tires"
+  ],
+  "image_urls": [
+    "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry",
+    "https://dma.canyon.com/image/upload/t_web-detail/w_543,h_543,c_fill/b_rgb:F2F2F2/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry",
+    "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355737/2027_FULL_endurace_cf-7-di2_4421_R129_P02_t6vk4y",
+    "https://dma.canyon.com/image/upload/w_543,h_543,c_fill/f_auto/q_auto/v1777552907/2027_TOP-4_endurace_cf-7-di2_4421_R129_P01_ergonomic-handlebar_mjsypx",
+    "https://dma.canyon.com/image/upload/w_543,h_543,c_fill/f_auto/q_auto/v1778228916/2027_TOP-1_endurace_cf-7-di2_4421_R129_P02_purity-versatility_inj7wq",
+    "https://dma.canyon.com/image/upload/w_543,h_543,c_fill/f_auto/q_auto/v1777552912/2027_TOP-2_endurace_cf-7-di2_4421_R129_P01_cable-integration_no61ms",
+    "https://dma.canyon.com/image/upload/w_543,h_543,c_fill/f_auto/q_auto/v1778153535/2027_TOP-3_endurace_cf-7-di2_4421_R129_P01_tire-clearance_eqmyg4",
+    "https://dma.canyon.com/image/upload/w_543,h_543,c_fill/f_auto/q_auto/v1777552913/2027_TOP-6_endurace_cf-7-di2_4421_R129_P01_all-day-fit_hwgpbp",
+    "https://dma.canyon.com/image/upload/w_543,h_543,c_fill/f_auto/q_auto/v1777892006/2027_TOP-5_endurace_cf-7-di2_4421_R129_P02_seatpost_y4jmvk",
+    "https://dma.canyon.com/image/upload/w_511,h_288,c_fill/f_auto/q_auto/2026_Launch_Product_CF_Endurace_Web_PDP_01_3000x4000_ALL_w086sp",
+    "https://dma.canyon.com/image/upload/w_511,h_288,c_fill/f_auto/q_auto/2026_Launch_Product_CF_Endurace_Web_PDP_02_3000x4000_ALL_enzqab",
+    "https://dma.canyon.com/image/upload/w_511,h_288,c_fill/f_auto/q_auto/2026_Launch_Product_CF_Endurace_Web_PDP_03_3000x4000_ALL_lfq0xs",
+    "https://dma.canyon.com/image/upload/w_511,h_288,c_fill/f_auto/q_auto/2026_Launch_Product_CF_Endurace_Web_PDP_04_3000x4000_ALL_ct89dv"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Sporting Goods > Outdoor Recreation > Cycling > Bicycles"
+  },
+  "brand": "Canyon",
+  "colors": [
+    "Stealth",
+    "Milk Tea"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "Stealth",
+        "Milk Tea"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        "2XS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Stealth"
+        },
+        {
+          "name": "Size",
+          "value": "2XS"
+        }
+      ],
+      "sku": "50044590",
+      "price": 3599.0,
+      "available": true,
+      "image_urls": [
+        "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Stealth"
+        },
+        {
+          "name": "Size",
+          "value": "XS"
+        }
+      ],
+      "sku": "50044591",
+      "price": 3599.0,
+      "available": true,
+      "image_urls": [
+        "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Stealth"
+        },
+        {
+          "name": "Size",
+          "value": "S"
+        }
+      ],
+      "sku": "50044592",
+      "price": 3599.0,
+      "available": true,
+      "image_urls": [
+        "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Stealth"
+        },
+        {
+          "name": "Size",
+          "value": "M"
+        }
+      ],
+      "sku": "50044593",
+      "price": 3599.0,
+      "available": true,
+      "image_urls": [
+        "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Stealth"
+        },
+        {
+          "name": "Size",
+          "value": "L"
+        }
+      ],
+      "sku": "50044594",
+      "price": 3599.0,
+      "available": true,
+      "image_urls": [
+        "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Stealth"
+        },
+        {
+          "name": "Size",
+          "value": "XL"
+        }
+      ],
+      "sku": "50044595",
+      "price": 3599.0,
+      "available": true,
+      "image_urls": [
+        "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Stealth"
+        },
+        {
+          "name": "Size",
+          "value": "2XL"
+        }
+      ],
+      "sku": "50044596",
+      "price": 3599.0,
+      "available": false,
+      "image_urls": [
+        "https://dma.canyon.com/image/upload/w_945,h_495,c_fit/f_auto/q_auto/v1777355662/2027_FULL_endurace_cf-7-di2_4421_R129_P01_oopfry"
+      ]
+    }
+  ]
+}

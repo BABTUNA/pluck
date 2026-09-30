@@ -103,7 +103,7 @@ LLM spend dominates at scale, which is the argument for the free rungs.
 ```bash
 uv sync                                  # deps
 uv run python main.py                    # hydrate the schema from data/*.html -> output/
-uv run python eval.py                    # 50-page accuracy eval (needs the graded set, see eval.py)
+uv run python eval.py                    # 50-page accuracy eval, pages and references vendored
 uv run uvicorn pipeline.api:app --port 8080       # the api, locally
 DATABASE_URL=... python -m pipeline.seed          # seed the queue
 DATABASE_URL=... python -m pipeline.worker        # a worker

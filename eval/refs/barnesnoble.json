@@ -1,0 +1,96 @@
+{
+  "name": "A Guardian and a Thief: A Novel",
+  "price": {
+    "price": 18.0,
+    "currency": "USD",
+    "compare_at_price": 20.0
+  },
+  "description": "NATIONAL BESTSELLER * WINNER OF THE ANDREW CARNEGIE MEDAL FOR EXCELLENCE * Megha Majumdar's electrifying new novel, following her acclaimed New York Times bestseller A Burning, is set in a near-future Kolkata, India in which two families seeking to protect their children must battle each other. A piercing and propulsive tour de force. FINALIST FOR THE NATIONAL BOOK AWARD * OPRAH'S BOOK CLUB PICK \"Wondering if there's a novel out there that gives Cormac McCarthy's The Road a run for its money? Here you go.\" -Stacy Schiff, author of Cleopatra: A LifeIn a near-future Kolkata, Ma, her two-year-old daughter, and her elderly father are just days from leaving the collapsing city behind to join Ma's husband in Ann Arbor, Michigan. After procuring long-awaited visas from the consulate, they pack their bags for the flight to America. But in the morning they awaken to discover that Ma's purse, containing their treasured immigration documents, has been stolen.Set over the course of one week, A Guardian and a Thief tells two stories: the story of Ma's frantic search for the thief while keeping hunger at bay during a worsening food shortage; and the story of Boomba, the thief, whose desperation to care for his family drives him to commit a series of escalating crimes whose consequences he cannot fathom. With stunning control and command, Megha Majumdar paints a kaleidoscopic portrait of two families, each operating from a place of ferocious love and undefeated hope, each discovering how far they will go to secure their children's future as they stave off encroaching catastrophe.A masterful new work from one of the most exciting voices of her generation.",
+  "key_features": [
+    "NATIONAL BESTSELLER",
+    "WINNER OF THE ANDREW CARNEGIE MEDAL FOR EXCELLENCE",
+    "FINALIST FOR THE NATIONAL BOOK AWARD",
+    "OPRAH'S BOOK CLUB PICK"
+  ],
+  "image_urls": [
+    "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9798217008025_p0.jpg",
+    "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9780593804872_p0.jpg?v=1768965342",
+    "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9780593804889_p0.jpg?v=1787145292",
+    "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9798217208470_p0.jpg?v=1765254192"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Media > Books"
+  },
+  "brand": "Knopf Doubleday Publishing Group",
+  "colors": [],
+  "options": [
+    {
+      "name": "Format",
+      "values": [
+        "Signed Book",
+        "Hardcover",
+        "Paperback",
+        "eBook"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Format",
+          "value": "Hardcover"
+        }
+      ],
+      "sku": "9780593804872",
+      "price": 29.0,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9780593804872_p0.jpg?v=1768965342"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Format",
+          "value": "eBook"
+        }
+      ],
+      "sku": "9780593804889",
+      "price": 11.99,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9780593804889_p0.jpg?v=1787145292"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Format",
+          "value": "Signed Book"
+        }
+      ],
+      "sku": "9798217208470",
+      "price": 29.0,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9798217208470_p0.jpg?v=1765254192"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Format",
+          "value": "Paperback"
+        }
+      ],
+      "sku": "9798217008025",
+      "price": 18.0,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/0674/5433/7265/files/9798217008025_p0.jpg"
+      ]
+    }
+  ]
+}

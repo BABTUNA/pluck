@@ -1,0 +1,258 @@
+{
+  "name": "Kiprun Kipstorm Elite Men's Carbon Plate Running Shoes",
+  "price": {
+    "price": 255.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Designed to push you beyond your limits, it combines carbon plate, lightness and shock absorption, following in the footsteps of Méline Rollin & Jimmy Gressier.\n\nEnergy return: Fastech+ foam:Propulsion and maximum energy return during the race.\n\nLightweight: Its featherweight of 215g (size 8) reduces fatigue and boosts performance.\n\nCushioning: Fastech+ foam for long-lasting protection, even over marathon distances.\n\nComfortable fit: Knitted upper and minimalist tongue for friction-free comfort.",
+  "key_features": [
+    "Fastech+ foam:Propulsion and maximum energy return during the race.",
+    "featherweight of 215g (size 8) reduces fatigue and boosts performance.",
+    "Fastech+ foam for long-lasting protection, even over marathon distances.",
+    "Knitted upper and minimalist tongue for friction-free comfort."
+  ],
+  "image_urls": [
+    "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg",
+    "https://www.decathlon.com/cdn/shop/files/8961381_003.jpg?v=1773881662",
+    "https://www.decathlon.com/cdn/shop/files/8961381_004.jpg?v=1773881662",
+    "https://www.decathlon.com/cdn/shop/files/8961381_009.jpg?v=1773881662",
+    "https://www.decathlon.com/cdn/shop/files/8961381_010.jpg?v=1773881662",
+    "https://www.decathlon.com/cdn/shop/files/8961381_011.jpg?v=1773881662",
+    "https://www.decathlon.com/cdn/shop/files/8961381_012.jpg?v=1773881662",
+    "https://www.decathlon.com/cdn/shop/files/8961381_015.jpg?v=1773881662",
+    "https://www.decathlon.com/cdn/shop/files/8961381_016.jpg?v=1773881662"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Shoes"
+  },
+  "brand": "Kiprun",
+  "colors": [
+    "Yellow"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "Yellow"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        "7",
+        "8",
+        "8.5",
+        "9",
+        "9.5",
+        "10",
+        "10.5",
+        "11",
+        "11.5",
+        "12",
+        "13"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "7"
+        }
+      ],
+      "sku": "5640546",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "8"
+        }
+      ],
+      "sku": "5653434",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "8.5"
+        }
+      ],
+      "sku": "5793281",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "9"
+        }
+      ],
+      "sku": "5654145",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "9.5"
+        }
+      ],
+      "sku": "5640548",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "10"
+        }
+      ],
+      "sku": "5640550",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "10.5"
+        }
+      ],
+      "sku": "5790461",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "11"
+        }
+      ],
+      "sku": "5640551",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "11.5"
+        }
+      ],
+      "sku": "5779821",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "12"
+        }
+      ],
+      "sku": "5640552",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Yellow"
+        },
+        {
+          "name": "Size",
+          "value": "13"
+        }
+      ],
+      "sku": "5640553",
+      "price": 255.0,
+      "available": true,
+      "image_urls": [
+        "https://www.decathlon.com/cdn/shop/files/8961381_001.jpg"
+      ]
+    }
+  ]
+}

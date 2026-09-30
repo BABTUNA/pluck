@@ -1,4 +1,6 @@
-"""Grade pluck against the previous project's verified outputs on 50 pages.
+"""Grade pluck on the 50 vendored pages: the assignment's 5 in data/ plus 45
+collected pages in data_unseen/, against the reference answers in eval/refs/
+(the previous pipeline's outputs, manually spot-checked).
 
 Usage: uv run python eval.py [n_pages]
 """
@@ -12,19 +14,14 @@ from pathlib import Path
 
 from pluck.extract import extract
 
-# the graded set lives in the original take-home checkout, point at yours
-OLD = Path(os.environ.get("PLUCK_EVAL_DIR",
-                          "/Users/benba/projects/interviews/take-home-2026"))
+ROOT = Path(__file__).parent
 
 
 async def main():
-    if not (OLD / "output").exists():
-        sys.exit("set PLUCK_EVAL_DIR to a take-home checkout with data/ and output/ "
-                 "(the 50 graded pages are not vendored into this repo)")
     limit = int(sys.argv[1]) if len(sys.argv) > 1 else 999
-    pages = (sorted((OLD / "data").glob("*.html"))
-             + sorted((OLD / "data_unseen").glob("*.html")))[:limit]
-    expected_cats = json.loads((OLD / "eval" / "expected_categories.json").read_text())
+    pages = (sorted((ROOT / "data").glob("*.html"))
+             + sorted((ROOT / "data_unseen").glob("*.html")))[:limit]
+    expected_cats = json.loads((ROOT / "eval" / "expected_categories.json").read_text())
 
     score = {k: [0, 0] for k in ("name", "price", "compare_at", "currency", "category")}
     sources, misses = Counter(), []
@@ -43,7 +40,7 @@ async def main():
         if isinstance(r, Exception):
             misses.append(f"{stem}: ERROR {r!r}")
             continue
-        ref_file = OLD / "output" / f"{stem}.json"
+        ref_file = ROOT / "eval" / "refs" / f"{stem}.json"
         if not ref_file.exists():
             continue
         ref = json.loads(ref_file.read_text())

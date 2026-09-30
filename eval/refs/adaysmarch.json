@@ -1,0 +1,127 @@
+{
+  "name": "Miller Cotton Lyocell Trousers",
+  "price": {
+    "price": 170.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "- 65% TENCEL™ Lyocell, 35% cotton \r\n- One visible button and one button inside\r\n- Topstitch at waistband\r\n- Side pockets\r\n- Two back pockets with buttoning\r\n",
+  "key_features": [
+    "65% TENCEL™ Lyocell, 35% cotton",
+    "One visible button and one button inside",
+    "Topstitch at waistband",
+    "Side pockets",
+    "Two back pockets with buttoning",
+    "Made in Portugal",
+    "Wash at 30°C with similar colors",
+    "Dry on hanger, do not tumble dry"
+  ],
+  "image_urls": [
+    "https://adaysmarch.centracdn.net/client/dynamic/images/8521_8e75528d95-102805-50_miller_cotton_lyocell_trousers_iron0822-square.jpg",
+    "https://adaysmarch.centracdn.net/client/dynamic/images/8521_d363c12cd7-miller-cotton-lyocell-iron-square.jpg",
+    "https://adaysmarch.centracdn.net/client/dynamic/images/8521_7915020793-102805-50_miller_cotton_lyocell_trousers_iron0828-square.jpg",
+    "https://adaysmarch.centracdn.net/client/dynamic/images/8521_b0d68ef8f6-102805-50_miller_cotton_lyocell_trousers_iron0839-square.jpg",
+    "https://adaysmarch.centracdn.net/client/dynamic/images/8521_b24209b41b-102805-50_miller_cotton_lyocell_trousers_iron0841-square.jpg"
+  ],
+  "video_url": "https://adaysmarch.centracdn.net/client/dynamic/attributes/531/miller_2x3.mp4",
+  "category": {
+    "name": "Apparel & Accessories > Clothing > Pants"
+  },
+  "brand": "A Day's March",
+  "colors": [
+    "Black",
+    "Dark Brown",
+    "Iron",
+    "Light Khaki",
+    "Navy",
+    "Olive",
+    "Oyster"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "44",
+        "46",
+        "48",
+        "50",
+        "52",
+        "54"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "44"
+        }
+      ],
+      "sku": "1028055044S",
+      "price": 170.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "46"
+        }
+      ],
+      "sku": "1028055046S",
+      "price": 170.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "48"
+        }
+      ],
+      "sku": "1028055048M",
+      "price": 170.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "50"
+        }
+      ],
+      "sku": "1028055050L",
+      "price": 170.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "52"
+        }
+      ],
+      "sku": "1028055052XL",
+      "price": 170.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "54"
+        }
+      ],
+      "sku": "1028055054XXL",
+      "price": 170.0,
+      "available": true,
+      "image_urls": []
+    }
+  ]
+}

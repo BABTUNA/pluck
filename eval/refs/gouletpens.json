@@ -1,0 +1,108 @@
+{
+  "name": "LAMY AL-star Fountain Pen - pine (Special Edition)",
+  "price": {
+    "price": 37.6,
+    "currency": "USD",
+    "compare_at_price": 47.0
+  },
+  "description": "This 2026 special edition green aluminum fountain pen comes with an interchangeable silver steel nib and a blue LAMY ink cartridge.",
+  "key_features": [
+    "One of two special edition LAMY AL-star fountain pen colors for 2026",
+    "Dark green anodized aluminum body",
+    "Translucent green triangular grip section",
+    "Matching green trim",
+    "Interchangeable silver steel nib",
+    "Snap-cap cap type",
+    "Postable cap",
+    "Compatible with bottled ink and proprietary LAMY ink cartridges",
+    "Weight: 22.0g overall (12g body, 10g cap)",
+    "Length: 139.4mm closed, 167.4mm posted",
+    "Body Diameter: 12.8mm",
+    "Grip Diameter: 8.9mm",
+    "Max Ink Capacity: 1.56ml cartridge, 1.08ml converter"
+  ],
+  "image_urls": [
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-2.jpg?v=1770130970",
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-3.jpg?v=1770130970",
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-1.jpg?v=1770130970",
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-5.jpg?v=1770130970",
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-6.jpg?v=1770130970",
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-4.jpg?v=1770130970",
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-flamingo-pine-group-1.jpg?v=1770131206",
+    "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-flamingo-pine-group-2_99a2906b-6ff8-4dfe-b3ed-d47d3dfaa93d.jpg?v=1770131206",
+    "https://www.gouletpens.com/cdn/shop/files/LAMYAL-starpine-stock-1.jpg?v=1770130970",
+    "https://www.gouletpens.com/cdn/shop/files/LAMYAL-starpine-stock-2.jpg?v=1770130970"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Office Supplies > Office Instruments > Writing & Drawing Instruments > Pens & Pencils > Pens"
+  },
+  "brand": "LAMY",
+  "colors": [
+    "black",
+    "black-purple",
+    "dark dusk",
+    "disco",
+    "flamingo",
+    "graphite",
+    "mint",
+    "oceanblue",
+    "pine",
+    "rollerskate",
+    "turmaline"
+  ],
+  "options": [
+    {
+      "name": "Nib Size",
+      "values": [
+        "Extra-Fine",
+        "Fine",
+        "Medium"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Nib Size",
+          "value": "Extra-Fine"
+        }
+      ],
+      "sku": "LMY-4041138",
+      "price": 37.6,
+      "available": true,
+      "image_urls": [
+        "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-2.jpg?v=1770130970"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Nib Size",
+          "value": "Fine"
+        }
+      ],
+      "sku": "LMY-4041139",
+      "price": 37.6,
+      "available": false,
+      "image_urls": [
+        "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-2.jpg?v=1770130970"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Nib Size",
+          "value": "Medium"
+        }
+      ],
+      "sku": "LMY-4041094",
+      "price": 37.6,
+      "available": false,
+      "image_urls": [
+        "https://www.gouletpens.com/cdn/shop/files/LAMY-AL-star-pine-2.jpg?v=1770130970"
+      ]
+    }
+  ]
+}

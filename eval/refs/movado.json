@@ -1,0 +1,52 @@
+{
+  "name": "Centurion Chronograph",
+  "price": {
+    "price": 1795.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "The Centurion marks a new dimension in our enduring pursuit of harmony: geometry, clarity, integrity of materials. Crafted with a Swiss made chronograph movement. Designed with an octagonal PVD case, bezel and integrated H-link bracelet. Swiss Super-LumiNova® markers. Textured matte dial. Bracelet engraved with Movado M Chevron logo, inspired by our archives.",
+  "key_features": [
+    "Dial: slate bue with index",
+    "Case Diameter: 40",
+    "Case Material: grey mid PVD-finished stainless steel",
+    "Crystal Fabrication: Sapphire",
+    "Water Resistance: 50 meters",
+    "Movement: Swiss quartz chronograph movement",
+    "Gender: men's",
+    "Strap: link bracelet",
+    "Bracelet: link bracelet grey mid PVD-finished stainless steel",
+    "Watch Shape: Octagonal",
+    "Clasp Type: push-button deployment",
+    "Case Depth: 11.35"
+  ],
+  "image_urls": [
+    "https://sfcc-prod.movado.com/dw/image/v2/BDKZ_PRD/on/demandware.static/-/Sites-mgi-master/default/dwc5c65134/images/products/0608074w_LRG_rgb_Profile.png",
+    "https://sfcc-prod.movado.com/dw/image/v2/BDKZ_PRD/on/demandware.static/-/Sites-mgi-master/default/dw79b6b51e/images/products/0608074w_LRG_rgb_Back.png",
+    "https://sfcc-prod.movado.com/dw/image/v2/BDKZ_PRD/on/demandware.static/-/Sites-mgi-master/default/dw0dbb26d2/images/products/0608074w_LRG_rgb_Web.png",
+    "https://sfcc-prod.movado.com/on/demandware.static/-/Sites-mgi-master/default/dw0dbb26d2/images/products/0608074w_LRG_rgb_Web.png"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Jewelry > Watches"
+  },
+  "brand": "MOVADO",
+  "colors": [
+    "grey/blue"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "grey/blue"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        "40"
+      ]
+    }
+  ],
+  "variants": []
+}

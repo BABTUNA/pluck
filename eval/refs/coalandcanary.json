@@ -1,0 +1,26 @@
+{
+  "name": "Fresh Air & Polar Bears - The Canada Candle",
+  "price": {
+    "price": 40.0,
+    "currency": "CAD",
+    "compare_at_price": null
+  },
+  "description": "Oh Canada! Celebrate with Fresh Air & Polar Bears, our newest candle in collaboration with talented Kal Barteski, with a portion of the proceeds going to the Polar Bear Fund. This candle features a trio of clover, jasmine, and aloe. Burn time is approx. 50 - 60 hours and features an FSC crackling wooden wick.",
+  "key_features": [
+    "Scent notes: trio of clover, jasmine, and aloe",
+    "Burn time is approx. 50 - 60 hours",
+    "Features an FSC crackling wooden wick"
+  ],
+  "image_urls": [
+    "https://static.wixstatic.com/media/58b250_161ea1381a6e42d2a8331105d6c2dde2~mv2.png/v1/fit/w_50,h_50,q_90/file.png",
+    "https://static.wixstatic.com/media/58b250_161ea1381a6e42d2a8331105d6c2dde2~mv2.png/v1/fill/w_81,h_81,al_c,q_85,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/58b250_161ea1381a6e42d2a8331105d6c2dde2~mv2.png"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Home & Garden > Decor > Home Fragrances > Candles"
+  },
+  "brand": "Coal and Canary",
+  "colors": [],
+  "options": [],
+  "variants": []
+}

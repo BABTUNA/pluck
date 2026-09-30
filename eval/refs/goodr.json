@@ -1,0 +1,65 @@
+{
+  "name": "Bean There, Run That",
+  "price": {
+    "price": 35.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Have you Bean There, Run That?! Now you can, with these Chicago-inspired shades. Featuring a geometric pattern in the city's flag colors and burnt orange lenses. Perfect for marathon miles, or just admiring your reflection at The Bean!!!",
+  "key_features": [
+    "100% UVA & UVB protection",
+    "Scratch-resistant & built to survive your chaos",
+    "Mirrored lenses reduce bright light & hide your peepers",
+    "Lightweight frames built for all-day comfort & everyday adventures",
+    "Polarized",
+    "No Slip",
+    "No Bounce"
+  ],
+  "image_urls": [
+    "https://goodr.com/cdn/shop/files/1_RunCityChicago_SideTransparent_1200x600_crop_center.png?v=1788983204",
+    "https://goodr.com/cdn/shop/files/1_RunCityChicago_SideTransparent_1024x1024.png?v=1788983204",
+    "https://goodr.com/cdn/shop/files/1_RunCityChicago_SideTransparent.png?v=1788983204",
+    "https://goodr.com/cdn/shop/files/3_RunCityChicago_FrontTransparent.png?v=1788983204",
+    "https://goodr.com/cdn/shop/files/2_RunCityChicago_Lifestyle.jpg?v=1788983204",
+    "https://goodr.com/cdn/shop/files/4_RunCityChicago_Packaging.jpg?v=1788983204",
+    "https://goodr.com/cdn/shop/files/5_RunCityChicago_Featured.jpg?v=1788983204"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Clothing Accessories > Sunglasses"
+  },
+  "brand": "goodr sunglasses",
+  "colors": [
+    "translucent blue"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "Small",
+        "Original",
+        "Large"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "Original"
+        }
+      ],
+      "sku": "G01093-OG-01",
+      "price": 35.0,
+      "available": true,
+      "image_urls": [
+        "https://goodr.com/cdn/shop/files/1_RunCityChicago_SideTransparent_1024x1024.png?v=1788983204",
+        "https://goodr.com/cdn/shop/files/3_RunCityChicago_FrontTransparent.png?v=1788983204",
+        "https://goodr.com/cdn/shop/files/2_RunCityChicago_Lifestyle.jpg?v=1788983204",
+        "https://goodr.com/cdn/shop/files/4_RunCityChicago_Packaging.jpg?v=1788983204",
+        "https://goodr.com/cdn/shop/files/5_RunCityChicago_Featured.jpg?v=1788983204"
+      ]
+    }
+  ]
+}

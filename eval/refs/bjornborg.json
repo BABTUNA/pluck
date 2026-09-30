@@ -1,0 +1,135 @@
+{
+  "name": "Borg Short Shorts",
+  "price": {
+    "price": 499.0,
+    "currency": "SEK",
+    "compare_at_price": null
+  },
+  "description": "Nya snygga Björn Borg Short Shorts\nSpeciellt för dig som tycker rörelsefrihet och bekvämlighet är viktiga detaljer för en bättre träning. Den kortare modellen med slitsar i sidorna, jerseymaterial på insidan av benen och en stretchig resår ger dig större rörelsefrihet.",
+  "key_features": [
+    "Återvunnen polyester",
+    "Smart nyckelficka",
+    "Kortare ben",
+    "Suitable for sport",
+    "Snabbtorkande",
+    "Breathing material",
+    "Smooth seams",
+    "92% Polyester - Recycled",
+    "8% Elastane",
+    "Tillverkad i: China(CN)"
+  ],
+  "image_urls": [
+    "https://imgs.bjornborg.com/media/images/1111_8c4a7c78e5-10000573_bl017_1-original.jpg",
+    "https://imgs.bjornborg.com/media/images/1111_9c9b76f658-10000573_bl017_2-original.jpg",
+    "https://imgs.bjornborg.com/media/images/1111_0904802de0-10000573_bl017_3-original.jpg",
+    "https://imgs.bjornborg.com/media/images/1111_d08bb8bbca-10000573_bl017_4-original.jpg"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Clothing > Shorts"
+  },
+  "brand": "BJÖRN BORG",
+  "colors": [
+    "Moonlit ocean",
+    "black_tonal_logo"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "S"
+        }
+      ],
+      "sku": "10000573_BL017-S",
+      "price": 499.0,
+      "available": false,
+      "image_urls": [
+        "https://imgs.bjornborg.com/media/images/1111_8c4a7c78e5-10000573_bl017_1-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_9c9b76f658-10000573_bl017_2-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_0904802de0-10000573_bl017_3-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_d08bb8bbca-10000573_bl017_4-original.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "M"
+        }
+      ],
+      "sku": "10000573_BL017-M",
+      "price": 499.0,
+      "available": false,
+      "image_urls": [
+        "https://imgs.bjornborg.com/media/images/1111_8c4a7c78e5-10000573_bl017_1-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_9c9b76f658-10000573_bl017_2-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_0904802de0-10000573_bl017_3-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_d08bb8bbca-10000573_bl017_4-original.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "L"
+        }
+      ],
+      "sku": "10000573_BL017-L",
+      "price": 499.0,
+      "available": false,
+      "image_urls": [
+        "https://imgs.bjornborg.com/media/images/1111_8c4a7c78e5-10000573_bl017_1-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_9c9b76f658-10000573_bl017_2-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_0904802de0-10000573_bl017_3-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_d08bb8bbca-10000573_bl017_4-original.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "XL"
+        }
+      ],
+      "sku": "10000573_BL017-XL",
+      "price": 499.0,
+      "available": false,
+      "image_urls": [
+        "https://imgs.bjornborg.com/media/images/1111_8c4a7c78e5-10000573_bl017_1-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_9c9b76f658-10000573_bl017_2-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_0904802de0-10000573_bl017_3-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_d08bb8bbca-10000573_bl017_4-original.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "XXL"
+        }
+      ],
+      "sku": "10000573_BL017-XXL",
+      "price": 499.0,
+      "available": false,
+      "image_urls": [
+        "https://imgs.bjornborg.com/media/images/1111_8c4a7c78e5-10000573_bl017_1-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_9c9b76f658-10000573_bl017_2-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_0904802de0-10000573_bl017_3-original.jpg",
+        "https://imgs.bjornborg.com/media/images/1111_d08bb8bbca-10000573_bl017_4-original.jpg"
+      ]
+    }
+  ]
+}

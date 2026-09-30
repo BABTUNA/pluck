@@ -1,0 +1,133 @@
+{
+  "name": "Soft \"Mochi\" Long Pillow",
+  "price": {
+    "price": 19.95,
+    "currency": "EUR",
+    "compare_at_price": 39.95
+  },
+  "description": "Enjoy cushioned support and comfort with this soft and stretchy design that can be used in multiple ways and whether as a backrest while seated, or as a headrest when lying down.",
+  "key_features": [
+    "Soft filling",
+    "110 x 26 x 26 cm",
+    "90% polyester; 10% elastane; Filling: 100% polyester",
+    "Weight: 1.40 KGS",
+    "Country of origin: China"
+  ],
+  "image_urls": [
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/1280x1280/products/10259/3275882/P-19819-H-000000-057__18374.1778781001.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/3275883/P-19819-H-000000-057_03__32452.1778781002.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/3275884/P-19819-H-000000-057_01__33830.1778781002.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/3275885/P-19819-H-000000-057_02__49299.1778781002.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588953/V-19819-H-014999__93805.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588956/P-19819-H-000000-014999_03__71844.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588954/P-19819-H-000000-014999_01__93792.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588955/P-19819-H-000000-014999_02__12056.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588947/V-19819-H-007999__08968.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588951/P-19819-H-000000-007999_04__69117.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588952/P-19819-H-000000-007999_05__06180.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588950/P-19819-H-000000-007999_03__34748.1778781003.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588949/P-19819-H-000000-007999_02__92956.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588957/V-19819-H-050999__38567.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588960/P-19819-H-000000-050999_03__95993.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588958/P-19819-H-000000-050999_01__04167.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588959/P-18348-H-000000-050999_02__13462.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2631811/V-19819-H-051999__63234.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2631812/P-19819-H-000000-051999_01__49086.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2631814/P-19819-H-000000-051999_03__71242.1778781004.jpg?c=1",
+    "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2631813/P-19819-H-000000-051999_02__92775.1778781004.jpg?c=1"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Home & Garden > Decor > Throw Pillows"
+  },
+  "brand": "MUJI",
+  "colors": [
+    "Charcoal Grey",
+    "Light Beige",
+    "Smoky Green",
+    "Pale Green",
+    "Mint Green"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "Charcoal Grey",
+        "Light Beige",
+        "Smoky Green"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        "One Size"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Smoky Green"
+        },
+        {
+          "name": "Size",
+          "value": "One Size"
+        }
+      ],
+      "sku": "4550584932137",
+      "price": 19.95,
+      "available": false,
+      "image_urls": [
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/1280x1280/products/10259/3275882/P-19819-H-000000-057__18374.1778781001.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/3275883/P-19819-H-000000-057_03__32452.1778781002.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/3275884/P-19819-H-000000-057_01__33830.1778781002.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/3275885/P-19819-H-000000-057_02__49299.1778781002.jpg?c=1"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Charcoal Grey"
+        },
+        {
+          "name": "Size",
+          "value": "One Size"
+        }
+      ],
+      "sku": "4550584932113",
+      "price": 31.95,
+      "available": false,
+      "image_urls": [
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588947/V-19819-H-007999__08968.1778781003.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588951/P-19819-H-000000-007999_04__69117.1778781003.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588952/P-19819-H-000000-007999_05__06180.1778781003.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588950/P-19819-H-000000-007999_03__34748.1778781003.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588949/P-19819-H-000000-007999_02__92956.1778781004.jpg?c=1"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Light Beige"
+        },
+        {
+          "name": "Size",
+          "value": "One Size"
+        }
+      ],
+      "sku": "4550584240744",
+      "price": 31.95,
+      "available": false,
+      "image_urls": [
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588953/V-19819-H-014999__93805.1778781003.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588956/P-19819-H-000000-014999_03__71844.1778781003.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588954/P-19819-H-000000-014999_01__93792.1778781003.jpg?c=1",
+        "https://cdn11.bigcommerce.com/s-36unquhwg5/images/stencil/{:size}/products/10259/2588955/P-19819-H-000000-014999_02__12056.1778781003.jpg?c=1"
+      ]
+    }
+  ]
+}

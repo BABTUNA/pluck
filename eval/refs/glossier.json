@@ -1,0 +1,72 @@
+{
+  "name": "Balm Dotcom Trio",
+  "price": {
+    "price": 42.0,
+    "currency": "USD",
+    "compare_at_price": 48.0
+  },
+  "description": "A customizable three-pack of our cult-favorite skin salve in your choice of flavors (or Original, with none)",
+  "key_features": [
+    "Castor Seed Oil - A plant-based oil with fatty acids and unique water-binding properties to help keep lips moisturized.",
+    "Beeswax - A naturally-derived emollient that leaves lips feeling cushiony and non-sticky.",
+    "15 ml / 0.5 fl oz"
+  ],
+  "image_urls": [
+    "https://www.glossier.com/cdn/shop/files/BDC_Trio_-_I_3NY_birthday_blackcherry.png?v=1788208005",
+    "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-02_427b3436-63a6-423a-9838-446fcb39a972.png?v=1784582788",
+    "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-04_1aaa8b8e-d2ee-4161-a328-99666fe46ce5.png?v=1784582723",
+    "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-05_66da3348-9ae3-4638-aa45-b2981b8973d3.png?v=1784582722",
+    "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-06_81576623-1cb8-467f-a608-8c05009766a4.png?v=1784582723",
+    "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-07_ff0d52a1-a34b-44b5-8343-51ae42cd9fcc.png?v=1784582722",
+    "https://www.glossier.com/cdn/shop/files/glossier-0813-balm-dotcom-trio-carousel-02.png?v=1786650890"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Health & Beauty > Personal Care > Cosmetics > Skin Care > Lip Balms & Treatments > Lip Balms"
+  },
+  "brand": "Glossier",
+  "colors": [
+    "I ❤️ NY",
+    "Black Cherry",
+    "Birthday",
+    "Strawberry",
+    "Original",
+    "Mint",
+    "Mango",
+    "Rose",
+    "Coconut",
+    "Wild Fig",
+    "Lavender",
+    "Espresso"
+  ],
+  "options": [
+    {
+      "name": "Title",
+      "values": [
+        "Default Title"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Title",
+          "value": "Default Title"
+        }
+      ],
+      "sku": "BDCTRIO",
+      "price": 42.0,
+      "available": true,
+      "image_urls": [
+        "https://www.glossier.com/cdn/shop/files/BDC_Trio_-_I_3NY_birthday_blackcherry.png?v=1788208005",
+        "https://www.glossier.com/cdn/shop/files/glossier-0813-balm-dotcom-trio-carousel-02.png?v=1786650890",
+        "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-02_427b3436-63a6-423a-9838-446fcb39a972.png?v=1784582788",
+        "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-04_1aaa8b8e-d2ee-4161-a328-99666fe46ce5.png?v=1784582723",
+        "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-05_66da3348-9ae3-4638-aa45-b2981b8973d3.png?v=1784582722",
+        "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-06_81576623-1cb8-467f-a608-8c05009766a4.png?v=1784582723",
+        "https://www.glossier.com/cdn/shop/files/glossier-iheartny-bdc-trio-carousel-07_ff0d52a1-a34b-44b5-8343-51ae42cd9fcc.png?v=1784582722"
+      ]
+    }
+  ]
+}

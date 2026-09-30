@@ -1,0 +1,149 @@
+{
+  "name": "The Box-Cut Tee in Essential Cotton | Black | No Pocket",
+  "price": {
+    "price": 34.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "With over 1M sold, we don’t mean to brag, but this tee is kind of a big deal. Famous for its crew neck, perfectly relaxed fit, slightly cropped length, easy short sleeves, it’s made of 100% organic cotton which makes it super breathable and soft to the touch. Like fries though, you can’t have just one, you’ll want a handful.",
+  "key_features": [
+    "Famous for its crew neck",
+    "Perfectly relaxed fit",
+    "Slightly cropped length",
+    "Easy short sleeves",
+    "100% organic cotton",
+    "Materials: 100% Organic Cotton, Exclusive of Elastic",
+    "Machine Wash Cold. Gentle Cycle with Like Colors.",
+    "Only Non-Chlorine Bleach When Needed.",
+    "Tumble Dry Low. Cool Iron When Needed.",
+    "Made in Kandy, Sri Lanka"
+  ],
+  "image_urls": [
+    "https://www.everlane.com/cdn/shop/files/716304bf_8e8d_2a95bbb8-da9a-469d-82aa-54d716370188_small.jpg?v=1753411472",
+    "https://www.everlane.com/cdn/shop/files/ab3f051f_794b_2c637b6c-0b10-4de4-9ce8-9a679dd93a33.jpg?v=1753411471",
+    "https://www.everlane.com/cdn/shop/files/fa2572e5_02cd_1f5b0a5d-a6c4-4009-a615-7c07e04bc22b.jpg?v=1753411472",
+    "https://www.everlane.com/cdn/shop/files/766adc5d_3a34_afb378fb-1e4c-4c21-8d21-6d6e8383cfa0.jpg?v=1753411471",
+    "https://www.everlane.com/cdn/shop/files/9d7d0810_0875_6ff1e55f-9992-4532-98c0-e378e098dc6f.jpg?v=1753411472"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Clothing > Shirts & Tops"
+  },
+  "brand": "Everlane",
+  "colors": [
+    "Black"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "XXXL"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "XXS"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-XXS",
+      "price": 34.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "XS"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-XS",
+      "price": 34.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "S"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-S",
+      "price": 34.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "M"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-M",
+      "price": 34.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "L"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-L",
+      "price": 34.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "XL"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-B",
+      "price": 34.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "XXL"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-AB",
+      "price": 34.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "XXXL"
+        }
+      ],
+      "sku": "F-T-CTN-ORGN-BOX-BLK-AAB",
+      "price": 34.0,
+      "available": false,
+      "image_urls": []
+    }
+  ]
+}

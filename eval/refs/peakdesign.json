@@ -1,0 +1,339 @@
+{
+  "name": "Everyday Backpack",
+  "price": {
+    "price": 279.95,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "An iconic, award-winning pack for everyday and photo carry, the newly revamped Everyday Backpack is built around access, organization, expansion, and protection. Unique MagLatch hardware provides lightning fast top access, with dual side access via two weatherproof UltraZips. Inside, 3 configurable FlexFold dividers keep gear organized, protected, and not bunched at the bottom of your bag. Dedicated sleeves for up to 15” laptop (or 16\" MacBook Pro), tablet, or documents, plus a variety of internal slip pockets for small items.",
+  "key_features": [
+    "MagLatch hardware provides lightning fast top access",
+    "Dual side access via two weatherproof UltraZips",
+    "3 configurable FlexFold dividers",
+    "Dedicated sleeves for up to 15” laptop (or 16\" MacBook Pro), tablet, or documents",
+    "PFAS-free"
+  ],
+  "image_urls": [
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-1.jpg",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack.jpg?v=1762275581",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-2.jpg?v=1725404905",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-7.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-2.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-6.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-2_777199fc-5ee7-4e3f-9e99-bcbd437c617f.jpg?v=1725404921",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-7_a0272555-c975-4580-bbcf-38ad41c7c354.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-6_6836be31-4c5d-460f-b3cd-9ecf7f10a6c0.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-4_c17afc8d-8561-403e-b561-0fe92c9cdd11.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-7_5486d1d1-fb34-47a2-ac85-60baed4d71a6.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-3_870b9f7d-b832-42f7-90b6-85a939cb79b0.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-4_48b96bb4-43a2-46bb-b19b-4178288b0a48.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-5_0e835765-ecd9-41a8-9e6c-3c83b795d1a7.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-6_330ab026-370e-4c16-ba1b-9fdb3f16798a.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-5_5109e948-9c40-48bf-aad2-c95adafb28c1.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/bags-everyday-v2-backpack-20L-black-PD_FullSize-78.jpg?v=1727204888",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-1.jpg?v=1762275582",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-4.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-7.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-3.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-4.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-5.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-6.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-5.jpg?v=1747072618",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-3.jpg?v=1747072879",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Coyote-8114_824c8c85-cbfa-41fd-a07d-338052db3cc5.jpg?v=1762275585",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Eclipse-1213.jpg?v=1753395675",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Ocean-1218.jpg?v=1753395149",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-charcoal-20-1.jpg?v=1762275583",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Kelp-1225.jpg?v=1753393545",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-midnight-20-1.jpg?v=1762275585",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-ash-20-1.jpg?v=1762275582",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-20L-coyote-159A0794_bc71cbb5-88ff-4b85-b4b3-b64d14dfa0cf.jpg?v=1738046073",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-20L-coyote-159A0772_0c13dc6b-dd1d-4255-b026-0082f8dee586.jpg?v=1738046073",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-20L-coyote-159A0699_472b43e5-713e-4947-8fef-41a05b57f7d8.jpg?v=1738046073",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-30L-coyote-159A1150_a0912b4c-f933-44c4-a42c-e3ea74639351.jpg?v=1738046093",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-30L-coyote-159A1516_1438c916-10f0-41e8-830a-8661c0578a2a.jpg?v=1738046093",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/coyote-everydaybackpack-20L-159A9394_ad4a9b77-d3f5-4276-8548-d9f5d3b4e719.jpg?v=1738046073",
+    "https://cdn.shopify.com/s/files/1/2986/1172/files/coyote-everydaybackpack-30L-159A9503_a86236d7-2fcd-44db-98a1-5eff2bdfc469.jpg?v=1738046093"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Cameras & Optics > Camera & Optic Accessories > Camera Parts & Accessories > Camera Bags & Cases"
+  },
+  "brand": "Peak Design",
+  "colors": [
+    "Black",
+    "Charcoal",
+    "Ocean",
+    "Kelp",
+    "Midnight",
+    "Coyote X-Pac™",
+    "Ash",
+    "Eclipse"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "20L",
+        "30L"
+      ]
+    },
+    {
+      "name": "Color",
+      "values": [
+        "Black",
+        "Charcoal",
+        "Ocean",
+        "Kelp",
+        "Midnight",
+        "Coyote X-Pac™",
+        "Ash",
+        "Eclipse"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Black"
+        }
+      ],
+      "sku": "BEDB-20-BK-3",
+      "price": 279.95,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-20-1.jpg"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Charcoal"
+        }
+      ],
+      "sku": "BEDB-20-CH-3",
+      "price": 279.95,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-charcoal-20-1.jpg?v=1762275583"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Ocean"
+        }
+      ],
+      "sku": "BEDB-20-DS-3",
+      "price": 279.95,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Ocean-1218.jpg?v=1753395149"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Kelp"
+        }
+      ],
+      "sku": "BEDB-20-KP-3",
+      "price": 279.95,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Kelp-1225.jpg?v=1753393545"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Midnight"
+        }
+      ],
+      "sku": "BEDB-20-MN-3",
+      "price": 279.95,
+      "available": false,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-midnight-20-1.jpg?v=1762275585"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Coyote X-Pac™"
+        }
+      ],
+      "sku": "BEDB-20-CY-3",
+      "price": 279.95,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Coyote-8114_824c8c85-cbfa-41fd-a07d-338052db3cc5.jpg?v=1762275585"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Ash"
+        }
+      ],
+      "sku": "BEDB-20-AS-3",
+      "price": 279.95,
+      "available": false,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-ash-20-1.jpg?v=1762275582"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "20L"
+        },
+        {
+          "name": "Color",
+          "value": "Eclipse"
+        }
+      ],
+      "sku": "BEDB-20-EP-3",
+      "price": 279.95,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/Everyday-Backpack-20L-Eclipse-1213.jpg?v=1753395675"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "30L"
+        },
+        {
+          "name": "Color",
+          "value": "Black"
+        }
+      ],
+      "sku": "BEDB-30-BK-3",
+      "price": 299.95,
+      "available": true,
+      "image_urls": [
+        "https://cdn.shopify.com/s/files/1/2986/1172/files/everyday-backpack-black-30-1.jpg?v=1762275582"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "30L"
+        },
+        {
+          "name": "Color",
+          "value": "Charcoal"
+        }
+      ],
+      "sku": "BEDB-30-CH-3",
+      "price": 299.95,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "30L"
+        },
+        {
+          "name": "Color",
+          "value": "Coyote X-Pac™"
+        }
+      ],
+      "sku": "BEDB-30-CY-3",
+      "price": 299.95,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "30L"
+        },
+        {
+          "name": "Color",
+          "value": "Midnight"
+        }
+      ],
+      "sku": "BEDB-30-MN-3",
+      "price": 299.95,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "30L"
+        },
+        {
+          "name": "Color",
+          "value": "Kelp"
+        }
+      ],
+      "sku": "BEDB-30-KP-3",
+      "price": 299.95,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "30L"
+        },
+        {
+          "name": "Color",
+          "value": "Ocean"
+        }
+      ],
+      "sku": "BEDB-30-DS-3",
+      "price": 299.95,
+      "available": true,
+      "image_urls": []
+    }
+  ]
+}

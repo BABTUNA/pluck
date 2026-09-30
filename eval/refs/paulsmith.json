@@ -1,0 +1,136 @@
+{
+  "name": "Tailored-Fit White Cotton 'Artist Stripe' Cuff Shirt",
+  "price": {
+    "price": 335.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Crafted in Italy from 100% cotton-poplin cloth from the renowned Thomas Mason Mill, this refined long-sleeve shirt is cut in a tailored-fit with colourful 'Artist Stripe' cuff lining - adding a playful twist to a classic style.",
+  "key_features": [
+    "100% soft-handle poplin cotton",
+    "Paul Smith signature label stitched internally",
+    "Tailored-Fit",
+    "100% Cotton",
+    "Made In Italy",
+    "Machine washable"
+  ],
+  "image_urls": [
+    "https://assets.paulsmith.com/paul-smith-products/f_auto,q_auto,w_1200,c_scale/v1714741465/MODEL/ECOM/M1R/M1R-800P3-L00050-01/M1R-800P3-L00050-01_3.jpg",
+    "https://assets.paulsmith.com/paul-smith-products/f_jpg,q_auto,ar_5:7,c_fill,w_1228/v1714741460/MODEL/ECOM/M1R/M1R-800P3-L00050-01/M1R-800P3-L00050-01_1",
+    "https://assets.paulsmith.com/paul-smith-products/f_jpg,q_auto,ar_5:7,c_fill,w_1228/v1714741465/MODEL/ECOM/M1R/M1R-800P3-L00050-01/M1R-800P3-L00050-01_3",
+    "https://assets.paulsmith.com/paul-smith-products/f_jpg,q_auto,ar_5:7,c_fill,w_1228/v1714741463/MODEL/ECOM/M1R/M1R-800P3-L00050-01/M1R-800P3-L00050-01_2",
+    "https://assets.paulsmith.com/paul-smith-products/f_jpg,q_auto,ar_5:7,c_fill,w_1228/v1695906101/STILL/M1R/M1R-800P3-L00050-01/M1R-800P3-L00050-01_10",
+    "https://assets.paulsmith.com/paul-smith-products/f_jpg,q_auto,ar_5:7,c_fill,w_1228/v1695906104/STILL/M1R/M1R-800P3-L00050-01/M1R-800P3-L00050-01_20",
+    "https://assets.paulsmith.com/paul-smith-products/f_jpg,q_auto,ar_5:7,c_fill,w_1228/v1684250849/STILL/M1R/M1R-800P3-L00050-01/M1R-800P3-L00050-01_30"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Clothing > Shirts & Tops"
+  },
+  "brand": "Paul Smith",
+  "colors": [
+    "White"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "14.5",
+        "15",
+        "15.5",
+        "16",
+        "16.5",
+        "17",
+        "17.5",
+        "18",
+        "18.5"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "15"
+        }
+      ],
+      "sku": "M1R-800P3-L00050-15",
+      "price": 335.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "15.5"
+        }
+      ],
+      "sku": "M1R-800P3-L00050-15.5",
+      "price": 335.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "16"
+        }
+      ],
+      "sku": "M1R-800P3-L00050-16",
+      "price": 335.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "16.5"
+        }
+      ],
+      "sku": "M1R-800P3-L00050-16.5",
+      "price": 335.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "17"
+        }
+      ],
+      "sku": "M1R-800P3-L00050-17",
+      "price": 335.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "17.5"
+        }
+      ],
+      "sku": "M1R-800P3-L00050-17.5",
+      "price": 335.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "18"
+        }
+      ],
+      "sku": "M1R-800P3-L00050-18",
+      "price": 335.0,
+      "available": true,
+      "image_urls": []
+    }
+  ]
+}

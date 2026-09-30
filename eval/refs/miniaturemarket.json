@@ -1,0 +1,38 @@
+{
+  "name": "Azul Duel",
+  "price": {
+    "price": 23.99,
+    "currency": "USD",
+    "compare_at_price": 29.99
+  },
+  "description": "Players have to show the king, in a tile-laying duel, who is the best among the best artists of all Portugal! Experience the famous tile-drafting mechanics with a new stacking twist. For 2 players ages 10+",
+  "key_features": [
+    "End Game Bonuses",
+    "Open Drafting",
+    "Pattern Building",
+    "Set Collection",
+    "Tile Placement",
+    "Turn Order: Claim Action",
+    "TWO-PLAYER CHALLENGE: Experience the classic Azul tile-laying mechanics now optimized for a duel between two strategic minds, perfect for couples or one-on-one gameplay.",
+    "BEAUTIFULLY DESIGNED: The game features materials and artwork inspired by traditional Chinese shadow theatre, providing not only a competitive experience but also a visually stunning set-up.",
+    "STREAMLINED GAMEPLAY: Engage in intense strategic decisions with simplified game mechanics that maintain constant tension and tactical choices throughout the play.",
+    "VARIABLE SETUP: Includes a unique array of scoring opportunities and game setups, ensuring that no two games are alike and offering high replayability.",
+    "EDUCATIONAL AND ENGAGING: Helps players develop strategic thinking and planning skills while they immerse themselves in the artistry and culture embedded in the game's design."
+  ],
+  "image_urls": [
+    "https://www.miniaturemarket.com/thumbnail/9f/97/e9/1752268021/nmg60160en_800x800.jpg",
+    "https://www.miniaturemarket.com/media/9f/97/e9/1752268021/nmg60160en.jpg?ts=1752268021",
+    "https://www.miniaturemarket.com/thumbnail/5e/35/a8/1752268023/NMG60160EN-2_800x800.jpg",
+    "https://www.miniaturemarket.com/thumbnail/04/e9/31/1752268024/NMG60160EN-3_800x800.jpg",
+    "https://www.miniaturemarket.com/media/5e/35/a8/1752268023/NMG60160EN-2.jpg?ts=1752268023",
+    "https://www.miniaturemarket.com/media/04/e9/31/1752268024/NMG60160EN-3.jpg?ts=1752268024"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Toys & Games > Games > Board Games"
+  },
+  "brand": "Next Move Games",
+  "colors": [],
+  "options": [],
+  "variants": []
+}

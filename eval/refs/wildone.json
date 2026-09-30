@@ -1,0 +1,184 @@
+{
+  "name": "Cat Harness & Leash + Collar Kit",
+  "price": {
+    "price": 45.0,
+    "currency": "USD",
+    "compare_at_price": 50.0
+  },
+  "description": "Everything you need for safe, comfortable cat adventures. This complete walking kit includes our escape-resistant Cat Harness & Leash alongside a lightweight Breakaway Cat Collar for everyday wear. Designed specifically for cats, the harness features a comfort-first fit with adjustable straps and soft materials, while the breakaway collar includes a safety buckle designed to release under pressure. Finished with lightweight hardware and playful details, this all-in-one set makes it easy to gear up for both indoor and outdoor routines.\nImportant: The leash should only be attached to the harness — never to the breakaway collar.",
+  "key_features": [
+    "Lightweight Comfort: Cushioned, barely-there feel",
+    "Adjustable Fit: Customizes easily for a secure, comfortable wear",
+    "Breakaway Safety: Collar releases under pressure",
+    "1 Cat Harness",
+    "1 Cat Leash",
+    "1 Breakaway Cat Collar",
+    "Harness & Leash: Polyester, Neoprene Padding, Zinc Alloy D-Ring & Leash Clip, Plastic Hardware",
+    "Breakaway Collar: Polyester Webbing, Breakaway Plastic Buckle, Metal Bell, Silicone Slider"
+  ],
+  "image_urls": [
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Lilac_PDP_01_4x5_Web.jpg?v=1777923729&width=1920",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Lilac_S-M_PDP_01_4x5_Web.jpg?v=1777561333",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Lilac_PDP_01_4x5_Web.jpg?v=1777128279",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Bubblegum_PDP_01_4x5_Web.jpg?v=1777923729",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Retro_PDP_01_4x5_Web.jpg?v=1777923729",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Retro_S-M_PDP_01_4x5_Web.jpg?v=1776972431",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Bubblegum_PDP_01_4x5_Web.jpg?v=1777128262",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_BreakawayCollar_Retro_OnCat_PDP_03_4x5_Web.jpg?v=1777128248",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Retro_PDP_01_4x5_Web.jpg?v=1777128248",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Bubblegum_S-M_PDP_01_4x5_Web_c.jpg?v=1778019487",
+    "https://wildone.com/cdn/shop/files/WO_VM_Cat_HarnessWalkKit_Bubblegum_OnCat_PDP_03_4x5_Web.jpg?v=1780070303",
+    "https://wildone.com/cdn/shop/files/wo_pdp_cat-harness-leash-kit_campaign_02.jpg?v=1777405685"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Animals & Pet Supplies > Pet Supplies > Pet Collars & Harnesses"
+  },
+  "brand": "Wild One",
+  "colors": [
+    "Bubblegum",
+    "Retro",
+    "Lilac"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "Bubblegum",
+        "Retro",
+        "Lilac"
+      ]
+    },
+    {
+      "name": "Collar Size",
+      "values": [
+        "S / M • Cat",
+        "XS • Kitten"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Lilac"
+        },
+        {
+          "name": "Collar Size",
+          "value": "S / M • Cat"
+        }
+      ],
+      "sku": "WO-CAT-HRN-L-COL",
+      "price": 45.0,
+      "available": true,
+      "image_urls": [
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Lilac_PDP_01_4x5_Web.jpg?v=1777923729&width=1920",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Lilac_S-M_PDP_01_4x5_Web.jpg?v=1777561333",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Lilac_PDP_01_4x5_Web.jpg?v=1777128279"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Bubblegum"
+        },
+        {
+          "name": "Collar Size",
+          "value": "S / M • Cat"
+        }
+      ],
+      "sku": "WO-CAT-HRN-L-COL-B-SM",
+      "price": 45.0,
+      "available": true,
+      "image_urls": [
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Bubblegum_PDP_01_4x5_Web.jpg?v=1777923729",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Bubblegum_S-M_PDP_01_4x5_Web_c.jpg?v=1778019487",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Bubblegum_PDP_01_4x5_Web.jpg?v=1777128262",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_HarnessWalkKit_Bubblegum_OnCat_PDP_03_4x5_Web.jpg?v=1780070303"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Bubblegum"
+        },
+        {
+          "name": "Collar Size",
+          "value": "XS • Kitten"
+        }
+      ],
+      "sku": "WO-CAT-HRN-L-COL-B-XS",
+      "price": 45.0,
+      "available": true,
+      "image_urls": [
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Bubblegum_PDP_01_4x5_Web.jpg?v=1777923729",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Bubblegum_S-M_PDP_01_4x5_Web_c.jpg?v=1778019487",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Bubblegum_PDP_01_4x5_Web.jpg?v=1777128262"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Retro"
+        },
+        {
+          "name": "Collar Size",
+          "value": "S / M • Cat"
+        }
+      ],
+      "sku": "WO-CAT-HRN-L-COL-R-SM",
+      "price": 45.0,
+      "available": true,
+      "image_urls": [
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Retro_PDP_01_4x5_Web.jpg?v=1777923729",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Retro_S-M_PDP_01_4x5_Web.jpg?v=1776972431",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Retro_PDP_01_4x5_Web.jpg?v=1777128248",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_BreakawayCollar_Retro_OnCat_PDP_03_4x5_Web.jpg?v=1777128248"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Retro"
+        },
+        {
+          "name": "Collar Size",
+          "value": "XS • Kitten"
+        }
+      ],
+      "sku": "WO-CAT-HRN-L-COL-R-XS",
+      "price": 45.0,
+      "available": true,
+      "image_urls": [
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Retro_PDP_01_4x5_Web.jpg?v=1777923729",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Retro_S-M_PDP_01_4x5_Web.jpg?v=1776972431",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Retro_PDP_01_4x5_Web.jpg?v=1777128248"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Lilac"
+        },
+        {
+          "name": "Collar Size",
+          "value": "XS • Kitten"
+        }
+      ],
+      "sku": "WO-CAT-HRN-L-COL-L-XS",
+      "price": 45.0,
+      "available": true,
+      "image_urls": [
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Collar_Lilac_PDP_01_4x5_Web.jpg?v=1777923729&width=1920",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_WalkKitHarness_Lilac_S-M_PDP_01_4x5_Web.jpg?v=1777561333",
+        "https://wildone.com/cdn/shop/files/WO_VM_Cat_Collar_Lilac_PDP_01_4x5_Web.jpg?v=1777128279"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "name": "Seasoned Carbon Steel Frying Pan",
+  "price": {
+    "price": 99.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Our best-selling Carbon Steel Frying Pan, now seasoned to help you achieve a naturally non stick surface. Durable enough for your grill, stove, oven, or open fire, our Seasoned Carbon Steel Frying Pan is the key to unlocking high-heat searing, grilling, and more.",
+  "key_features": [
+    "Pre-seasoned with a mixture of shea nut oil and coconut oil",
+    "Heat Safe to 1200°F (650°C)",
+    "Naturally Non Stick",
+    "Optimized for Oven, Gas, Electric, Induction, and Open Fire",
+    "Stay Cool Handle™",
+    "Weight: 2 lbs",
+    "Total Diameter 8”",
+    "Cooking surface: 5.5”",
+    "Thickness: 2mm",
+    "PFAS-free",
+    "PFOA-free",
+    "PTFE-free",
+    "Hand Wash Only",
+    "Made in Sweden"
+  ],
+  "image_urls": [
+    "https://cdn.sanity.io/images/fr9flhkd/main/c57be5bfdd7c094ab36d267e3ce30ef9da6d6b58-1080x1080.jpg",
+    "https://cdn.sanity.io/images/fr9flhkd/main/cf0602eaabb85cdda25d81ff5ec2d084153ce967-1500x1500.png"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Skillets & Frying Pans"
+  },
+  "brand": "Made In",
+  "colors": [],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "8\"",
+        "10\"",
+        "12\""
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "8\""
+        }
+      ],
+      "sku": "COOK-8-FRYCN-S-R3",
+      "price": 99.0,
+      "available": true,
+      "image_urls": [
+        "https://cdn.sanity.io/images/fr9flhkd/main/c57be5bfdd7c094ab36d267e3ce30ef9da6d6b58-1080x1080.jpg",
+        "https://cdn.sanity.io/images/fr9flhkd/main/cf0602eaabb85cdda25d81ff5ec2d084153ce967-1500x1500.png"
+      ]
+    }
+  ]
+}

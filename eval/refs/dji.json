@@ -1,0 +1,100 @@
+{
+  "name": "DJI Mini 4 Pro (DJI RC-N2)",
+  "price": {
+    "price": 759.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "DJI Mini 4 Pro is a mini drone ideal for beginners and pros seeking a portable, regulation-friendly 4k drone with adavanced performance.",
+  "key_features": [
+    "Under 249 g",
+    "4K/60fps HDR True Vertical Shooting",
+    "Omnidirectional Obstacle Sensing",
+    "Extended Battery Life",
+    "20km FHD Video Transmission",
+    "ActiveTrack 360°"
+  ],
+  "image_urls": [
+    "https://se-cdn.djiits.com/tpc/uploads/spu/three_d_cover/a7d12fd971ff600723b7a59316418cf7@ultra.jpg",
+    "https://se-cdn.djiits.com/tpc/uploads/carousel/image/069daa8c4384db605f496061f55207a6@ultra.jpg?format=webp",
+    "https://se-cdn.djiits.com/tpc/uploads/spu/three_d_cover/a7d12fd971ff600723b7a59316418cf7@medium.jpg",
+    "https://se-cdn.djiits.com/tpc/uploads/spu/three_d_cover/a7d12fd971ff600723b7a59316418cf7@xlarge.jpg",
+    "https://se-cdn.djiits.com/tpc/uploads/spu/three_d_cover/a7d12fd971ff600723b7a59316418cf7@origin.jpg",
+    "https://se-cdn.djiits.com/tpc/uploads/spu/three_d_cover/a7d12fd971ff600723b7a59316418cf7@extra.jpg",
+    "https://se-cdn.djiits.com/tpc/uploads/spu/family_photo/e7b1616a9a9831ec586563ef0a5cbe58@ultra.png"
+  ],
+  "video_url": "https://se-cdn.djiits.com/uploads/video/banner/575047a441f2a661fc78668555ba6e62.mp4",
+  "category": {
+    "name": "Cameras & Optics > Cameras > Video Cameras"
+  },
+  "brand": "DJI",
+  "colors": [],
+  "options": [
+    {
+      "name": "Option",
+      "values": [
+        "DJI Mini 4 Pro (DJI RC-N2)",
+        "DJI Mini 4 Pro Fly More Combo (DJI RC 2)",
+        "DJI Mini 4 Pro Fly More Combo Plus (DJI RC 2)"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Option",
+          "value": "DJI Mini 4 Pro (DJI RC-N2)"
+        }
+      ],
+      "sku": "DJI RC-N2",
+      "price": 759.0,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Option",
+          "value": "DJI Mini 4 Pro Fly More Combo (DJI RC 2)"
+        }
+      ],
+      "sku": "EAN2025032701",
+      "price": 1099.0,
+      "available": false,
+      "image_urls": [
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@medium.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@retina_small.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@thumb_374.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@thumb_290.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@thumb_200.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@origin.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@xlarge.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@extra.png?format=webp"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Option",
+          "value": "DJI Mini 4 Pro Fly More Combo Plus (DJI RC 2)"
+        }
+      ],
+      "sku": "EAN2025032702",
+      "price": 1159.0,
+      "available": false,
+      "image_urls": [
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@ultra.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@medium.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@retina_small.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/family_photo/46e4d1ebe037164e673f59cb4b3c0150@ultra.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@thumb_374.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@thumb_290.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@thumb_200.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@origin.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@xlarge.png?format=webp",
+        "https://se-cdn.djiits.com/tpc/uploads/spu_bundle/cover/c048b773389f360eff9d745e971e5c9a@extra.png?format=webp"
+      ]
+    }
+  ]
+}

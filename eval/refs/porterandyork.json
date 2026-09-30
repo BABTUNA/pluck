@@ -1,0 +1,117 @@
+{
+  "name": "Bacon Wrapped Filet Mignon",
+  "price": {
+    "price": 30.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Indulge in premium filet mignon wrapped in savory bacon. Hand-cut, aged Angus beef delivered fresh — the perfect gift or dinner upgrade.",
+  "key_features": [
+    "Only the top 8% of USDA beef",
+    "Prime and high-Choice grades",
+    "Pasture raised in the Midwest",
+    "Grass-fed and grain finished",
+    "Aged 28 days & cut-to-order"
+  ],
+  "image_urls": [
+    "https://porterandyork.com/wp-content/uploads/Porter-and-York-2.26.20-filet-2-1024x768.jpg",
+    "https://porterandyork.com/wp-content/uploads/2013/10/filet_fork-e1572827225121.jpg",
+    "https://porterandyork.com/wp-content/uploads/filet-newsletter.jpg",
+    "https://porterandyork.com/wp-content/uploads/AB2A9862-scaled.jpg",
+    "https://porterandyork.com/wp-content/uploads/AB2A9862-1024x768.jpg",
+    "https://porterandyork.com/wp-content/uploads/2013/10/angus-beef.png"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Food, Beverages & Tobacco > Food Items > Meat, Seafood & Eggs > Meat > Fresh & Frozen Meats"
+  },
+  "brand": "Porter & York",
+  "colors": [],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "10 oz, USDA Choice+",
+        "10 oz, USDA Prime",
+        "12 oz, USDA Choice+",
+        "12 oz, USDA Prime",
+        "8 oz, USDA Choice+",
+        "8 oz, USDA Prime"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "8 oz, USDA Choice+"
+        }
+      ],
+      "sku": "PY1330-1",
+      "price": 30.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "8 oz, USDA Prime"
+        }
+      ],
+      "sku": "PY1330-1",
+      "price": 35.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "10 oz, USDA Choice+"
+        }
+      ],
+      "sku": "PY1330-1",
+      "price": 35.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "10 oz, USDA Prime"
+        }
+      ],
+      "sku": "PY1330-1",
+      "price": 40.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "12 oz, USDA Choice+"
+        }
+      ],
+      "sku": "PY1330-1",
+      "price": 40.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "12 oz, USDA Prime"
+        }
+      ],
+      "sku": "PY1330-1",
+      "price": 45.0,
+      "available": true,
+      "image_urls": []
+    }
+  ]
+}

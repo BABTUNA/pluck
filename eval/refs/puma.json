@@ -1,0 +1,88 @@
+{
+  "name": "Suede Classic Sneakers",
+  "price": {
+    "price": 90.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "The Suede hit the scene in 1968 and has been changing the game ever since. It's been worn by icons of every generation, and it's stayed classic through it all. Instantly recognisable and constantly reinvented, Suede's legacy continues to grow and be legitimised by the authentic and expressive individuals that embrace the iconic shoe. This latest rendition is outfitted with new details and premium materials for a fresh look.",
+  "key_features": [
+    "Leather upper",
+    "Suede leather heel overlay and tongue",
+    "Synthetic lining",
+    "Mesh sockliner",
+    "Rubber midsole",
+    "Rubber outsole",
+    "PUMA branding details",
+    "Lining: 72.44% Textile, 27.56% Synthetic",
+    "Outsole: 100% Rubber",
+    "Upper: 97.36% Cow Leather, 2.74% Synthetic",
+    "Sockliner: 100% Textile",
+    "PUMA's leather products support responsible manufacturing via the Leather Working Group"
+  ],
+  "image_urls": [
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399781/01/mod01/fnd/PNA/fmt/png/Suede-Classic-Sneakers",
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399781/01/mod02/fnd/PNA/fmt/png/Suede-Classic-Sneakers",
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399781/01/sv02/fnd/PNA/fmt/png/Suede-Classic-Sneakers",
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399781/01/sv03/fnd/PNA/fmt/png/Suede-Classic-Sneakers",
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399781/01/sv04/fnd/PNA/fmt/png/Suede-Classic-Sneakers",
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399781/01/bv/fnd/PNA/fmt/png/Suede-Classic-Sneakers",
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399781/01/fnd/PNA/fmt/png/Suede-Classic-Sneakers",
+    "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_600,h_600/global/399781/01/sv01/fnd/PNA/fmt/png/Suede-Classic-Sneakers"
+  ],
+  "video_url": "https://videos.puma.net/videos/399781/41/vid01/fnd/PNA/",
+  "category": {
+    "name": "Apparel & Accessories > Shoes"
+  },
+  "brand": "PUMA",
+  "colors": [
+    "PUMA Black-PUMA White",
+    "For All Time Red-PUMA White",
+    "PUMA Navy-PUMA White",
+    "Amber-PUMA White",
+    "Team Regal Red-PUMA White",
+    "Cast Iron-PUMA White",
+    "PUMA Black-PUMA Black",
+    "Dark Myrtle-PUMA White",
+    "Pebble Path-Warm White",
+    "Chocolate Brown-PUMA White",
+    "Olive Green-PUMA White",
+    "Mountain Blue-PUMA White",
+    "Alpine Snow-PUMA White",
+    "Lavender Alert-PUMA White",
+    "Cayenne Pepper-PUMA White",
+    "Haute Coffee-PUMA White",
+    "Buttercream-PUMA White",
+    "Créme De Mint-PUMA White"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "PUMA Black-PUMA White",
+        "For All Time Red-PUMA White",
+        "PUMA Navy-PUMA White",
+        "Amber-PUMA White",
+        "Team Regal Red-PUMA White",
+        "Cast Iron-PUMA White",
+        "PUMA Black-PUMA Black",
+        "Dark Myrtle-PUMA White",
+        "Pebble Path-Warm White",
+        "Chocolate Brown-PUMA White",
+        "Olive Green-PUMA White",
+        "Mountain Blue-PUMA White",
+        "Alpine Snow-PUMA White",
+        "Lavender Alert-PUMA White",
+        "Cayenne Pepper-PUMA White",
+        "Haute Coffee-PUMA White",
+        "Buttercream-PUMA White",
+        "Créme De Mint-PUMA White"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": []
+    }
+  ],
+  "variants": []
+}

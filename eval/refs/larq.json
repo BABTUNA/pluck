@@ -1,0 +1,113 @@
+{
+  "name": "LARQ Bottle PureVis™ 2",
+  "price": {
+    "price": 129.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Improve your well-being with the LARQ Bottle PureVis™ 2—the all-in-one self-cleaning and water filtering bottle with hydration tracking to help you drink more of the good stuff. Smart sensors in the bottle automatically track each sip while the LARQ companion app gives you access to insights and progress.This double-wall insulated smart water bottle features a detachable handle, and includes a removable filter straw and Essential Bottle Filter to give you flexibility with your drinking experience.Elevate your hydration with LARQ Bottle PureVis™ 2.",
+  "key_features": [
+    "Built-in UV-C LED",
+    "Double-wall insulated to keep water cold for 24 hours or hot for 12",
+    "Electropolished 18/8 stainless steel (BPA free)",
+    "Rechargeable lithium-polymer battery",
+    "MicroUSB connector",
+    "Proprietary powder coating",
+    "PureVis™ technology eliminates up to 99.999% of Salmonella and 99.99% of E. coli",
+    "Nano Zero filtration improves taste and removes chlorine, pharmaceuticals and PFOA/PFOS",
+    "Hydration tracking with LARQ companion app",
+    "Detachable handle",
+    "USB-C charging port"
+  ],
+  "image_urls": [
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1770984506/BWOB068A_600857559/BWOB068A_600857559.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071948/BWOB068A-4A1/BWOB068A-4A1.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071946/BWOB068A-4A2/BWOB068A-4A2.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071942/BWOB068A-4A3/BWOB068A-4A3.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071936/BWOB068A-4B1/BWOB068A-4B1.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071933/BWOB068A-4B2/BWOB068A-4B2.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071931/BWOB068A-4B3/BWOB068A-4B3.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071951/BWOB068A-4A/BWOB068A-4A.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071940/BWOB068A-4B/BWOB068A-4B.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071925/BWOB068A-51/BWOB068A-51.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071923/BWOB068A-52/BWOB068A-52.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071919/BWOB068A-53/BWOB068A-53.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071954/BWOB068A-2/BWOB068A-2.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071928/BWOB068A-5/BWOB068A-5.png?_i=AA",
+    "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071916/BWOB068A/BWOB068A.png?_i=AA",
+    "https://res.cloudinary.com/larq/image/upload/q_auto/w_900/v1714750463/SKU/SPA/v3/BWOB068A.jpg"
+  ],
+  "video_url": "https://res.cloudinary.com/larq/video/upload/f_auto/v1777442398/assets/spa/v3/products/video/LARQ_Bottle_PureVis_2_mbb/LARQ_MBBxPV2_m-opt.mp4",
+  "category": {
+    "name": "Home & Garden > Kitchen & Dining > Food & Beverage Carriers > Water Bottles"
+  },
+  "brand": "LARQ",
+  "colors": [
+    "Obsidian Black",
+    "Granite White",
+    "Mojave Dune",
+    "Eucalyptus Green",
+    "Luberon Lavender",
+    "Limoncello Yellow",
+    "Sorrento Tangerine",
+    "Arctic Blue",
+    "Juniper Green"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "23 oz",
+        "34 oz"
+      ]
+    },
+    {
+      "name": "Color",
+      "values": [
+        "Obsidian Black",
+        "Granite White",
+        "Mojave Dune",
+        "Eucalyptus Green",
+        "Luberon Lavender",
+        "Limoncello Yellow",
+        "Sorrento Tangerine",
+        "Arctic Blue",
+        "Juniper Green"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "23 oz"
+        },
+        {
+          "name": "Color",
+          "value": "Obsidian Black"
+        }
+      ],
+      "sku": "BWOB068A",
+      "price": 129.0,
+      "available": true,
+      "image_urls": [
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1770984506/BWOB068A_600857559/BWOB068A_600857559.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071948/BWOB068A-4A1/BWOB068A-4A1.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071946/BWOB068A-4A2/BWOB068A-4A2.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071942/BWOB068A-4A3/BWOB068A-4A3.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071936/BWOB068A-4B1/BWOB068A-4B1.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071933/BWOB068A-4B2/BWOB068A-4B2.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071931/BWOB068A-4B3/BWOB068A-4B3.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071951/BWOB068A-4A/BWOB068A-4A.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071940/BWOB068A-4B/BWOB068A-4B.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071925/BWOB068A-51/BWOB068A-51.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071923/BWOB068A-52/BWOB068A-52.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071919/BWOB068A-53/BWOB068A-53.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071954/BWOB068A-2/BWOB068A-2.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071928/BWOB068A-5/BWOB068A-5.png?_i=AA",
+        "https://res.cloudinary.com/larq/images/f_auto,q_auto/v1715071916/BWOB068A/BWOB068A.png?_i=AA"
+      ]
+    }
+  ]
+}

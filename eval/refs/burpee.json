@@ -1,0 +1,56 @@
+{
+  "name": "Summer Zucchini Limelight Squash",
+  "price": {
+    "price": 5.95,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "This ravishing new zucchini is a feast for the eyes and palate. The novel beauty of the luminous creamy light green color is matched by the creamy, rich, refreshing taste. Limelights early maturing 8\" yellow-green fruits come dressed to impress, garlanded by deep green foliage gracefully mottled in silver. A must for zucchini lovers.",
+  "key_features": [
+    "F1 Hybrid",
+    "Light Requirement: Full sun",
+    "Lifecycle: Annual",
+    "Sow Method: Outdoor",
+    "Mature Spread: 60 in",
+    "Days to Maturity: 50",
+    "Fruit Weight: 15 oz",
+    "Mature Height: 25 in",
+    "Fruit Size: 8 in",
+    "Variety: Summer Zucchini"
+  ],
+  "image_urls": [
+    "https://www.burpee.com/cdn/shop/files/hjgq8xnhrtiyqpnwwx0p.jpg",
+    "https://www.burpee.com/cdn/shop/files/afyziz4yffk5h8u39up3_ae0081f2-2124-4400-a880-9c100af6c84c.jpg",
+    "https://www.burpee.com/cdn/shop/files/9ca9bc546b342ea74d3a40c268deaa4abb5be7ab.jpg"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Home & Garden > Plants > Seeds > Seeds & Seed Tape"
+  },
+  "brand": "Burpee.com",
+  "colors": [],
+  "options": [
+    {
+      "name": "30 Seeds",
+      "values": [
+        "30 Seeds"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "30 Seeds",
+          "value": "30 Seeds"
+        }
+      ],
+      "sku": "63990A",
+      "price": 5.95,
+      "available": false,
+      "image_urls": [
+        "https://www.burpee.com/cdn/shop/files/hjgq8xnhrtiyqpnwwx0p.jpg"
+      ]
+    }
+  ]
+}

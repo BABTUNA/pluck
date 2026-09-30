@@ -1,0 +1,159 @@
+{
+  "name": "Skis Rossignol Savage All Mountain",
+  "price": {
+    "price": 949.95,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "The Savage All Mountain is perfect for advanced and expert skiers who thrive on variety and adaptability, providing excellent performance across diverse snow condition. They balance a blend of race tech and freeride construction to create a new quiver-of-one experience. The combination of a shorter turn radius and a wider waist makes for progressive carving in all terrain. The Savage ski collection features bold, animal-inspired graphics that bring the raw beauty of nature to life on the slopes. The leopard design showcases sleek, dynamic patterns evoking speed and agility, while the tiger graphics roar with fierce stripes and vibrant colors symbolizing power and strength. Reveal your Savage side !",
+  "key_features": [
+    "CORE: POPLAR WOOD CORE",
+    "CONSTRUCTION: RECTANGULAR FULL SIDEWALL",
+    "SIDECUTS TECHNOLOGY: EXTENDED SIDECUT",
+    "REINFORCEMENT 1: TITANAL BEAM",
+    "V-A-S",
+    "RECTANGULAR FULL SIDEWALL",
+    "PREMIUM HARDTOP",
+    "LCT",
+    "AIR TIP",
+    "SINTERED HD BASE",
+    "TIP & TAIL ROCKER",
+    "EXTENDED SIDECUT",
+    "TITANAL BEAM",
+    "POPLAR WOOD CORE"
+  ],
+  "image_urls": [
+    "https://www.rossignol.com/dw/image/v2/BJJZ_PRD/on/demandware.static/-/Sites-rossignol-catalog/default/dwded2e24e/images/large/RAOFV05000_72DPI_01_v00.jpg",
+    "https://www.rossignol.com/dw/image/v2/BJJZ_PRD/on/demandware.static/-/Sites-rossignol-catalog/default/dwce328e32/images/large/RAOFV05000_72DPI_02_v00.jpg",
+    "https://www.rossignol.com/dw/image/v2/BJJZ_PRD/on/demandware.static/-/Sites-rossignol-catalog/default/dwc2ce8d14/images/large/RAOFV05000_72DPI_03_v00.jpg",
+    "https://www.rossignol.com/dw/image/v2/BJJZ_PRD/on/demandware.static/-/Sites-rossignol-catalog/default/dw204679ff/images/large/RAOFV05000_72DPI_04_v00.jpg",
+    "https://www.rossignol.com/dw/image/v2/BJJZ_PRD/on/demandware.static/-/Sites-rossignol-catalog/default/dwdda2fdf2/images/large/RAOFV05000_72DPI_05_v00.jpg",
+    "https://www.rossignol.com/dw/image/v2/BJJZ_PRD/on/demandware.static/-/Sites-rossignol-catalog/default/dwfeeecaca/images/large/RAOFV05000_72DPI_06_v00.jpg"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Sporting Goods > Outdoor Recreation > Winter Sports & Activities > Skiing & Snowboarding > Skis > Downhill Skis"
+  },
+  "brand": "ROSSIGNOL",
+  "colors": [
+    "000"
+  ],
+  "options": [
+    {
+      "name": "Size",
+      "values": [
+        "146",
+        "152",
+        "160",
+        "168",
+        "176",
+        "184"
+      ]
+    },
+    {
+      "name": "Binding",
+      "values": [
+        "No bindings",
+        "NX 12 KONECT GW B90 SAVAGE"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "146"
+        },
+        {
+          "name": "Binding",
+          "value": "No bindings"
+        }
+      ],
+      "sku": "RAOFV05000146",
+      "price": 949.95,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "152"
+        },
+        {
+          "name": "Binding",
+          "value": "No bindings"
+        }
+      ],
+      "sku": "RAOFV05000152",
+      "price": 949.95,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "160"
+        },
+        {
+          "name": "Binding",
+          "value": "No bindings"
+        }
+      ],
+      "sku": "RAOFV05000160",
+      "price": 949.95,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "168"
+        },
+        {
+          "name": "Binding",
+          "value": "No bindings"
+        }
+      ],
+      "sku": "RAOFV05000168",
+      "price": 949.95,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "176"
+        },
+        {
+          "name": "Binding",
+          "value": "No bindings"
+        }
+      ],
+      "sku": "RAOFV05000176",
+      "price": 949.95,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Size",
+          "value": "184"
+        },
+        {
+          "name": "Binding",
+          "value": "No bindings"
+        }
+      ],
+      "sku": "RAOFV05000184",
+      "price": 949.95,
+      "available": false,
+      "image_urls": []
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "name": "Men's Carefree Unshrinkable Tee, Traditional Fit, Henley",
+  "price": {
+    "price": 29.95,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Made of soft cotton that resists wrinkles, shrinking, fading and pilling, our resilient henley keeps its shape wash after wash.",
+  "key_features": [
+    "Traditional Fit: Relaxed through the chest, sleeve and waist.",
+    "Ribbed trim is 90% cotton/10% Lycra® elastane.",
+    "100% jersey-knit cotton.",
+    "Double ring-spun fabric fights shrinkage, wrinkles, fading and pilling.",
+    "Built for comfort, the fabric gets even softer the more you wash and dry it.",
+    "Machine wash and dry.",
+    "Durable double-needle stitching.",
+    "Straight hem can be worn tucked or untucked.",
+    "Comfortable enough for everyday wear.",
+    "Tagless printed label for comfort.",
+    "Soft jersey-knit taping on neck seam.",
+    "Imported."
+  ],
+  "image_urls": [
+    "https://cdni.llbean.net/is/image/wim/224626_36814_41",
+    "https://cdni.llbean.net/is/image/wim/224626_38221_41",
+    "https://cdni.llbean.net/is/image/wim/224626_1176_41",
+    "https://cdni.llbean.net/is/image/wim/224626_1207_41",
+    "https://cdni.llbean.net/is/image/wim/224626_292_41",
+    "https://cdni.llbean.net/is/image/wim/224626_464_41",
+    "https://cdni.llbean.net/is/image/wim/224626_55_41",
+    "https://cdni.llbean.net/is/image/wim/224626_1_41",
+    "https://cdni.llbean.net/is/image/wim/224626_0_44?hei=1379&wid=1200&resMode=sharp2&defaultImage=llbprod/224626_0_44",
+    "https://cdni.llbean.net/is/image/wim/224626_0_45",
+    "https://cdni.llbean.net/is/image/wim/224626_0_46",
+    "https://cdni.llbean.net/is/image/wim/224626_0_47",
+    "https://cdni.llbean.net/is/image/wim/224626_0_48"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Clothing > Shirts & Tops"
+  },
+  "brand": "L.L.Bean",
+  "colors": [
+    "Black",
+    "Charcoal Heather",
+    "Delta Blue",
+    "Gray Heather",
+    "Lake",
+    "Navy Blue",
+    "Soft Spruce",
+    "White"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "Black",
+        "Charcoal Heather",
+        "Delta Blue",
+        "Gray Heather",
+        "Lake",
+        "Navy Blue",
+        "Soft Spruce",
+        "White"
+      ]
+    },
+    {
+      "name": "Item",
+      "values": [
+        "Regular",
+        "Tall"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        "Small",
+        "Medium",
+        "Large",
+        "X-Large",
+        "XX-Large",
+        "XXX-Large"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Delta Blue"
+        },
+        {
+          "name": "Item",
+          "value": "Regular"
+        },
+        {
+          "name": "Size",
+          "value": "Small"
+        }
+      ],
+      "sku": "0ATH201002",
+      "price": 29.95,
+      "available": true,
+      "image_urls": [
+        "https://cdni.llbean.net/is/image/wim/224626_36814_41",
+        "https://cdni.llbean.net/is/image/wim/224626_0_44?hei=1379&wid=1200&resMode=sharp2&defaultImage=llbprod/224626_0_44",
+        "https://cdni.llbean.net/is/image/wim/224626_0_45",
+        "https://cdni.llbean.net/is/image/wim/224626_0_46",
+        "https://cdni.llbean.net/is/image/wim/224626_0_47",
+        "https://cdni.llbean.net/is/image/wim/224626_0_48"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Lake"
+        },
+        {
+          "name": "Item",
+          "value": "Regular"
+        },
+        {
+          "name": "Size",
+          "value": "Small"
+        }
+      ],
+      "sku": "1000264614",
+      "price": 24.99,
+      "available": true,
+      "image_urls": [
+        "https://cdni.llbean.net/is/image/wim/224626_55_41",
+        "https://cdni.llbean.net/is/image/wim/224626_0_44?hei=1379&wid=1200&resMode=sharp2&defaultImage=llbprod/224626_0_44",
+        "https://cdni.llbean.net/is/image/wim/224626_0_45",
+        "https://cdni.llbean.net/is/image/wim/224626_0_46",
+        "https://cdni.llbean.net/is/image/wim/224626_0_47",
+        "https://cdni.llbean.net/is/image/wim/224626_0_48"
+      ]
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Black"
+        },
+        {
+          "name": "Item",
+          "value": "Tall"
+        },
+        {
+          "name": "Size",
+          "value": "Medium"
+        }
+      ],
+      "sku": "0ATG410004",
+      "price": 29.95,
+      "available": true,
+      "image_urls": [
+        "https://cdni.llbean.net/is/image/wim/224626_1_41",
+        "https://cdni.llbean.net/is/image/wim/224626_0_44?hei=1379&wid=1200&resMode=sharp2&defaultImage=llbprod/224626_0_44",
+        "https://cdni.llbean.net/is/image/wim/224626_0_45",
+        "https://cdni.llbean.net/is/image/wim/224626_0_46",
+        "https://cdni.llbean.net/is/image/wim/224626_0_47",
+        "https://cdni.llbean.net/is/image/wim/224626_0_48"
+      ]
+    }
+  ]
+}

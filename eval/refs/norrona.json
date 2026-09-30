@@ -1,0 +1,157 @@
+{
+  "name": "falketind Gore-Tex Jacket M's",
+  "price": {
+    "price": 599.0,
+    "currency": "USD",
+    "compare_at_price": null
+  },
+  "description": "Our most versatile waterproof jacket with the new ePE Membrane. This protective shell jacket is made for all-year mountaineering but works great for general outdoor activities all year, from trekking to ski touring.",
+  "key_features": [
+    "Long underarm vents with two-way zipper",
+    "articulated sleeves",
+    "mid-mounted pockets",
+    "storm hood fitted for a helmet with one-hand adjustment",
+    "asymmetric cuffs with Velcro adjustment",
+    "3-layer 30D ePE GORE-TEX®",
+    "recycled nylon face and backer",
+    "waterproofness (28,000mm)",
+    "breathability (RET Less than 13)",
+    "total windproofness",
+    "Weight: 356g"
+  ],
+  "image_urls": [
+    "https://res-2.cloudinary.com/norrona/image/upload/b_rgb:fcfcfc,c_pad,d_imgmissing.jpg,f_auto,fl_progressive.lossy,h_288,q_auto,w_210/v1/Auto/1834-24-5564-packshot-f.jpg"
+  ],
+  "video_url": null,
+  "category": {
+    "name": "Apparel & Accessories > Clothing > Outerwear > Coats & Jackets"
+  },
+  "brand": "Norrøna",
+  "colors": [
+    "Indigo Night",
+    "Caviar Black",
+    "Exuberance",
+    "Tender Shoots/Dark Citron",
+    "Brilliant Blue/Dark Blue"
+  ],
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "Indigo Night",
+        "Caviar Black",
+        "Exuberance",
+        "Tender Shoots/Dark Citron",
+        "Brilliant Blue/Dark Blue"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Indigo Night"
+        },
+        {
+          "name": "Size",
+          "value": "L"
+        }
+      ],
+      "sku": "1834-24 2295 L",
+      "price": 599.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Indigo Night"
+        },
+        {
+          "name": "Size",
+          "value": "M"
+        }
+      ],
+      "sku": "1834-24 2295 M",
+      "price": 599.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Caviar Black"
+        },
+        {
+          "name": "Size",
+          "value": "S"
+        }
+      ],
+      "sku": "1834-24 7718 S",
+      "price": 599.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Exuberance"
+        },
+        {
+          "name": "Size",
+          "value": "S"
+        }
+      ],
+      "sku": "1834-24 1003 S",
+      "price": 599.0,
+      "available": false,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Tender Shoots/Dark Citron"
+        },
+        {
+          "name": "Size",
+          "value": "XL"
+        }
+      ],
+      "sku": "1834-24 5577 XL",
+      "price": 599.0,
+      "available": true,
+      "image_urls": []
+    },
+    {
+      "selections": [
+        {
+          "name": "Color",
+          "value": "Brilliant Blue/Dark Blue"
+        },
+        {
+          "name": "Size",
+          "value": "XXL"
+        }
+      ],
+      "sku": "1834-24 6655 XXL",
+      "price": 599.0,
+      "available": true,
+      "image_urls": []
+    }
+  ]
+}
