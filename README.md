@@ -23,14 +23,6 @@ wc -l pluck/*.py                                           # the extraction core
 PLUCK_MODEL=google/gemini-3-flash-preview uv run python eval.py 10   # same eval on the bigger model
 ```
 
-And against the live deployment, any product URL you like:
-
-```bash
-curl -X POST https://pluck-extract.fly.dev/extract \
-  -H 'content-type: application/json' \
-  -d '{"url": "https://www.brooklinen.com/products/luxe-core-sheet-set"}'
-```
-
 ## Demo
 
 [![Demo video](docs/demo-thumbnail.jpg)](https://www.youtube.com/watch?v=blkHG3OnneM)
