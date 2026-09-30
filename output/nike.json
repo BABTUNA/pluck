@@ -16,10 +16,20 @@
   "Rubber outsole with classic pivot circles"
  ],
  "image_urls": [
-  "https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/6a4d2051-1fee-4ce0-aba7-5de42641dae2/NIKE+AIR+FORCE+1+%2707+LV8.png",
-  "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/6a4d2051-1fee-4ce0-aba7-5de42641dae2/NIKE+AIR+FORCE+1+%2707+LV8.png"
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d6d2266d-0fa9-4f34-bf74-6528c9a0945f/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/6888cdd1-346f-4136-a14b-7412f920419c/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/4fb11077-60ab-45e6-b6a7-80b378a1fcb8/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/7802fe0d-f661-456e-ab2b-90a3c68e7dd9/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/e7213e98-fd6d-42b1-b1fd-2edaa0162b04/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/720cbe44-dc8e-4a8f-aab2-fdabdc67d358/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/8e30bed9-2cc3-4a80-af82-cb6503bd793c/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/38453cbe-24fb-4190-8694-3e7c38db1c23/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/f03db976-618f-4208-bad2-807b517b705a/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c1ea061e-d792-43a7-b61f-8fa111ef9617/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d389bf3b-35e7-4c4a-b894-c0d049d630d0/NIKE+AIR+FORCE+1+%2707+LV8.png",
+  "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ae5acefc-9650-45e1-8a2e-ba9706e90deb/NIKE+AIR+FORCE+1+%2707+LV8.png"
  ],
- "video_url": "https://shortformvideo.nike.com/a/videos/a91adb2a-77f4-4e15-811b-4847a3768ac0/video.mp4",
+ "video_url": null,
  "category": {
   "name": "Apparel & Accessories > Shoes"
  },
@@ -27,5 +37,108 @@
  "colors": [
   "Phantom/College Grey/Team Red/Black"
  ],
- "variants": []
+ "variants": [
+  {
+   "name": "5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "6",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "6.5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "7",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "7.5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "8",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "8.5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "9",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "9.5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "10",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "10.5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "11",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "11.5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "12",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "12.5",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "13",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  },
+  {
+   "name": "14",
+   "price": 76.99,
+   "compare_at_price": null,
+   "available": null
+  }
+ ]
 }

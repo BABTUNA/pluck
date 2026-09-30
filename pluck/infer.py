@@ -15,6 +15,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MODEL = os.environ.get("PLUCK_MODEL", "google/gemini-2.5-flash-lite")
+# the details prompt shows these as format examples and the extractor drops
+# any variant that just echoes them back
+EXAMPLE_VARIANTS = ("Black / S", "Black / M")
 
 
 # strip the page down to what a human would read
@@ -86,7 +89,7 @@ async def pick_leaf(known: str, html: str, paths: list[str]) -> tuple[dict, dict
 async def list_details(known: str, html: str) -> tuple[dict, dict]:
     fb, usage = await _chat(
         "From the page list: 'variants' (the selectable configurations like "
-        '["Black / S", "Black / M"]), \'colors\' (the color names offered), '
+        + str(list(EXAMPLE_VARIANTS)) + "), 'colors' (the color names offered), "
         "'key_features' (3-6 short feature phrases). Reply JSON "
         '{"variants": [...], "colors": [...], "key_features": [...]}, '
         "empty arrays when the page shows none.",

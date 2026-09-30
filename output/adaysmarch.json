@@ -14,7 +14,11 @@
   "Two back pockets with buttoning"
  ],
  "image_urls": [
-  "https://adaysmarch.centracdn.net/client/dynamic/images/8521_d363c12cd7-miller-cotton-lyocell-iron.jpg"
+  "https://adaysmarch.centracdn.net/client/dynamic/images/8521_d363c12cd7-miller-cotton-lyocell-iron-max.jpg",
+  "https://adaysmarch.centracdn.net/client/dynamic/images/8521_8e75528d95-102805-50_miller_cotton_lyocell_trousers_iron0822-max.jpg",
+  "https://adaysmarch.centracdn.net/client/dynamic/images/8521_7915020793-102805-50_miller_cotton_lyocell_trousers_iron0828-max.jpg",
+  "https://adaysmarch.centracdn.net/client/dynamic/images/8521_b0d68ef8f6-102805-50_miller_cotton_lyocell_trousers_iron0839-max.jpg",
+  "https://adaysmarch.centracdn.net/client/dynamic/images/8521_b24209b41b-102805-50_miller_cotton_lyocell_trousers_iron0841-max.jpg"
  ],
  "video_url": "https://adaysmarch.centracdn.net/client/dynamic/attributes/531/miller_2x3.mp4",
  "category": {
@@ -22,44 +26,46 @@
  },
  "brand": "A Day's March",
  "colors": [
-  "Iron"
+  "Grey",
+  "Iron",
+  "Black"
  ],
  "variants": [
   {
    "name": "44",
    "price": null,
    "compare_at_price": null,
-   "available": null
+   "available": true
   },
   {
    "name": "46",
    "price": null,
    "compare_at_price": null,
-   "available": null
+   "available": true
   },
   {
    "name": "48",
    "price": null,
    "compare_at_price": null,
-   "available": null
+   "available": true
   },
   {
    "name": "50",
    "price": null,
    "compare_at_price": null,
-   "available": null
+   "available": true
   },
   {
    "name": "52",
    "price": null,
    "compare_at_price": null,
-   "available": null
+   "available": true
   },
   {
    "name": "54",
    "price": null,
    "compare_at_price": null,
-   "available": null
+   "available": true
   }
  ]
 }

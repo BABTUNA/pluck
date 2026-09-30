@@ -95,7 +95,8 @@ def jsonld(objs: list) -> dict:
         if not isinstance(o, dict):
             continue
         # a productgroup declares its size and color matrix under hasvariant
-        stack.extend((o.get("@graph") or []) + (o.get("hasVariant") or []))
+        # children go to the front so page order beats later top level blocks
+        stack[0:0] = (o.get("@graph") or []) + (o.get("hasVariant") or [])
         t = " ".join(o["@type"]) if isinstance(o.get("@type"), list) else (o.get("@type") or "")
         if "BreadcrumbList" in t:
             for el in o.get("itemListElement") or []:

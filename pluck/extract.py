@@ -12,11 +12,13 @@ import time
 from pydantic import BaseModel
 
 from . import mine, rungs, taxonomy
-from .infer import infer, list_details, pick_leaf
+from .infer import EXAMPLE_VARIANTS, infer, list_details, pick_leaf
 
 _CORE = ("name", "price", "currency")
 _TOL = 0.01  # prices within one percent count as the same number
 _SALE = re.compile(r"was \$|% off|you save|original price|compare at|-\d+%", re.I)
+# kr is ambiguous across scandinavia, sek is the commonest guess and
+# state iso codes win before this map ever runs
 _SYM = {"$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY", "kr": "SEK"}
 
 
@@ -171,7 +173,7 @@ def _video(html: str, mined: str | None) -> str | None:
     if m := re.search(r'property=["\']og:video[^"\']*["\'][^>]*content=["\'](http[^"\']+)', html, re.I):
         return m.group(1)
     found = {u.replace("\\/", "/") for u in re.findall(
-        r'(?:https?:)?(?:\\/\\/|//)(?:[^"\'\s\\]|\\/)+\.(?:mp4|m3u8|webm)\b(?:[^"\'\s\\]|\\/)*', html)}
+        r'(?:https?:)?(?:\\/\\/|//)(?:[^"\'\s\\<>;]|\\/)+\.(?:mp4|m3u8|webm)\b(?:[^"\'\s\\<>;]|\\/)*', html)}
     if len(found) != 1:
         return None
     u = found.pop()
@@ -239,6 +241,10 @@ async def extract(html: str) -> Product:
 
     if "name" not in f.data and hint:
         f.merge({"name": hint.split("|")[0].strip()}, "declared")
+    # a mined name sharing no words with the page title is an upsell block
+    nm = f.value("name")
+    if hint and isinstance(nm, str) and not (mine._toks(nm) & mine._toks(hint)):
+        f.set("name", hint.split("|")[0].strip(), "declared")
     if "brand" not in f.data and (m := re.search(
             r'property=["\']og:site_name["\'][^>]*content=["\']([^"\']{2,60})', html, re.I)):
         f.merge({"brand": mine.unesc(m.group(1))}, "declared")
@@ -273,7 +279,7 @@ async def extract(html: str) -> Product:
     usage = _add_usage(usage, _add_usage(usage2, usage3))
     # model listed extras only count when the page text actually shows them
     text = re.sub(r"<[^>]+>", " ", html).lower()
-    grounded = lambda t: str(t).lower() not in ("black / s", "black / m") and all(
+    grounded = lambda t: str(t) not in EXAMPLE_VARIANTS and all(
         re.search(rf"\b{re.escape(w.strip())}\b", text, re.I)
         for w in str(t).split(" / ") if w.strip())
     if not f.variants:
