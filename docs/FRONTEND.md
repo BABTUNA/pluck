@@ -19,23 +19,30 @@ App.tsx                                router + the Catalog / Live extraction ta
 │
 ├─ CatalogPage                         batch tabs (fifty | five | live) + search,    src/pages/CatalogPage.tsx
 │  │                                   refetches /products?batch= on tab switch
+│  │
 │  └─ ProductCard                      hover photo layered over the primary, sale    src/components/ProductCard.tsx
 │                                      badge, broken-image retry chain
 │
 ├─ ProductPage                         one product by id from /products/{id}         src/pages/ProductPage.tsx
+│  │
 │  ├─ Gallery                          thumb rail + main pane, video as the last     src/components/Gallery.tsx
 │  │                                   slide, broken thumbs drop from the rail
+│  │
 │  ├─ PriceBlock                       Intl currency formatting, strikethrough +     src/components/PriceBlock.tsx
 │  │                                   percent off when compare-at beats price
+│  │
 │  ├─ groupVariants()                  splits "Charcoal / Small" names on " / ",     src/pages/ProductPage.tsx
 │  │                                   dedupes per position, labels axes from
 │  │                                   options or falls back to Option n
-│  └─ extracted-data table             field, value, and SOURCE_LABEL tag per rung   src/pages/ProductPage.tsx
+│  │
+│  └─ extracted-data table             field, value, and a source tag per rung       src/pages/ProductPage.tsx
 │
 └─ LivePage                            polls /progress + /products?batch=live every  src/pages/LivePage.tsx
    │                                   2.5s, new arrivals fade in
+   │
    ├─ crawl controls                   crawlStart(url?, maxPages?) / crawlPause /    src/api.ts
    │                                   crawlResume / crawlClear with confirm dialog
+   │
    └─ progress bar                     done/total width, flips to Paused or          src/pages/LivePage.tsx
                                        Crawl complete from the queue counts
 ```
