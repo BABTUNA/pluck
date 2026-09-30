@@ -12,6 +12,15 @@ curl -X POST https://pluck-extract.fly.dev/extract \
 
 Or browse the storefront it feeds: [pluck-extract.fly.dev](https://pluck-extract.fly.dev) has the assignment's 50 pages, the original 5, a live-crawled catalog, and a live view where you can run, pause, cap, or clear the crawl and feed it single urls.
 
+## Run it in four commands
+
+```bash
+uv sync                                  # deps (put any OpenRouter key in .env first)
+uv run python main.py                    # hydrate the schema from data/*.html -> output/, with cost log
+python3 -m json.tool output/ace.json     # look at one hydrated Product
+uv run python eval.py                    # grade all 50 vendored pages against the reference answers
+```
+
 ## Demo
 
 [![Demo video](docs/demo-thumbnail.jpg)](https://www.youtube.com/watch?v=blkHG3OnneM)
